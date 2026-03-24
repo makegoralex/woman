@@ -180,16 +180,6 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   flex-wrap: wrap;
 }
 .footer p { color: var(--muted); max-width: 500px; }
-.footer-links { display: flex; flex-wrap: wrap; gap: 8px; }
-.footer-links button {
-  border: 1px solid var(--border);
-  background: #fff;
-  color: var(--muted);
-  border-radius: 9px;
-  padding: 4px 8px;
-  cursor: pointer;
-  line-height: 1.1;
-}
 .admin-input { display: grid; gap: 8px; max-width: 280px; margin-top: 16px; }
 
 @media (max-width: 1000px) {

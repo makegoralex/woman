@@ -16,7 +16,7 @@ const events = [
     title: "Бизнес-завтрак: личный бренд 2026",
     date: "12 апреля 2026",
     time: "10:00–13:00",
-    place: "Москва, Soho Rooms",
+    place: "Пенза, Soho Hall",
     format: "Оффлайн",
     category: "Бизнес",
     status: "future",
@@ -30,7 +30,7 @@ const events = [
     title: "Нетворкинг-вечер EVTENIA: связи, которые растут",
     date: "25 апреля 2026",
     time: "19:00–22:00",
-    place: "Санкт-Петербург, Dom Boutique Hotel",
+    place: "Пенза, Dom Boutique Hall",
     format: "Оффлайн",
     category: "Нетворкинг",
     status: "future",
@@ -44,7 +44,7 @@ const events = [
     title: "Женский круг: энергия, опора, баланс",
     date: "7 мая 2026",
     time: "18:30–21:00",
-    place: "Москва, клубное пространство EVTENIA",
+    place: "Пенза, клубное пространство EVTENIA",
     format: "Оффлайн",
     category: "Женские встречи",
     status: "future",
@@ -72,7 +72,7 @@ const events = [
     title: "Итоги форума EVTENIA: женщины в новой экономике",
     date: "18 ноября 2025",
     time: "11:00–18:00",
-    place: "Москва, LOFT#7",
+    place: "Пенза, LOFT#7",
     format: "Оффлайн",
     category: "Special events",
     status: "past",
@@ -86,7 +86,7 @@ const events = [
     title: "Благотворительный культурный вечер",
     date: "13 декабря 2025",
     time: "19:30–23:00",
-    place: "Казань, Art Hall",
+    place: "Пенза, Art Hall",
     format: "Оффлайн",
     category: "Культурные события",
     status: "past",
@@ -213,11 +213,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
         <div>
           <h4>EVTENIA</h4>
           <p>Женское сообщество, где встречаются развитие, поддержка и стильная клубная культура.</p>
-        </div>
-        <div className="footer-links">
-          {["/privacy", "/consent", "/partners", "/stories", "/faq", "/team", "/admin"].map((href) => (
-            <button key={href} onClick={() => goTo(href)}>{href.replace("/", "").toUpperCase()}</button>
-          ))}
         </div>
       </footer>
     </div>
@@ -459,7 +454,7 @@ function ContactsPage() {
       <h1>Контакты</h1>
       <div className="cards grid-2">
         <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />Telegram: @evtenia_club<br />WhatsApp: +7 (900) 000-00-00</p></article>
-        <article className="card"><h3>Оффлайн-точка</h3><p>Москва, Пресненская наб., 8<br />По предварительной записи на мероприятия и встречи.</p></article>
+        <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Московская, 12<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
       <JoinForm compact />
     </div>
