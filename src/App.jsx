@@ -20,7 +20,7 @@ const events = [
     format: "Оффлайн",
     category: "Бизнес",
     status: "future",
-    image: "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
     short: "Практическая встреча о позиционировании, репутации и росте экспертности.",
     program: ["Нетворкинг и welcome-coffee", "Панель с основательницами бизнесов", "Q&A + закрытый клубный круг"],
     audience: "Предпринимательницы, эксперты, руководительницы команд.",
@@ -34,7 +34,7 @@ const events = [
     format: "Оффлайн",
     category: "Нетворкинг",
     status: "future",
-    image: "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
     short: "Интеллигентный вечер знакомств, мини-питчи и новые партнерства.",
     program: ["Круг знакомств", "Формат быстрых диалогов", "After-talk с модератором клуба"],
     audience: "Для участниц, которые хотят расширить деловой и личный круг общения.",
@@ -48,7 +48,7 @@ const events = [
     format: "Оффлайн",
     category: "Женские встречи",
     status: "future",
-    image: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
     short: "Камерная встреча для глубокой перезагрузки и поддержки в кругу женщин.",
     program: ["Практика заземления", "Тематическое обсуждение", "Чайная церемония"],
     audience: "Для тех, кому важно бережное и вдохновляющее окружение.",
@@ -62,7 +62,7 @@ const events = [
     format: "Гибрид",
     category: "Обучение",
     status: "future",
-    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
     short: "Тренировка публичных выступлений и подачи себя перед аудиторией.",
     program: ["Разбор структуры речи", "Практика на камеру", "Индивидуальная обратная связь"],
     audience: "Для спикеров, основательниц и экспертов.",
@@ -76,7 +76,7 @@ const events = [
     format: "Оффлайн",
     category: "Special events",
     status: "past",
-    image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
     short: "Большой клубный форум с 300+ участницами, экспертами и партнерами.",
     program: ["Пленарная сессия", "Экспертные панели", "Вечерний networking"],
     audience: "Открытое мероприятие для участниц и гостей клуба.",
@@ -90,7 +90,7 @@ const events = [
     format: "Оффлайн",
     category: "Культурные события",
     status: "past",
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+    image: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
     short: "Музыка, искусство и сбор средств в поддержку женских образовательных проектов.",
     program: ["Камерный концерт", "Арт-аукцион", "Партнерские выступления"],
     audience: "Для участниц клуба и партнеров EVTENIA.",
@@ -112,17 +112,17 @@ const galleryAlbums = [
   {
     title: "Весенний business brunch",
     date: "март 2026",
-    cover: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=1000&q=80",
+    cover: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1000&q=80",
   },
   {
     title: "Камерный вечер историй участниц",
     date: "февраль 2026",
-    cover: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1000&q=80",
+    cover: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=80",
   },
   {
     title: "Осенний форум EVTENIA",
     date: "ноябрь 2025",
-    cover: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1000&q=80",
+    cover: "https://images.unsplash.com/photo-1510070009289-b5bc34383727?auto=format&fit=crop&w=1000&q=80",
   },
 ];
 
@@ -167,7 +167,7 @@ function usePath() {
   return { path, goTo };
 }
 
-function Layout({ children, goTo, path }) {
+function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   const nav = [
     ["/", "Главная"], ["/about", "О клубе"], ["/events", "Мероприятия"], ["/news", "Новости"],
     ["/gallery", "Галерея"], ["/join", "Вступить"], ["/contacts", "Контакты"],
@@ -177,12 +177,36 @@ function Layout({ children, goTo, path }) {
     <div className="site">
       <header className="header">
         <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
-        <nav>
+        <button
+          className={`burger ${mobileMenuOpen ? "open" : ""}`}
+          onClick={() => setMobileMenuOpen((prev) => !prev)}
+          aria-label="Открыть меню"
+        >
+          ☰
+        </button>
+        <nav className={mobileMenuOpen ? "open" : ""}>
           {nav.map(([href, label]) => (
-            <button key={href} className={`nav-link ${path === href ? "active" : ""}`} onClick={() => goTo(href)}>{label}</button>
+            <button
+              key={href}
+              className={`nav-link ${path === href ? "active" : ""}`}
+              onClick={() => {
+                goTo(href);
+                setMobileMenuOpen(false);
+              }}
+            >
+              {label}
+            </button>
           ))}
         </nav>
-        <button className="btn btn-small" onClick={() => goTo("/join")}>Подать заявку</button>
+        <button
+          className="btn btn-small"
+          onClick={() => {
+            goTo("/join");
+            setMobileMenuOpen(false);
+          }}
+        >
+          Подать заявку
+        </button>
       </header>
       <main>{children}</main>
       <footer className="footer">
@@ -215,7 +239,7 @@ function Hero({ goTo }) {
           <li>женские встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
         </ul>
       </div>
-      <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=1200&q=80" alt="Участницы клуба EVTENIA" />
+      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80" alt="Атмосфера клубного пространства EVTENIA" />
     </section>
   );
 }
@@ -507,6 +531,7 @@ function NotFound({ goTo }) {
 
 export default function App() {
   const { path, goTo } = usePath();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const matched = path.startsWith("/events/")
@@ -561,5 +586,9 @@ export default function App() {
     return <NotFound goTo={goTo} />;
   }, [path]);
 
-  return <Layout goTo={goTo} path={path}>{page}</Layout>;
+  useEffect(() => {
+    setMobileMenuOpen(false);
+  }, [path]);
+
+  return <Layout goTo={goTo} path={path} mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}>{page}</Layout>;
 }
