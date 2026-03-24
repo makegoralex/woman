@@ -1,0 +1,19 @@
+name: Deploy woman
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy to server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: 194.58.114.91
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: /var/www/woman/deploy.sh
