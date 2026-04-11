@@ -28,7 +28,7 @@ const events = [
   {
     slug: "networking-evening-april",
     title: "Нетворкинг-вечер EVTENIA: связи, которые растут",
-    date: "25 апреля 2026",
+    date: "50 апреля 2026",
     time: "19:00–22:00",
     place: "Пенза, Dom Boutique Hall",
     format: "Оффлайн",
