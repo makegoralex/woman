@@ -324,6 +324,7 @@ function usePath() {
 
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const nav = [
     ["/", "Главная"],
@@ -435,11 +436,39 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
       </header>
       <main>{children}</main>
       <footer className="footer">
-        <div>
+        <div className="footer-col">
           <h4>EVTENIA</h4>
-          <p>Женское сообщество, где встречаются развитие, поддержка и стильная клубная культура.</p>
+          <p>Сообщество с проектными направлениями, региональными отделениями и единой афишей событий.</p>
+        </div>
+        <div className="footer-col">
+          <h5>Навигация</h5>
+          <button onClick={() => goTo("/")}>Главная</button>
+          <button onClick={() => goTo("/poster")}>Афиша</button>
+          <button onClick={() => goTo("/regions")}>Регионы</button>
+          <button onClick={() => goTo("/news")}>Новости</button>
+          <button onClick={() => goTo("/team")}>Команда</button>
+        </div>
+        <div className="footer-col">
+          <h5>Участие</h5>
+          <button onClick={() => goTo("/join")}>Подать заявку</button>
+          <button onClick={() => goTo("/partners")}>Партнерство</button>
+          <button onClick={() => goTo("/contacts")}>Контакты</button>
+        </div>
+        <div className="footer-col">
+          <h5>Документы</h5>
+          <button onClick={() => goTo("/privacy")}>Политика конфиденциальности</button>
+          <button onClick={() => goTo("/consent")}>Согласие на обработку данных</button>
         </div>
       </footer>
+      {!cookieAccepted && (
+        <div className="cookie-banner">
+          <p>Мы используем cookies для улучшения работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с политикой конфиденциальности.</p>
+          <div className="cookie-actions">
+            <button className="btn btn-small" onClick={() => setCookieAccepted(true)}>Принять</button>
+            <button className="btn btn-small btn-ghost" onClick={() => goTo("/privacy")}>Подробнее</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -491,7 +520,7 @@ function Home({ goTo }) {
           {regionalBranches.map((branch) => (
             <article className="card" key={branch.slug}>
               <img src={branch.cover} alt={branch.city} />
-              <h3>{branch.city}</h3>
+              <h3><button className="title-link" onClick={() => goTo(`/regions/${branch.slug}`)}>{branch.city}</button></h3>
               <p>Руководители: {branch.leaders.map((leader) => leader.name).join(", ")}.</p>
               <button onClick={() => goTo(`/regions/${branch.slug}`)}>Карточка отделения</button>
             </article>
@@ -518,7 +547,7 @@ function Home({ goTo }) {
         </article>
       </section>
 
-      <JoinForm compact />
+      <JoinForm compact goTo={goTo} />
 
       <section className="cta-final">
         <h2>Присоединяйтесь к сообществу EVTENIA</h2>
@@ -534,7 +563,7 @@ function EventCard({ event, goTo }) {
     <article className="card event-card">
       <img src={event.image} alt={event.title} />
       <small>{event.date} · {event.format}</small>
-      <h3>{event.title}</h3>
+      <h3><button className="title-link" onClick={() => goTo(`/events/${event.slug}`)}>{event.title}</button></h3>
       <p>{event.short}</p>
       <button onClick={() => goTo(`/events/${event.slug}`)}>Подробнее</button>
     </article>
@@ -546,7 +575,7 @@ function ProjectPreviewCard({ project, goTo }) {
   return (
     <article className="card">
       {details?.photo && <img src={details.photo} alt={project.title} />}
-      <h3>{project.title}</h3>
+      <h3><button className="title-link" onClick={() => goTo(`/projects/${project.slug}`)}>{project.title}</button></h3>
       <p>{details ? details.description : "Описание направления в разработке."}</p>
       <small>{details ? `Ведет: ${details.lead.name}` : "Куратор будет назначен"}</small>
       <button onClick={() => goTo(`/projects/${project.slug}`)}>Открыть направление</button>
@@ -557,10 +586,10 @@ function ProjectPreviewCard({ project, goTo }) {
 function PostCard({ post, goTo }) {
   return (
     <article className="card post-card">
-      <small>{post.category} · {post.date}</small>
-      <h3>{post.title}</h3>
+      <small>{post.category} · {post.city ? `${post.city} · ` : ""}{post.date}</small>
+      <h3><button className="title-link" onClick={() => goTo(post.href || `/news/${post.slug}`)}>{post.title}</button></h3>
       <p>{post.excerpt}</p>
-      <button onClick={() => goTo(`/news/${post.slug}`)}>Читать</button>
+      <button onClick={() => goTo(post.href || `/news/${post.slug}`)}>Читать</button>
     </article>
   );
 }
@@ -631,12 +660,34 @@ function EventDetail({ slug, goTo }) {
 }
 
 function NewsPage({ goTo }) {
-  const categories = ["Все", ...new Set(posts.map((p) => p.category))];
+  const branchNews = regionalBranches.flatMap((branch) => branch.news.map((item) => ({
+    slug: `${branch.slug}-${item.slug}`,
+    title: item.title,
+    category: "Новости отделений",
+    date: item.date,
+    city: branch.city,
+    excerpt: item.excerpt,
+    href: `/regions/${branch.slug}/news/${item.slug}`,
+  })));
+  const allNews = [...branchNews, ...posts];
+  const categories = ["Все", ...new Set(allNews.map((p) => p.category))];
+  const cities = ["Все города", ...new Set(branchNews.map((p) => p.city))];
   const [active, setActive] = useState("Все");
-  const filtered = posts.filter((p) => active === "Все" || p.category === active);
+  const [city, setCity] = useState("Все города");
+  const filtered = allNews.filter((p) =>
+    (active === "Все" || p.category === active)
+    && (city === "Все города" || p.city === city)
+  );
   return (
     <div className="page">
       <h1>Новости и блог</h1>
+      <div className="filters">
+        <label>Город
+          <select value={city} onChange={(e) => setCity(e.target.value)}>
+            {cities.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
+      </div>
       <div className="tags">{categories.map((c) => <button key={c} className={active === c ? "active" : ""} onClick={() => setActive(c)}>{c}</button>)}</div>
       <div className="cards grid-3">{filtered.map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
     </div>
@@ -676,7 +727,7 @@ function AboutPage() {
   );
 }
 
-function JoinForm({ compact = false }) {
+function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
       <h2>{compact ? "Оставьте заявку" : "Вступить в клуб EVTENIA"}</h2>
@@ -692,13 +743,19 @@ function JoinForm({ compact = false }) {
           <option>Участие в клубе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
         </select>
         <textarea placeholder="Комментарий" rows="4" />
+        <small className="form-note">
+          Отправляя форму, вы принимаете{" "}
+          <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политику конфиденциальности</button>
+          {" "}и{" "}
+          <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку данных</button>.
+        </small>
         <button className="btn" type="submit">Отправить заявку</button>
       </form>
     </section>
   );
 }
 
-function JoinPage() {
+function JoinPage({ goTo }) {
   return (
     <div className="page">
       <h1>Вступить / подать заявку</h1>
@@ -707,7 +764,7 @@ function JoinPage() {
         <article className="card"><h3>Что получает участница</h3><p>Доступ к событиям, закрытым форматам, контенту и клубным знакомствам.</p></article>
         <article className="card"><h3>Форматы участия</h3><p>Гостевой визит, резидентство, партнёрские пакеты и special events.</p></article>
       </div>
-      <JoinForm />
+      <JoinForm goTo={goTo} />
     </div>
   );
 }
@@ -721,7 +778,7 @@ function GalleryPage() {
   );
 }
 
-function ContactsPage() {
+function ContactsPage({ goTo }) {
   return (
     <div className="page">
       <h1>Контакты</h1>
@@ -729,7 +786,7 @@ function ContactsPage() {
         <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />Telegram: @evtenia_club<br />WhatsApp: +7 (900) 000-00-00</p></article>
         <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Московская, 12<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
-      <JoinForm compact />
+      <JoinForm compact goTo={goTo} />
     </div>
   );
 }
@@ -1056,8 +1113,8 @@ export default function App() {
     if (path === "/news") return <NewsPage goTo={goTo} />;
     if (path.startsWith("/news/")) return <NewsDetail slug={path.split("/news/")[1]} goTo={goTo} />;
     if (path === "/gallery") return <GalleryPage />;
-    if (path === "/join") return <JoinPage />;
-    if (path === "/contacts") return <ContactsPage />;
+    if (path === "/join") return <JoinPage goTo={goTo} />;
+    if (path === "/contacts") return <ContactsPage goTo={goTo} />;
     if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в клубе." />;
     if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
     if (path === "/partners") return <SimplePage title="Партнеры" text="EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами." />;
