@@ -1,15 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
 
-const clubDirections = [
-  { title: "Бизнес и предпринимательство", text: "Мастермайнды, разборы кейсов и клубные бизнес-завтраки." },
-  { title: "Развитие и образование", text: "Лекции, практикумы и встречи с экспертами разных сфер." },
-  { title: "Нетворкинг", text: "Тёплая среда знакомств, партнерств и совместных проектов." },
-  { title: "Женские встречи", text: "Камерные встречи про баланс, самоценность и ресурсы." },
-  { title: "Культурные  события", text: "Арт-вечера, камерная музыка и интеллектуальный досуг." },
-  { title: "Lifestyle и вдохновение", text: "Практики восстановления, стиля жизни и внутренней опоры." },
-];
-
 const events = [
   {
     slug: "business-breakfast-march",
@@ -17,8 +8,10 @@ const events = [
     date: "12 апреля 2026",
     time: "10:00–13:00",
     place: "Пенза, Soho Hall",
+    city: "Пенза",
     format: "Оффлайн",
     category: "Бизнес",
+    projectSlug: "business-i-zhenshina",
     status: "future",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
     short: "Практическая встреча о позиционировании, репутации и росте экспертности.",
@@ -28,11 +21,13 @@ const events = [
   {
     slug: "networking-evening-april",
     title: "Нетворкинг-вечер EVTENIA: связи, которые растут",
-    date: "50 апреля 2026",
+    date: "15 апреля 2026",
     time: "19:00–22:00",
     place: "Пенза, Dom Boutique Hall",
+    city: "Пенза",
     format: "Оффлайн",
     category: "Нетворкинг",
+    projectSlug: "networking",
     status: "future",
     image: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
     short: "Интеллигентный вечер знакомств, мини-питчи и новые партнерства.",
@@ -45,8 +40,10 @@ const events = [
     date: "7 мая 2026",
     time: "18:30–21:00",
     place: "Пенза, клубное пространство EVTENIA",
+    city: "Пенза",
     format: "Оффлайн",
     category: "Женские встречи",
+    projectSlug: "perezagruzka",
     status: "future",
     image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
     short: "Камерная встреча для глубокой перезагрузки и поддержки в кругу женщин.",
@@ -59,8 +56,10 @@ const events = [
     date: "21 мая 2026",
     time: "17:00–20:00",
     place: "Онлайн + офлайн студия",
+    city: "Онлайн",
     format: "Гибрид",
     category: "Обучение",
+    projectSlug: "fitnes-dlya-mozga",
     status: "future",
     image: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
     short: "Тренировка публичных выступлений и подачи себя перед аудиторией.",
@@ -73,8 +72,10 @@ const events = [
     date: "18 ноября 2025",
     time: "11:00–18:00",
     place: "Пенза, LOFT#7",
+    city: "Пенза",
     format: "Оффлайн",
     category: "Special events",
+    projectSlug: "business-i-zhenshina",
     status: "past",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
     short: "Большой клубный форум с 300+ участницами, экспертами и партнерами.",
@@ -87,8 +88,10 @@ const events = [
     date: "13 декабря 2025",
     time: "19:30–23:00",
     place: "Пенза, Art Hall",
+    city: "Пенза",
     format: "Оффлайн",
     category: "Культурные события",
+    projectSlug: "prazdnik-v-kazhdyj-dom",
     status: "past",
     image: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
     short: "Музыка, искусство и сбор средств в поддержку женских образовательных проектов.",
@@ -133,11 +136,26 @@ const testimonials = [
   { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основательница бренда" },
 ];
 
+const teamMembers = {
+  founder: {
+    name: "Евгения Тарасова",
+    role: "Основатель сообщества EVTENIA",
+    photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80",
+    bio: "Формирует стратегию развития сообщества, курирует стандарты качества клубных программ и партнерств.",
+  },
+  members: [
+    { name: "Мария Соколова", role: "Куратор событий", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" },
+    { name: "Алина Петрова", role: "Руководитель московского отделения", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=800&q=80" },
+    { name: "Марина Орлова", role: "Куратор образовательных направлений", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80" },
+  ],
+};
+
 const pageSeo = {
   "/": { title: "EVTENIA — женский клуб, события и развитие", description: "Современный женский клуб EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для женщин, которые растут в бизнесе и жизни." },
   "/events": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
   "/poster": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
+  "/regions": { title: "Регионы EVTENIA", description: "Региональные отделения EVTENIA: руководители, контакты и новости по городам." },
   "/news": { title: "Новости и блог EVTENIA", description: "Новости клуба, статьи, интервью и полезные материалы для участниц EVTENIA." },
   "/gallery": { title: "Галерея EVTENIA", description: "Фотоотчеты и атмосфера мероприятий женского клуба EVTENIA." },
   "/join": { title: "Вступить в клуб EVTENIA", description: "Подать заявку на участие в женском клубе EVTENIA: анкета, форматы участия и преимущества." },
@@ -169,6 +187,124 @@ const clubProjects = [
   { slug: "prekrasnaya-ya", title: "Прекрасная Я" },
 ];
 
+const projectDetails = {
+  "fitnes-dlya-mozga": {
+    lead: { name: "Елена Матвеева", photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80", bio: "Коуч по обучению взрослых, помогает системно развивать мышление и навыки концентрации.", socials: ["t.me/elena_m", "vk.com/elenamind"] },
+    description: "Направление про развитие интеллектуальной выносливости, навыков обучения и уверенного публичного выступления.",
+    photo: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/fitnes-dlya-mozga-demo",
+    testimonials: ["После цикла занятий мне стало проще выступать и структурировать мысли.", "Система маленьких шагов реально помогает учиться без выгорания."],
+  },
+  "networking": {
+    lead: { name: "Анна Климова", photo: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80", bio: "Модератор деловых сообществ, развивает безопасный и результативный нетворкинг.", socials: ["t.me/anna_network", "vk.com/annaklimova"] },
+    description: "Практика знакомств и партнерств: от первого контакта до совместных проектов и коллабораций.",
+    photo: "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/networking-demo",
+    testimonials: ["Нашла двух партнеров для запуска сезонной линейки.", "Формат быстрых диалогов помог собраться и смело говорить о проекте."],
+  },
+  "sozdanie-meropriyatij": {
+    lead: { name: "Светлана Громова", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", bio: "Продюсер событий с опытом запуска городских и камерных форматов для женских сообществ.", socials: ["t.me/svetlana_events", "vk.com/svetlana.events"] },
+    description: "Направление о том, как проектировать сильные события: от идеи и программы до партнерств и post-аналитики.",
+    photo: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/sozdanie-meropriyatij-demo",
+    testimonials: ["Собрала первое мероприятие на 60 гостей без стресса.", "Появилась четкая система подготовки и работы с партнерами."],
+  },
+  "intellekt-mental-health": {
+    lead: { name: "Ирина Белова", photo: "https://images.unsplash.com/photo-1542382257-80dedb725088?auto=format&fit=crop&w=800&q=80", bio: "Психолог и модератор интеллектуальных клубов, работает на стыке развития мышления и эмоциональной устойчивости.", socials: ["t.me/irina_mindcare", "vk.com/irina.belova"] },
+    description: "Практики ментального здоровья, интеллектуальные встречи и техники, которые помогают сохранять ясность и ресурсность.",
+    photo: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/intellekt-mental-health-demo",
+    testimonials: ["Снизился уровень тревоги, появилось больше фокуса и энергии.", "Встречи помогли выстроить здоровый ритм работы и отдыха."],
+  },
+  "business-i-zhenshina": {
+    lead: { name: "Ольга Смирнова", photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80", bio: "Бизнес-наставник для предпринимательниц, помогает масштабировать проекты и команды.", socials: ["t.me/olga_business", "vk.com/olga.smirnova"] },
+    description: "Направление для женщин в бизнесе: стратегия роста, управленческие решения, личный бренд и партнерские коллаборации.",
+    photo: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/business-i-zhenshina-demo",
+    testimonials: ["За 2 месяца пересобрала воронку и увеличила заявки.", "Получила работающую систему делегирования и уверенность в роли лидера."],
+  },
+  "perezagruzka": {
+    lead: { name: "Наталья Кравцова", photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&w=800&q=80", bio: "Куратор wellbeing-программ, специализируется на восстановлении ресурса и профилактике выгорания.", socials: ["t.me/natalia_reset", "vk.com/natalia.reset"] },
+    description: "Перезагрузка для тех, кому важен баланс: телесные и дыхательные практики, поддерживающие встречи и мягкий ритм восстановления.",
+    photo: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/perezagruzka-demo",
+    testimonials: ["После программы вернулась мотивация и спокойный рабочий темп.", "Научилась восстанавливаться без чувства вины."],
+  },
+  "prazdnik-v-kazhdyj-dom": {
+    lead: { name: "Дарья Новикова", photo: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80", bio: "Организатор культурных и благотворительных проектов, развивает социальные инициативы сообщества.", socials: ["t.me/daria_charity", "vk.com/daria.novikova"] },
+    description: "Социально-культурное направление: благотворительные и семейные инициативы, праздничные форматы и городские коллаборации.",
+    photo: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/prazdnik-v-kazhdyj-dom-demo",
+    testimonials: ["Впервые организовала благотворительный вечер с партнерами.", "Проект помог включиться в городские социальные инициативы."],
+  },
+  "psihologiya-otnoshenij": {
+    lead: { name: "Вера Андреева", photo: "https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=800&q=80", bio: "Семейный психолог, ведет практики экологичной коммуникации и построения зрелых отношений.", socials: ["t.me/vera_relationships", "vk.com/vera.andreeva"] },
+    description: "Направление о зрелых отношениях: границы, диалог, доверие и эмоциональная близость в семье и партнерстве.",
+    photo: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/psihologiya-otnoshenij-demo",
+    testimonials: ["Улучшилось общение с партнером и снизилось количество конфликтов.", "Получила ясные инструменты для спокойного диалога."],
+  },
+  "prekrasnaya-ya": {
+    lead: { name: "Екатерина Власова", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80", bio: "Стилист-имиджмейкер и коуч по самоценности, помогает выстраивать внешний и внутренний образ.", socials: ["t.me/ekaterina_style", "vk.com/ekaterina.vlasova"] },
+    description: "Про самоощущение и образ: стиль, уверенность, голос, визуальная подача и бережная работа с самоценностью.",
+    photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/prekrasnaya-ya-demo",
+    testimonials: ["Собрала базовый гардероб под задачи и стиль жизни.", "Стало легче проявляться публично и говорить о себе уверенно."],
+  },
+};
+
+const regionalBranches = [
+  {
+    slug: "penza",
+    city: "Пенза",
+    cover: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1000&q=80",
+    leaders: [
+      { name: "Евгения Тарасова", role: "Руководитель отделения", contact: "+7 (900) 123-45-67 · @evtenia_penza", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_penza", "t.me/evtenia_penza"] },
+      { name: "Марина Орлова", role: "Куратор программ", contact: "+7 (900) 765-43-21 · @marina_orlova", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/marina.ev", "t.me/marina_ev"] },
+    ],
+    news: [
+      {
+        slug: "may-business-program",
+        title: "Открыт набор в майский поток «Бизнес и женщина»",
+        date: "14 апреля 2026",
+        excerpt: "Новый поток стартует 3 мая и включает мастермайнды, менторские встречи и закрытый чат.",
+        body: "Руководитель отделения открыл прием заявок до 30 апреля. В программе — 4 офлайн-встречи, 2 онлайн-сессии с экспертами и индивидуальный разбор целей участниц.",
+      },
+      {
+        slug: "city-community-chat",
+        title: "Запущен городской чат участниц и партнеров отделения",
+        date: "8 апреля 2026",
+        excerpt: "Внутри чата публикуются локальные анонсы, запросы на партнерства и новости по проектам.",
+        body: "Куратор программ модерирует тематические ветки и публикует еженедельный дайджест возможностей: вакансии, коллаборации, анонсы мероприятий и образовательные форматы.",
+      },
+    ],
+  },
+  {
+    slug: "moscow",
+    city: "Москва",
+    cover: "https://images.unsplash.com/photo-1524041255072-7da0525d6b30?auto=format&fit=crop&w=1000&q=80",
+    leaders: [
+      { name: "Алина Петрова", role: "Руководитель отделения", contact: "+7 (901) 222-11-00 · @evtenia_msk", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_msk", "t.me/evtenia_msk"] },
+    ],
+    news: [
+      {
+        slug: "june-leadership-forum",
+        title: "Анонсирован форум «Женщина и лидерство» на июнь",
+        date: "11 апреля 2026",
+        excerpt: "Форум объединит предпринимательниц, управленцев и экспертов по карьерному росту.",
+        body: "Программа форума включает панельные дискуссии, нетворкинг-сессии и практикум по развитию личного бренда. Регистрация откроется в конце апреля.",
+      },
+      {
+        slug: "mentorship-cycle",
+        title: "Добавлен цикл встреч с менторами для новых резидентов",
+        date: "2 апреля 2026",
+        excerpt: "Серия из 6 встреч для адаптации в сообществе и ускоренного запуска личных целей.",
+        body: "Участницы получают поддержку от менторов по бизнесу, коммуникациям и личной эффективности. Формат — офлайн + онлайн сопровождение в закрытой группе.",
+      },
+    ],
+  },
+];
+
 function usePath() {
   const [path, setPath] = useState(window.location.pathname);
   useEffect(() => {
@@ -187,14 +323,14 @@ function usePath() {
 }
 
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
-  const cities = ["Пенза", "Москва", "Санкт-Петербург", "Онлайн"];
-  const [city, setCity] = useState("Пенза");
   const [showAllProjects, setShowAllProjects] = useState(false);
+  const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const nav = [
     ["/", "Главная"],
     ["/about", "О нас"],
     ["/poster", "Афиша"],
+    ["/regions", "Регионы"],
     ["/team", "Команда"],
     ["/partners", "Партнеры"],
     ["/news", "Новости"],
@@ -231,18 +367,17 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           </nav>
 
           <div className="header-controls">
-            <label className="city-picker">
-              <span className="city-label">Город:</span>
-              <select value={city} onChange={(e) => setCity(e.target.value)}>
-                {cities.map((item) => <option key={item}>{item}</option>)}
-              </select>
-            </label>
             <div className="socials">
               <SocialIcon label="VK" href="https://vk.com">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
               </SocialIcon>
               <SocialIcon label="MAX" href="#">
-                <span className="max-icon">MAX</span>
+                <span className="max-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
+                    <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
+                  </svg>
+                </span>
               </SocialIcon>
               <SocialIcon label="Telegram" href="https://t.me">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 4.9c.31-.12.64.16.56.5l-2.85 13.43c-.07.34-.43.53-.75.4l-4.15-1.7-2.1 2.03c-.24.22-.64.1-.7-.22l-.66-3.42 7.48-6.92-9.25 5.76-3.41-1.4c-.34-.14-.34-.62 0-.76L21.6 4.9Z" fill="currentColor" /></svg>
@@ -301,11 +436,39 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
       </header>
       <main>{children}</main>
       <footer className="footer">
-        <div>
+        <div className="footer-col">
           <h4>EVTENIA</h4>
-          <p>Женское сообщество, где встречаются развитие, поддержка и стильная клубная культура.</p>
+          <p>Сообщество с проектными направлениями, региональными отделениями и единой афишей событий.</p>
+        </div>
+        <div className="footer-col">
+          <h5>Навигация</h5>
+          <button onClick={() => goTo("/")}>Главная</button>
+          <button onClick={() => goTo("/poster")}>Афиша</button>
+          <button onClick={() => goTo("/regions")}>Регионы</button>
+          <button onClick={() => goTo("/news")}>Новости</button>
+          <button onClick={() => goTo("/team")}>Команда</button>
+        </div>
+        <div className="footer-col">
+          <h5>Участие</h5>
+          <button onClick={() => goTo("/join")}>Подать заявку</button>
+          <button onClick={() => goTo("/partners")}>Партнерство</button>
+          <button onClick={() => goTo("/contacts")}>Контакты</button>
+        </div>
+        <div className="footer-col">
+          <h5>Документы</h5>
+          <button onClick={() => goTo("/privacy")}>Политика конфиденциальности</button>
+          <button onClick={() => goTo("/consent")}>Согласие на обработку данных</button>
         </div>
       </footer>
+      {!cookieAccepted && (
+        <div className="cookie-banner">
+          <p>Мы используем cookies для улучшения работы сайта. Продолжая пользоваться сайтом, вы соглашаетесь с политикой конфиденциальности.</p>
+          <div className="cookie-actions">
+            <button className="btn btn-small" onClick={() => setCookieAccepted(true)}>Принять</button>
+            <button className="btn btn-small btn-ghost" onClick={() => goTo("/privacy")}>Подробнее</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -336,7 +499,7 @@ function Home({ goTo }) {
       <Hero goTo={goTo} />
       <section>
         <h2>Что такое EVTENIA</h2>
-        <p>Это живой женский клуб, который объединяет офлайн-встречи, образовательные события и доверительное деловое окружение. Мы создаем среду, где можно развиваться, находить партнёрства и быть собой.</p>
+        <p>EVTENIA — это сообщество с региональными отделениями, проектными направлениями и единой афишей событий по городам.</p>
       </section>
 
       <section>
@@ -345,26 +508,46 @@ function Home({ goTo }) {
       </section>
 
       <section>
-        <h2>Направления клуба</h2>
-        <div className="cards grid-3">{clubDirections.map((d) => <article key={d.title} className="card"><h3>{d.title}</h3><p>{d.text}</p></article>)}</div>
+        <div className="section-head"><h2>Направления</h2><button onClick={() => goTo("/projects/networking")}>Открыть направления →</button></div>
+        <div className="cards grid-3">
+          {clubProjects.slice(0, 6).map((project) => <ProjectPreviewCard key={project.slug} project={project} goTo={goTo} />)}
+        </div>
       </section>
 
       <section>
-        <div className="section-head"><h2>Новости и статьи</h2><button onClick={() => goTo("/news")}>Все материалы →</button></div>
-        <div className="cards grid-3">{posts.slice(0, 6).map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
+        <div className="section-head"><h2>Регионы</h2><button onClick={() => goTo("/regions")}>Все отделения →</button></div>
+        <div className="cards grid-2">
+          {regionalBranches.map((branch) => (
+            <article className="card" key={branch.slug}>
+              <img src={branch.cover} alt={branch.city} />
+              <h3><button className="title-link" onClick={() => goTo(`/regions/${branch.slug}`)}>{branch.city}</button></h3>
+              <p>Руководители: {branch.leaders.map((leader) => leader.name).join(", ")}.</p>
+              <button onClick={() => goTo(`/regions/${branch.slug}`)}>Карточка отделения</button>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section>
-        <h2>Атмосфера клуба</h2>
-        <div className="gallery-grid">{galleryAlbums.map((album) => <figure key={album.title}><img src={album.cover} alt={album.title} /><figcaption>{album.title} · {album.date}</figcaption></figure>)}</div>
+        <div className="section-head"><h2>Новости</h2><button onClick={() => goTo("/news")}>Все новости →</button></div>
+        <div className="cards grid-3">{posts.slice(0, 3).map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
       </section>
 
       <section>
-        <h2>Отзывы участниц</h2>
-        <div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div>
+        <div className="section-head"><h2>Команда</h2><button onClick={() => goTo("/team")}>Подробнее о команде →</button></div>
+        <article className="card founder-card">
+          <div className="founder-layout">
+            <img src={teamMembers.founder.photo} alt={teamMembers.founder.name} />
+            <div>
+              <p className="eyebrow">Основатель</p>
+              <h3>{teamMembers.founder.name}</h3>
+              <p>{teamMembers.founder.role}</p>
+            </div>
+          </div>
+        </article>
       </section>
 
-      <JoinForm compact />
+      <JoinForm compact goTo={goTo} />
 
       <section className="cta-final">
         <h2>Присоединяйтесь к сообществу EVTENIA</h2>
@@ -380,9 +563,22 @@ function EventCard({ event, goTo }) {
     <article className="card event-card">
       <img src={event.image} alt={event.title} />
       <small>{event.date} · {event.format}</small>
-      <h3>{event.title}</h3>
+      <h3><button className="title-link" onClick={() => goTo(`/events/${event.slug}`)}>{event.title}</button></h3>
       <p>{event.short}</p>
       <button onClick={() => goTo(`/events/${event.slug}`)}>Подробнее</button>
+    </article>
+  );
+}
+
+function ProjectPreviewCard({ project, goTo }) {
+  const details = projectDetails[project.slug];
+  return (
+    <article className="card">
+      {details?.photo && <img src={details.photo} alt={project.title} />}
+      <h3><button className="title-link" onClick={() => goTo(`/projects/${project.slug}`)}>{project.title}</button></h3>
+      <p>{details ? details.description : "Описание направления в разработке."}</p>
+      <small>{details ? `Ведет: ${details.lead.name}` : "Куратор будет назначен"}</small>
+      <button onClick={() => goTo(`/projects/${project.slug}`)}>Открыть направление</button>
     </article>
   );
 }
@@ -390,25 +586,40 @@ function EventCard({ event, goTo }) {
 function PostCard({ post, goTo }) {
   return (
     <article className="card post-card">
-      <small>{post.category} · {post.date}</small>
-      <h3>{post.title}</h3>
+      <small>{post.category} · {post.city ? `${post.city} · ` : ""}{post.date}</small>
+      <h3><button className="title-link" onClick={() => goTo(post.href || `/news/${post.slug}`)}>{post.title}</button></h3>
       <p>{post.excerpt}</p>
-      <button onClick={() => goTo(`/news/${post.slug}`)}>Читать</button>
+      <button onClick={() => goTo(post.href || `/news/${post.slug}`)}>Читать</button>
     </article>
   );
 }
 
 function EventsPage({ goTo }) {
-  const [status, setStatus] = useState("future");
-  const [category, setCategory] = useState("all");
-  const categories = ["all", ...new Set(events.map((e) => e.category))];
-  const filtered = events.filter((e) => (status === "all" ? true : e.status === status) && (category === "all" ? true : e.category === category));
+  const [status, setStatus] = useState("all");
+  const [project, setProject] = useState("all");
+  const [city, setCity] = useState("all");
+  const projects = ["all", ...clubProjects.map((p) => p.slug)];
+  const cities = ["all", ...new Set(events.map((e) => e.city))];
+  const filtered = events.filter((e) =>
+    (status === "all" ? true : e.status === status)
+    && (project === "all" ? true : e.projectSlug === project)
+    && (city === "all" ? true : e.city === city)
+  );
   return (
     <div className="page">
       <h1>Афиша EVTENIA</h1>
       <div className="filters">
         <label>Статус <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
-        <label>Категория <select value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((c) => <option key={c}>{c}</option>)}</select></label>
+        <label>Направление
+          <select value={project} onChange={(e) => setProject(e.target.value)}>
+            {projects.map((p) => <option key={p} value={p}>{p === "all" ? "Все направления" : clubProjects.find((item) => item.slug === p)?.title}</option>)}
+          </select>
+        </label>
+        <label>Город
+          <select value={city} onChange={(e) => setCity(e.target.value)}>
+            {cities.map((item) => <option key={item} value={item}>{item === "all" ? "Все города" : item}</option>)}
+          </select>
+        </label>
       </div>
       <div className="cards grid-3">{filtered.map((event) => <EventCard key={event.slug} event={event} goTo={goTo} />)}</div>
     </div>
@@ -449,12 +660,34 @@ function EventDetail({ slug, goTo }) {
 }
 
 function NewsPage({ goTo }) {
-  const categories = ["Все", ...new Set(posts.map((p) => p.category))];
+  const branchNews = regionalBranches.flatMap((branch) => branch.news.map((item) => ({
+    slug: `${branch.slug}-${item.slug}`,
+    title: item.title,
+    category: "Новости отделений",
+    date: item.date,
+    city: branch.city,
+    excerpt: item.excerpt,
+    href: `/regions/${branch.slug}/news/${item.slug}`,
+  })));
+  const allNews = [...branchNews, ...posts];
+  const categories = ["Все", ...new Set(allNews.map((p) => p.category))];
+  const cities = ["Все города", ...new Set(branchNews.map((p) => p.city))];
   const [active, setActive] = useState("Все");
-  const filtered = posts.filter((p) => active === "Все" || p.category === active);
+  const [city, setCity] = useState("Все города");
+  const filtered = allNews.filter((p) =>
+    (active === "Все" || p.category === active)
+    && (city === "Все города" || p.city === city)
+  );
   return (
     <div className="page">
       <h1>Новости и блог</h1>
+      <div className="filters">
+        <label>Город
+          <select value={city} onChange={(e) => setCity(e.target.value)}>
+            {cities.map((item) => <option key={item}>{item}</option>)}
+          </select>
+        </label>
+      </div>
       <div className="tags">{categories.map((c) => <button key={c} className={active === c ? "active" : ""} onClick={() => setActive(c)}>{c}</button>)}</div>
       <div className="cards grid-3">{filtered.map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
     </div>
@@ -494,7 +727,7 @@ function AboutPage() {
   );
 }
 
-function JoinForm({ compact = false }) {
+function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
       <h2>{compact ? "Оставьте заявку" : "Вступить в клуб EVTENIA"}</h2>
@@ -510,13 +743,19 @@ function JoinForm({ compact = false }) {
           <option>Участие в клубе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
         </select>
         <textarea placeholder="Комментарий" rows="4" />
+        <small className="form-note">
+          Отправляя форму, вы принимаете{" "}
+          <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политику конфиденциальности</button>
+          {" "}и{" "}
+          <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку данных</button>.
+        </small>
         <button className="btn" type="submit">Отправить заявку</button>
       </form>
     </section>
   );
 }
 
-function JoinPage() {
+function JoinPage({ goTo }) {
   return (
     <div className="page">
       <h1>Вступить / подать заявку</h1>
@@ -525,7 +764,7 @@ function JoinPage() {
         <article className="card"><h3>Что получает участница</h3><p>Доступ к событиям, закрытым форматам, контенту и клубным знакомствам.</p></article>
         <article className="card"><h3>Форматы участия</h3><p>Гостевой визит, резидентство, партнёрские пакеты и special events.</p></article>
       </div>
-      <JoinForm />
+      <JoinForm goTo={goTo} />
     </div>
   );
 }
@@ -539,7 +778,7 @@ function GalleryPage() {
   );
 }
 
-function ContactsPage() {
+function ContactsPage({ goTo }) {
   return (
     <div className="page">
       <h1>Контакты</h1>
@@ -547,7 +786,7 @@ function ContactsPage() {
         <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />Telegram: @evtenia_club<br />WhatsApp: +7 (900) 000-00-00</p></article>
         <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Московская, 12<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
-      <JoinForm compact />
+      <JoinForm compact goTo={goTo} />
     </div>
   );
 }
@@ -571,17 +810,163 @@ function VideoProjectPage({ slug }) {
   );
 }
 
-function OrgProjectPage({ slug }) {
+function OrgProjectPage({ slug, goTo }) {
   const project = clubProjects.find((item) => item.slug === slug);
+  const details = projectDetails[slug];
+  const relatedEvents = events.filter((event) => event.projectSlug === slug);
   if (!project) return <SimplePage title="Проект не найден" text="Попробуйте открыть проект из меню в шапке." />;
   return (
     <div className="page">
       <h1>{project.title}</h1>
-      <p>Отдельная страница проекта с описанием формата, командой, ближайшими наборами и кнопкой участия.</p>
+      {!details && <p>Демо-страница проекта. Данные для этого направления пока не заполнены.</p>}
+      {details && (
+        <>
+          <section className="card">
+            <h3>Кто ведет</h3>
+            <div className="leader-block">
+              <img src={details.lead.photo} alt={details.lead.name} />
+              <div>
+                <p><strong>{details.lead.name}</strong></p>
+                <p>{details.lead.bio}</p>
+                <p>Соцсети: {details.lead.socials.join(" · ")}</p>
+              </div>
+            </div>
+          </section>
+          <section className="card">
+            <h3>Описание направления</h3>
+            <p>{details.description}</p>
+            <img src={details.photo} alt={project.title} />
+            <p>Видео: {details.video}</p>
+          </section>
+        </>
+      )}
+      <section>
+        <h2>Мероприятия</h2>
+        {relatedEvents.length > 0 ? <div className="cards grid-3">{relatedEvents.map((event) => <EventCard key={event.slug} event={event} goTo={goTo} />)}</div> : <p>Пока нет мероприятий по этому направлению.</p>}
+      </section>
+      {details && (
+        <section>
+          <h2>Отзывы</h2>
+          <div className="cards grid-2">
+            {details.testimonials.map((item) => <article key={item} className="card"><p>“{item}”</p></article>)}
+          </div>
+        </section>
+      )}
+    </div>
+  );
+}
+
+function RegionsPage({ goTo }) {
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredBranches = regionalBranches.filter((branch) => {
+    if (!normalizedQuery) return true;
+    return (
+      branch.city.toLowerCase().includes(normalizedQuery)
+      || branch.leaders.some((leader) => leader.name.toLowerCase().includes(normalizedQuery))
+    );
+  });
+
+  return (
+    <div className="page">
+      <h1>Регионы</h1>
+      <p>Список отделений EVTENIA. Карточки кликабельны и ведут на детальную страницу региона.</p>
+      <label className="region-search">
+        Поиск по городу или руководителю
+        <input
+          type="search"
+          placeholder="Например: Москва или Алина"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </label>
       <div className="cards grid-2">
-        <article className="card"><h3>Для кого</h3><p>Для участниц клуба и гостей, которым важны системное развитие и качественное окружение.</p></article>
-        <article className="card"><h3>Формат</h3><p>Живые встречи, образовательные модули и регулярная поддержка от сообщества.</p></article>
+        {filteredBranches.map((branch) => (
+          <article
+            className="card branch-card clickable"
+            key={branch.slug}
+            onClick={() => goTo(`/regions/${branch.slug}`)}
+            onKeyDown={(e) => e.key === "Enter" && goTo(`/regions/${branch.slug}`)}
+            role="button"
+            tabIndex={0}
+          >
+            <img src={branch.cover} alt={`Отделение EVTENIA ${branch.city}`} />
+            <h3>{branch.city}</h3>
+            <p><strong>Руководители:</strong> {branch.leaders.map((leader) => `${leader.name} (${leader.contact})`).join("; ")}</p>
+            <h4>Новости отделения</h4>
+            <ul>
+              {branch.news.slice(0, 2).map((newsItem) => (
+                <li key={newsItem.slug}>
+                  <button onClick={(e) => { e.stopPropagation(); goTo(`/regions/${branch.slug}/news/${newsItem.slug}`); }}>
+                    {newsItem.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button className="btn btn-ghost" onClick={(e) => { e.stopPropagation(); goTo(`/regions/${branch.slug}`); }}>Открыть карточку отделения</button>
+          </article>
+        ))}
       </div>
+      {filteredBranches.length === 0 && <p>По вашему запросу отделения не найдены.</p>}
+      <section className="card">
+        <h3>Доступы и роли</h3>
+        <p><strong>Главный админ:</strong> создает отделения, назначает руководителей и выдает права на редактирование карточек.</p>
+        <p><strong>Руководитель отделения:</strong> редактирует информацию отделения, публикует новости и обновляет контакты.</p>
+      </section>
+    </div>
+  );
+}
+
+function RegionDetailPage({ slug, goTo }) {
+  const branch = regionalBranches.find((item) => item.slug === slug);
+  if (!branch) return <NotFound goTo={goTo} />;
+  return (
+    <div className="page">
+      <div className="breadcrumbs">Главная / Регионы / {branch.city}</div>
+      <h1>Отделение EVTENIA · {branch.city}</h1>
+      <img className="detail-cover" src={branch.cover} alt={`Отделение ${branch.city}`} />
+      <h2>Руководители отделения</h2>
+      <div className="cards grid-2">
+        {branch.leaders.map((leader) => (
+          <article key={leader.name} className="card">
+            <div className="branch-leader-item">
+              <img src={leader.photo} alt={leader.name} />
+              <div>
+                <strong>{leader.name}</strong>
+                <p>{leader.role}</p>
+                <p>{leader.contact}</p>
+                <p>Соцсети: {leader.socials.join(" · ")}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <h2>Новости отделения</h2>
+      <div className="cards grid-2">
+        {branch.news.map((newsItem) => (
+          <article className="card" key={newsItem.slug}>
+            <small>{newsItem.date}</small>
+            <h3>{newsItem.title}</h3>
+            <p>{newsItem.excerpt}</p>
+            <button onClick={() => goTo(`/regions/${branch.slug}/news/${newsItem.slug}`)}>Читать новость</button>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RegionNewsDetailPage({ regionSlug, newsSlug, goTo }) {
+  const branch = regionalBranches.find((item) => item.slug === regionSlug);
+  const newsItem = branch?.news.find((item) => item.slug === newsSlug);
+  if (!branch || !newsItem) return <NotFound goTo={goTo} />;
+  return (
+    <div className="page article">
+      <div className="breadcrumbs">Главная / Регионы / {branch.city} / Новости / {newsItem.title}</div>
+      <h1>{newsItem.title}</h1>
+      <p className="lead">{branch.city} · {newsItem.date}</p>
+      <p>{newsItem.body}</p>
+      <button onClick={() => goTo(`/regions/${branch.slug}`)}>← К карточке отделения</button>
     </div>
   );
 }
@@ -590,12 +975,34 @@ function TeamPage() {
   return (
     <div className="page">
       <h1>Команда и основатель</h1>
-      <div className="cards grid-3">
-        <article className="card"><h3>Евгения Т.</h3><p>Основательница EVTENIA, модератор клубных программ.</p></article>
-        <article className="card"><h3>Куратор событий</h3><p>Отвечает за календарь, качество форматов и атмосферу встреч.</p></article>
-        <article className="card"><h3>Редакционная команда</h3><p>Ведет новости, интервью и экспертные материалы платформы.</p></article>
+      <section className="card founder-card">
+        <div className="founder-layout">
+          <img src={teamMembers.founder.photo} alt={teamMembers.founder.name} />
+          <div>
+            <p className="eyebrow">Основатель</p>
+            <h2>{teamMembers.founder.name}</h2>
+            <p><strong>{teamMembers.founder.role}</strong></p>
+            <p>{teamMembers.founder.bio}</p>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Команда второго плана</h2>
+        <div className="cards grid-3">
+          {teamMembers.members.map((member) => (
+            <article className="card" key={member.name}>
+              <img src={member.photo} alt={member.name} />
+              <h3>{member.name}</h3>
+              <p>{member.role}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="card">
+        <h3>Как устроена команда</h3>
+        <p>Основатель определяет стратегию, а руководители и кураторы отделений отвечают за локальные события, новости и развитие направлений.</p>
+      </section>
       </div>
-    </div>
   );
 }
 
@@ -633,6 +1040,8 @@ function AdminPage() {
         <article className="card"><h3>SEO-поля</h3><p>{state.seoReady}</p></article>
         <article className="card"><h3>Контакты</h3><p>Редактируются из CMS</p></article>
         <article className="card"><h3>Заявки за сегодня</h3><p>{state.applicationsToday}</p></article>
+        <article className="card"><h3>Отделения</h3><p>{regionalBranches.length} региональных карточек</p></article>
+        <article className="card"><h3>Доступы</h3><p>Главный админ назначает руководителей отделений</p></article>
       </div>
       <label className="admin-input">Демо-поле: изменить количество заявок
         <input type="number" value={state.applicationsToday} onChange={(e) => setState((prev) => ({ ...prev, applicationsToday: Number(e.target.value) }))} />
@@ -652,6 +1061,8 @@ export default function App() {
   useEffect(() => {
     const matched = path.startsWith("/events/")
       ? pageSeo["/events"]
+      : path.startsWith("/regions/")
+        ? pageSeo["/regions"]
       : path.startsWith("/video/")
         ? { title: "Видеопроекты EVTENIA", description: "Видео-проекты клуба EVTENIA на RuTube: интервью, лайфстайл и вдохновение." }
         : path.startsWith("/projects/")
@@ -690,14 +1101,20 @@ export default function App() {
     if (path === "/") return <Home goTo={goTo} />;
     if (path === "/about") return <AboutPage />;
     if (path === "/events" || path === "/poster") return <EventsPage goTo={goTo} />;
+    if (path === "/regions") return <RegionsPage goTo={goTo} />;
+    if (path.startsWith("/regions/") && path.includes("/news/")) {
+      const [, , regionSlug, , newsSlug] = path.split("/");
+      return <RegionNewsDetailPage regionSlug={regionSlug} newsSlug={newsSlug} goTo={goTo} />;
+    }
+    if (path.startsWith("/regions/")) return <RegionDetailPage slug={path.split("/regions/")[1]} goTo={goTo} />;
     if (path.startsWith("/events/")) return <EventDetail slug={path.split("/events/")[1]} goTo={goTo} />;
     if (path.startsWith("/video/")) return <VideoProjectPage slug={path.split("/video/")[1]} />;
-    if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} />;
+    if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} goTo={goTo} />;
     if (path === "/news") return <NewsPage goTo={goTo} />;
     if (path.startsWith("/news/")) return <NewsDetail slug={path.split("/news/")[1]} goTo={goTo} />;
     if (path === "/gallery") return <GalleryPage />;
-    if (path === "/join") return <JoinPage />;
-    if (path === "/contacts") return <ContactsPage />;
+    if (path === "/join") return <JoinPage goTo={goTo} />;
+    if (path === "/contacts") return <ContactsPage goTo={goTo} />;
     if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в клубе." />;
     if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
     if (path === "/partners") return <SimplePage title="Партнеры" text="EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами." />;
