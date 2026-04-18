@@ -1,15 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
 
-const clubDirections = [
-  { title: "Бизнес и предпринимательство", text: "Мастермайнды, разборы кейсов и клубные бизнес-завтраки." },
-  { title: "Развитие и образование", text: "Лекции, практикумы и встречи с экспертами разных сфер." },
-  { title: "Нетворкинг", text: "Тёплая среда знакомств, партнерств и совместных проектов." },
-  { title: "Женские встречи", text: "Камерные встречи про баланс, самоценность и ресурсы." },
-  { title: "Культурные  события", text: "Арт-вечера, камерная музыка и интеллектуальный досуг." },
-  { title: "Lifestyle и вдохновение", text: "Практики восстановления, стиля жизни и внутренней опоры." },
-];
-
 const events = [
   {
     slug: "business-breakfast-march",
@@ -210,6 +201,55 @@ const projectDetails = {
     photo: "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/networking-demo",
     testimonials: ["Нашла двух партнеров для запуска сезонной линейки.", "Формат быстрых диалогов помог собраться и смело говорить о проекте."],
+  },
+  "sozdanie-meropriyatij": {
+    lead: { name: "Светлана Громова", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", bio: "Продюсер событий с опытом запуска городских и камерных форматов для женских сообществ.", socials: ["t.me/svetlana_events", "vk.com/svetlana.events"] },
+    description: "Направление о том, как проектировать сильные события: от идеи и программы до партнерств и post-аналитики.",
+    photo: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/sozdanie-meropriyatij-demo",
+    testimonials: ["Собрала первое мероприятие на 60 гостей без стресса.", "Появилась четкая система подготовки и работы с партнерами."],
+  },
+  "intellekt-mental-health": {
+    lead: { name: "Ирина Белова", photo: "https://images.unsplash.com/photo-1542382257-80dedb725088?auto=format&fit=crop&w=800&q=80", bio: "Психолог и модератор интеллектуальных клубов, работает на стыке развития мышления и эмоциональной устойчивости.", socials: ["t.me/irina_mindcare", "vk.com/irina.belova"] },
+    description: "Практики ментального здоровья, интеллектуальные встречи и техники, которые помогают сохранять ясность и ресурсность.",
+    photo: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/intellekt-mental-health-demo",
+    testimonials: ["Снизился уровень тревоги, появилось больше фокуса и энергии.", "Встречи помогли выстроить здоровый ритм работы и отдыха."],
+  },
+  "business-i-zhenshina": {
+    lead: { name: "Ольга Смирнова", photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80", bio: "Бизнес-наставник для предпринимательниц, помогает масштабировать проекты и команды.", socials: ["t.me/olga_business", "vk.com/olga.smirnova"] },
+    description: "Направление для женщин в бизнесе: стратегия роста, управленческие решения, личный бренд и партнерские коллаборации.",
+    photo: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/business-i-zhenshina-demo",
+    testimonials: ["За 2 месяца пересобрала воронку и увеличила заявки.", "Получила работающую систему делегирования и уверенность в роли лидера."],
+  },
+  "perezagruzka": {
+    lead: { name: "Наталья Кравцова", photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&w=800&q=80", bio: "Куратор wellbeing-программ, специализируется на восстановлении ресурса и профилактике выгорания.", socials: ["t.me/natalia_reset", "vk.com/natalia.reset"] },
+    description: "Перезагрузка для тех, кому важен баланс: телесные и дыхательные практики, поддерживающие встречи и мягкий ритм восстановления.",
+    photo: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/perezagruzka-demo",
+    testimonials: ["После программы вернулась мотивация и спокойный рабочий темп.", "Научилась восстанавливаться без чувства вины."],
+  },
+  "prazdnik-v-kazhdyj-dom": {
+    lead: { name: "Дарья Новикова", photo: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80", bio: "Организатор культурных и благотворительных проектов, развивает социальные инициативы сообщества.", socials: ["t.me/daria_charity", "vk.com/daria.novikova"] },
+    description: "Социально-культурное направление: благотворительные и семейные инициативы, праздничные форматы и городские коллаборации.",
+    photo: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/prazdnik-v-kazhdyj-dom-demo",
+    testimonials: ["Впервые организовала благотворительный вечер с партнерами.", "Проект помог включиться в городские социальные инициативы."],
+  },
+  "psihologiya-otnoshenij": {
+    lead: { name: "Вера Андреева", photo: "https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=800&q=80", bio: "Семейный психолог, ведет практики экологичной коммуникации и построения зрелых отношений.", socials: ["t.me/vera_relationships", "vk.com/vera.andreeva"] },
+    description: "Направление о зрелых отношениях: границы, диалог, доверие и эмоциональная близость в семье и партнерстве.",
+    photo: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/psihologiya-otnoshenij-demo",
+    testimonials: ["Улучшилось общение с партнером и снизилось количество конфликтов.", "Получила ясные инструменты для спокойного диалога."],
+  },
+  "prekrasnaya-ya": {
+    lead: { name: "Екатерина Власова", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80", bio: "Стилист-имиджмейкер и коуч по самоценности, помогает выстраивать внешний и внутренний образ.", socials: ["t.me/ekaterina_style", "vk.com/ekaterina.vlasova"] },
+    description: "Про самоощущение и образ: стиль, уверенность, голос, визуальная подача и бережная работа с самоценностью.",
+    photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80",
+    video: "rutube.ru/video/prekrasnaya-ya-demo",
+    testimonials: ["Собрала базовый гардероб под задачи и стиль жизни.", "Стало легче проявляться публично и говорить о себе уверенно."],
   },
 };
 
@@ -430,7 +470,7 @@ function Home({ goTo }) {
       <Hero goTo={goTo} />
       <section>
         <h2>Что такое EVTENIA</h2>
-        <p>Это живой женский клуб, который объединяет офлайн-встречи, образовательные события и доверительное деловое окружение. Мы создаем среду, где можно развиваться, находить партнёрства и быть собой.</p>
+        <p>EVTENIA — это сообщество с региональными отделениями, проектными направлениями и единой афишей событий по городам.</p>
       </section>
 
       <section>
@@ -439,23 +479,43 @@ function Home({ goTo }) {
       </section>
 
       <section>
-        <h2>Направления клуба</h2>
-        <div className="cards grid-3">{clubDirections.map((d) => <article key={d.title} className="card"><h3>{d.title}</h3><p>{d.text}</p></article>)}</div>
+        <div className="section-head"><h2>Направления</h2><button onClick={() => goTo("/projects/networking")}>Открыть направления →</button></div>
+        <div className="cards grid-3">
+          {clubProjects.slice(0, 6).map((project) => <ProjectPreviewCard key={project.slug} project={project} goTo={goTo} />)}
+        </div>
       </section>
 
       <section>
-        <div className="section-head"><h2>Новости и статьи</h2><button onClick={() => goTo("/news")}>Все материалы →</button></div>
-        <div className="cards grid-3">{posts.slice(0, 6).map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
+        <div className="section-head"><h2>Регионы</h2><button onClick={() => goTo("/regions")}>Все отделения →</button></div>
+        <div className="cards grid-2">
+          {regionalBranches.map((branch) => (
+            <article className="card" key={branch.slug}>
+              <img src={branch.cover} alt={branch.city} />
+              <h3>{branch.city}</h3>
+              <p>Руководители: {branch.leaders.map((leader) => leader.name).join(", ")}.</p>
+              <button onClick={() => goTo(`/regions/${branch.slug}`)}>Карточка отделения</button>
+            </article>
+          ))}
+        </div>
       </section>
 
       <section>
-        <h2>Атмосфера клуба</h2>
-        <div className="gallery-grid">{galleryAlbums.map((album) => <figure key={album.title}><img src={album.cover} alt={album.title} /><figcaption>{album.title} · {album.date}</figcaption></figure>)}</div>
+        <div className="section-head"><h2>Новости</h2><button onClick={() => goTo("/news")}>Все новости →</button></div>
+        <div className="cards grid-3">{posts.slice(0, 3).map((post) => <PostCard key={post.slug} post={post} goTo={goTo} />)}</div>
       </section>
 
       <section>
-        <h2>Отзывы участниц</h2>
-        <div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div>
+        <div className="section-head"><h2>Команда</h2><button onClick={() => goTo("/team")}>Подробнее о команде →</button></div>
+        <article className="card founder-card">
+          <div className="founder-layout">
+            <img src={teamMembers.founder.photo} alt={teamMembers.founder.name} />
+            <div>
+              <p className="eyebrow">Основатель</p>
+              <h3>{teamMembers.founder.name}</h3>
+              <p>{teamMembers.founder.role}</p>
+            </div>
+          </div>
+        </article>
       </section>
 
       <JoinForm compact />
@@ -477,6 +537,19 @@ function EventCard({ event, goTo }) {
       <h3>{event.title}</h3>
       <p>{event.short}</p>
       <button onClick={() => goTo(`/events/${event.slug}`)}>Подробнее</button>
+    </article>
+  );
+}
+
+function ProjectPreviewCard({ project, goTo }) {
+  const details = projectDetails[project.slug];
+  return (
+    <article className="card">
+      {details?.photo && <img src={details.photo} alt={project.title} />}
+      <h3>{project.title}</h3>
+      <p>{details ? details.description : "Описание направления в разработке."}</p>
+      <small>{details ? `Ведет: ${details.lead.name}` : "Куратор будет назначен"}</small>
+      <button onClick={() => goTo(`/projects/${project.slug}`)}>Открыть направление</button>
     </article>
   );
 }
