@@ -145,6 +145,20 @@ const testimonials = [
   { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основательница бренда" },
 ];
 
+const teamMembers = {
+  founder: {
+    name: "Евгения Тарасова",
+    role: "Основатель сообщества EVTENIA",
+    photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=900&q=80",
+    bio: "Формирует стратегию развития сообщества, курирует стандарты качества клубных программ и партнерств.",
+  },
+  members: [
+    { name: "Мария Соколова", role: "Куратор событий", photo: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=800&q=80" },
+    { name: "Алина Петрова", role: "Руководитель московского отделения", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=800&q=80" },
+    { name: "Марина Орлова", role: "Куратор образовательных направлений", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80" },
+  ],
+};
+
 const pageSeo = {
   "/": { title: "EVTENIA — женский клуб, события и развитие", description: "Современный женский клуб EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для женщин, которые растут в бизнесе и жизни." },
@@ -317,7 +331,12 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
               </SocialIcon>
               <SocialIcon label="MAX" href="#">
-                <span className="max-icon">MAX</span>
+                <span className="max-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24">
+                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
+                    <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
+                  </svg>
+                </span>
               </SocialIcon>
               <SocialIcon label="Telegram" href="https://t.me">
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 4.9c.31-.12.64.16.56.5l-2.85 13.43c-.07.34-.43.53-.75.4l-4.15-1.7-2.1 2.03c-.24.22-.64.1-.7-.22l-.66-3.42 7.48-6.92-9.25 5.76-3.41-1.4c-.34-.14-.34-.62 0-.76L21.6 4.9Z" fill="currentColor" /></svg>
@@ -661,7 +680,7 @@ function VideoProjectPage({ slug }) {
   );
 }
 
-function OrgProjectPage({ slug }) {
+function OrgProjectPage({ slug, goTo }) {
   const project = clubProjects.find((item) => item.slug === slug);
   const details = projectDetails[slug];
   const relatedEvents = events.filter((event) => event.projectSlug === slug);
@@ -803,11 +822,6 @@ function RegionDetailPage({ slug, goTo }) {
           </article>
         ))}
       </div>
-      <section className="card">
-        <h3>Доступы и роли</h3>
-        <p><strong>Главный админ:</strong> создает отделения, назначает руководителей и выдает права на редактирование карточек.</p>
-        <p><strong>Руководитель отделения:</strong> редактирует информацию отделения, публикует новости и обновляет контакты.</p>
-      </section>
     </div>
   );
 }
@@ -831,12 +845,34 @@ function TeamPage() {
   return (
     <div className="page">
       <h1>Команда и основатель</h1>
-      <div className="cards grid-3">
-        <article className="card"><h3>Евгения Т.</h3><p>Основательница EVTENIA, модератор клубных программ.</p></article>
-        <article className="card"><h3>Куратор событий</h3><p>Отвечает за календарь, качество форматов и атмосферу встреч.</p></article>
-        <article className="card"><h3>Редакционная команда</h3><p>Ведет новости, интервью и экспертные материалы платформы.</p></article>
+      <section className="card founder-card">
+        <div className="founder-layout">
+          <img src={teamMembers.founder.photo} alt={teamMembers.founder.name} />
+          <div>
+            <p className="eyebrow">Основатель</p>
+            <h2>{teamMembers.founder.name}</h2>
+            <p><strong>{teamMembers.founder.role}</strong></p>
+            <p>{teamMembers.founder.bio}</p>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2>Команда второго плана</h2>
+        <div className="cards grid-3">
+          {teamMembers.members.map((member) => (
+            <article className="card" key={member.name}>
+              <img src={member.photo} alt={member.name} />
+              <h3>{member.name}</h3>
+              <p>{member.role}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+      <section className="card">
+        <h3>Как устроена команда</h3>
+        <p>Основатель определяет стратегию, а руководители и кураторы отделений отвечают за локальные события, новости и развитие направлений.</p>
+      </section>
       </div>
-    </div>
   );
 }
 
@@ -943,7 +979,7 @@ export default function App() {
     if (path.startsWith("/regions/")) return <RegionDetailPage slug={path.split("/regions/")[1]} goTo={goTo} />;
     if (path.startsWith("/events/")) return <EventDetail slug={path.split("/events/")[1]} goTo={goTo} />;
     if (path.startsWith("/video/")) return <VideoProjectPage slug={path.split("/video/")[1]} />;
-    if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} />;
+    if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} goTo={goTo} />;
     if (path === "/news") return <NewsPage goTo={goTo} />;
     if (path.startsWith("/news/")) return <NewsDetail slug={path.split("/news/")[1]} goTo={goTo} />;
     if (path === "/gallery") return <GalleryPage />;

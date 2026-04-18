@@ -73,7 +73,8 @@ body {
 }
 .social-link:hover { background: rgba(255, 255, 255, 0.8); border-color: rgba(231, 220, 213, 0.9); }
 .social-link svg { width: 18px; height: 18px; }
-.max-icon { font-size: 9px; font-weight: 700; letter-spacing: 0.04em; }
+.max-icon { width: 18px; height: 18px; display: inline-flex; }
+.max-icon svg { width: 18px; height: 18px; display: block; }
 .burger {
   display: none;
   border: 1px solid rgba(231, 220, 213, 0.9);
@@ -217,6 +218,21 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 }
 .branch-card h4 { margin: 10px 0 8px; }
 .branch-leaders { display: grid; gap: 10px; }
+.founder-card { background: linear-gradient(135deg, #fff8f4 0%, #f8ebe6 100%); }
+.founder-layout {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+.founder-layout img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  margin: 0;
+}
 
 .gallery-grid {
   display: grid;
@@ -342,4 +358,6 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   .quick-group-inline p { margin-bottom: 4px; min-width: 0; }
   .quick-links { overflow-x: auto; flex-wrap: nowrap; }
   .sub-link { white-space: nowrap; }
+  .founder-layout { grid-template-columns: 1fr; }
+  .founder-layout img { width: 100%; height: 280px; }
 }
