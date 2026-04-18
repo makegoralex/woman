@@ -189,6 +189,7 @@ function usePath() {
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   const cities = ["Пенза", "Москва", "Санкт-Петербург", "Онлайн"];
   const [city, setCity] = useState("Пенза");
+  const [showAllProjects, setShowAllProjects] = useState(false);
 
   const nav = [
     ["/", "Главная"],
@@ -206,14 +207,32 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     </a>
   );
 
+  const visibleProjects = showAllProjects ? clubProjects : clubProjects.slice(0, 6);
+  const hiddenProjectsCount = clubProjects.length - visibleProjects.length;
+
   return (
     <div className="site">
-      <header className="header">
-        <div className="header-top">
+      <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
+        <div className="header-main">
           <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
-          <div className="header-meta">
+          <nav className="nav-main">
+            {nav.map(([href, label]) => (
+              <button
+                key={href}
+                className={`nav-link ${path === href || (href === "/poster" && path.startsWith("/events")) ? "active" : ""}`}
+                onClick={() => {
+                  goTo(href);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                {label}
+              </button>
+            ))}
+          </nav>
+
+          <div className="header-controls">
             <label className="city-picker">
-              <span>Город</span>
+              <span className="city-label">Город:</span>
               <select value={city} onChange={(e) => setCity(e.target.value)}>
                 {cities.map((item) => <option key={item}>{item}</option>)}
               </select>
@@ -229,7 +248,18 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 4.9c.31-.12.64.16.56.5l-2.85 13.43c-.07.34-.43.53-.75.4l-4.15-1.7-2.1 2.03c-.24.22-.64.1-.7-.22l-.66-3.42 7.48-6.92-9.25 5.76-3.41-1.4c-.34-.14-.34-.62 0-.76L21.6 4.9Z" fill="currentColor" /></svg>
               </SocialIcon>
             </div>
+            <button
+              className="btn btn-small header-cta"
+              onClick={() => {
+                goTo("/join");
+                setMobileMenuOpen(false);
+              }}
+            >
+              Подать заявку
+            </button>
           </div>
+
+          <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
           <button
             className={`burger ${mobileMenuOpen ? "open" : ""}`}
             onClick={() => setMobileMenuOpen((prev) => !prev)}
@@ -239,51 +269,32 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           </button>
         </div>
 
-        <div className={`header-menu ${mobileMenuOpen ? "open" : ""}`}>
-          <nav className="nav-main">
-            {nav.map(([href, label]) => (
-              <button
-                key={href}
-                className={`nav-link ${path === href || (href === "/poster" && path.startsWith("/events")) ? "active" : ""}`}
-                onClick={() => {
-                  goTo(href);
-                  setMobileMenuOpen(false);
-                }}
-              >
-                {label}
-              </button>
-            ))}
-            <button
-              className="btn btn-small nav-cta"
-              onClick={() => {
-                goTo("/join");
-                setMobileMenuOpen(false);
-              }}
-            >
-              Подать заявку
-            </button>
-          </nav>
-
-          <div className="mega-nav">
-            <div className="mega-group">
-              <p>Видеопроекты</p>
-              <div className="mega-links">
-                {mediaProjects.map((item) => (
-                  <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
-                    {item.title}
-                  </button>
-                ))}
-              </div>
+        <div className="quick-links-bar">
+          <div className="quick-group-inline">
+            <p>Видеопроекты</p>
+            <div className="quick-links">
+              {mediaProjects.map((item) => (
+                <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
+                  {item.title}
+                </button>
+              ))}
             </div>
-            <div className="mega-group">
-              <p>Проекты организации</p>
-              <div className="mega-links">
-                {clubProjects.map((item) => (
-                  <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
-                    {item.title}
-                  </button>
-                ))}
-              </div>
+          </div>
+
+          <div className="quick-group-inline">
+            <p>Проекты</p>
+            <div className="quick-links">
+              {visibleProjects.map((item) => (
+                <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+                  {item.title}
+                </button>
+              ))}
+              {hiddenProjectsCount > 0 && (
+                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(true)}>Еще {hiddenProjectsCount}</button>
+              )}
+              {showAllProjects && (
+                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(false)}>Свернуть</button>
+              )}
             </div>
           </div>
         </div>
