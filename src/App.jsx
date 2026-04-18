@@ -208,7 +208,22 @@ const regionalBranches = [
       { name: "Евгения Тарасова", role: "Руководитель отделения", contact: "+7 (900) 123-45-67 · @evtenia_penza", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_penza", "t.me/evtenia_penza"] },
       { name: "Марина Орлова", role: "Куратор программ", contact: "+7 (900) 765-43-21 · @marina_orlova", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/marina.ev", "t.me/marina_ev"] },
     ],
-    news: ["Открыт набор в майский поток направления «Бизнес и женщина».", "Запущен городской чат участниц и партнеров отделения."],
+    news: [
+      {
+        slug: "may-business-program",
+        title: "Открыт набор в майский поток «Бизнес и женщина»",
+        date: "14 апреля 2026",
+        excerpt: "Новый поток стартует 3 мая и включает мастермайнды, менторские встречи и закрытый чат.",
+        body: "Руководитель отделения открыл прием заявок до 30 апреля. В программе — 4 офлайн-встречи, 2 онлайн-сессии с экспертами и индивидуальный разбор целей участниц.",
+      },
+      {
+        slug: "city-community-chat",
+        title: "Запущен городской чат участниц и партнеров отделения",
+        date: "8 апреля 2026",
+        excerpt: "Внутри чата публикуются локальные анонсы, запросы на партнерства и новости по проектам.",
+        body: "Куратор программ модерирует тематические ветки и публикует еженедельный дайджест возможностей: вакансии, коллаборации, анонсы мероприятий и образовательные форматы.",
+      },
+    ],
   },
   {
     slug: "moscow",
@@ -217,7 +232,22 @@ const regionalBranches = [
     leaders: [
       { name: "Алина Петрова", role: "Руководитель отделения", contact: "+7 (901) 222-11-00 · @evtenia_msk", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_msk", "t.me/evtenia_msk"] },
     ],
-    news: ["Анонсирован городской форум «Женщина и лидерство» на июнь.", "Добавлен цикл встреч с менторами для новых резидентов."],
+    news: [
+      {
+        slug: "june-leadership-forum",
+        title: "Анонсирован форум «Женщина и лидерство» на июнь",
+        date: "11 апреля 2026",
+        excerpt: "Форум объединит предпринимательниц, управленцев и экспертов по карьерному росту.",
+        body: "Программа форума включает панельные дискуссии, нетворкинг-сессии и практикум по развитию личного бренда. Регистрация откроется в конце апреля.",
+      },
+      {
+        slug: "mentorship-cycle",
+        title: "Добавлен цикл встреч с менторами для новых резидентов",
+        date: "2 апреля 2026",
+        excerpt: "Серия из 6 встреч для адаптации в сообществе и ускоренного запуска личных целей.",
+        body: "Участницы получают поддержку от менторов по бизнесу, коммуникациям и личной эффективности. Формат — офлайн + онлайн сопровождение в закрытой группе.",
+      },
+    ],
   },
 ];
 
@@ -677,32 +707,99 @@ function OrgProjectPage({ slug }) {
   );
 }
 
-function RegionsPage() {
+function RegionsPage({ goTo }) {
+  const [query, setQuery] = useState("");
+  const normalizedQuery = query.trim().toLowerCase();
+  const filteredBranches = regionalBranches.filter((branch) => {
+    if (!normalizedQuery) return true;
+    return (
+      branch.city.toLowerCase().includes(normalizedQuery)
+      || branch.leaders.some((leader) => leader.name.toLowerCase().includes(normalizedQuery))
+    );
+  });
+
   return (
     <div className="page">
       <h1>Регионы</h1>
-      <p>Карточки отделений, где уже открыто сообщество EVTENIA.</p>
+      <p>Список отделений EVTENIA. Карточки кликабельны и ведут на детальную страницу региона.</p>
+      <label className="region-search">
+        Поиск по городу или руководителю
+        <input
+          type="search"
+          placeholder="Например: Москва или Алина"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </label>
       <div className="cards grid-2">
-        {regionalBranches.map((branch) => (
-          <article className="card branch-card" key={branch.slug}>
+        {filteredBranches.map((branch) => (
+          <article
+            className="card branch-card clickable"
+            key={branch.slug}
+            onClick={() => goTo(`/regions/${branch.slug}`)}
+            onKeyDown={(e) => e.key === "Enter" && goTo(`/regions/${branch.slug}`)}
+            role="button"
+            tabIndex={0}
+          >
             <img src={branch.cover} alt={`Отделение EVTENIA ${branch.city}`} />
             <h3>{branch.city}</h3>
-            <h4>Руководители отделения</h4>
-            <div className="branch-leaders">
-              {branch.leaders.map((leader) => (
-                <div key={leader.name} className="branch-leader-item">
-                  <img src={leader.photo} alt={leader.name} />
-                  <div>
-                    <strong>{leader.name}</strong>
-                    <p>{leader.role}</p>
-                    <p>{leader.contact}</p>
-                    <p>{leader.socials.join(" · ")}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+            <p><strong>Руководители:</strong> {branch.leaders.map((leader) => `${leader.name} (${leader.contact})`).join("; ")}</p>
             <h4>Новости отделения</h4>
-            <ul>{branch.news.map((item) => <li key={item}>{item}</li>)}</ul>
+            <ul>
+              {branch.news.slice(0, 2).map((newsItem) => (
+                <li key={newsItem.slug}>
+                  <button onClick={(e) => { e.stopPropagation(); goTo(`/regions/${branch.slug}/news/${newsItem.slug}`); }}>
+                    {newsItem.title}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button className="btn btn-ghost" onClick={(e) => { e.stopPropagation(); goTo(`/regions/${branch.slug}`); }}>Открыть карточку отделения</button>
+          </article>
+        ))}
+      </div>
+      {filteredBranches.length === 0 && <p>По вашему запросу отделения не найдены.</p>}
+      <section className="card">
+        <h3>Доступы и роли</h3>
+        <p><strong>Главный админ:</strong> создает отделения, назначает руководителей и выдает права на редактирование карточек.</p>
+        <p><strong>Руководитель отделения:</strong> редактирует информацию отделения, публикует новости и обновляет контакты.</p>
+      </section>
+    </div>
+  );
+}
+
+function RegionDetailPage({ slug, goTo }) {
+  const branch = regionalBranches.find((item) => item.slug === slug);
+  if (!branch) return <NotFound goTo={goTo} />;
+  return (
+    <div className="page">
+      <div className="breadcrumbs">Главная / Регионы / {branch.city}</div>
+      <h1>Отделение EVTENIA · {branch.city}</h1>
+      <img className="detail-cover" src={branch.cover} alt={`Отделение ${branch.city}`} />
+      <h2>Руководители отделения</h2>
+      <div className="cards grid-2">
+        {branch.leaders.map((leader) => (
+          <article key={leader.name} className="card">
+            <div className="branch-leader-item">
+              <img src={leader.photo} alt={leader.name} />
+              <div>
+                <strong>{leader.name}</strong>
+                <p>{leader.role}</p>
+                <p>{leader.contact}</p>
+                <p>Соцсети: {leader.socials.join(" · ")}</p>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <h2>Новости отделения</h2>
+      <div className="cards grid-2">
+        {branch.news.map((newsItem) => (
+          <article className="card" key={newsItem.slug}>
+            <small>{newsItem.date}</small>
+            <h3>{newsItem.title}</h3>
+            <p>{newsItem.excerpt}</p>
+            <button onClick={() => goTo(`/regions/${branch.slug}/news/${newsItem.slug}`)}>Читать новость</button>
           </article>
         ))}
       </div>
@@ -711,6 +808,21 @@ function RegionsPage() {
         <p><strong>Главный админ:</strong> создает отделения, назначает руководителей и выдает права на редактирование карточек.</p>
         <p><strong>Руководитель отделения:</strong> редактирует информацию отделения, публикует новости и обновляет контакты.</p>
       </section>
+    </div>
+  );
+}
+
+function RegionNewsDetailPage({ regionSlug, newsSlug, goTo }) {
+  const branch = regionalBranches.find((item) => item.slug === regionSlug);
+  const newsItem = branch?.news.find((item) => item.slug === newsSlug);
+  if (!branch || !newsItem) return <NotFound goTo={goTo} />;
+  return (
+    <div className="page article">
+      <div className="breadcrumbs">Главная / Регионы / {branch.city} / Новости / {newsItem.title}</div>
+      <h1>{newsItem.title}</h1>
+      <p className="lead">{branch.city} · {newsItem.date}</p>
+      <p>{newsItem.body}</p>
+      <button onClick={() => goTo(`/regions/${branch.slug}`)}>← К карточке отделения</button>
     </div>
   );
 }
@@ -783,6 +895,8 @@ export default function App() {
   useEffect(() => {
     const matched = path.startsWith("/events/")
       ? pageSeo["/events"]
+      : path.startsWith("/regions/")
+        ? pageSeo["/regions"]
       : path.startsWith("/video/")
         ? { title: "Видеопроекты EVTENIA", description: "Видео-проекты клуба EVTENIA на RuTube: интервью, лайфстайл и вдохновение." }
         : path.startsWith("/projects/")
@@ -821,7 +935,12 @@ export default function App() {
     if (path === "/") return <Home goTo={goTo} />;
     if (path === "/about") return <AboutPage />;
     if (path === "/events" || path === "/poster") return <EventsPage goTo={goTo} />;
-    if (path === "/regions") return <RegionsPage />;
+    if (path === "/regions") return <RegionsPage goTo={goTo} />;
+    if (path.startsWith("/regions/") && path.includes("/news/")) {
+      const [, , regionSlug, , newsSlug] = path.split("/");
+      return <RegionNewsDetailPage regionSlug={regionSlug} newsSlug={newsSlug} goTo={goTo} />;
+    }
+    if (path.startsWith("/regions/")) return <RegionDetailPage slug={path.split("/regions/")[1]} goTo={goTo} />;
     if (path.startsWith("/events/")) return <EventDetail slug={path.split("/events/")[1]} goTo={goTo} />;
     if (path.startsWith("/video/")) return <VideoProjectPage slug={path.split("/video/")[1]} />;
     if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} />;
