@@ -135,8 +135,9 @@ const testimonials = [
 
 const pageSeo = {
   "/": { title: "EVTENIA — женский клуб, события и развитие", description: "Современный женский клуб EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
-  "/about": { title: "О клубе EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для женщин, которые растут в бизнесе и жизни." },
-  "/events": { title: "Мероприятия EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
+  "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для женщин, которые растут в бизнесе и жизни." },
+  "/events": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
+  "/poster": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
   "/news": { title: "Новости и блог EVTENIA", description: "Новости клуба, статьи, интервью и полезные материалы для участниц EVTENIA." },
   "/gallery": { title: "Галерея EVTENIA", description: "Фотоотчеты и атмосфера мероприятий женского клуба EVTENIA." },
   "/join": { title: "Вступить в клуб EVTENIA", description: "Подать заявку на участие в женском клубе EVTENIA: анкета, форматы участия и преимущества." },
@@ -149,6 +150,24 @@ const pageSeo = {
   "/team": { title: "Команда EVTENIA", description: "Основательница и команда, которые создают сообщество EVTENIA." },
   "/admin": { title: "Админка EVTENIA (демо)", description: "Демо-панель управления контентом EVTENIA." },
 };
+
+const mediaProjects = [
+  { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
+  { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и женские истории." },
+  { slug: "blagodaryu-s-evtenia", title: "Благодарю с Evtenia", description: "Проект про благодарность, поддержку и внутреннюю устойчивость в ежедневности." },
+];
+
+const clubProjects = [
+  { slug: "fitnes-dlya-mozga", title: "Фитнес для мозга" },
+  { slug: "networking", title: "Нетворкинг" },
+  { slug: "sozdanie-meropriyatij", title: "Создание мероприятий" },
+  { slug: "intellekt-mental-health", title: "Интеллектуальное развитие и ментальное здоровье" },
+  { slug: "business-i-zhenshina", title: "Бизнес и женщина" },
+  { slug: "perezagruzka", title: "Перезагрузка" },
+  { slug: "prazdnik-v-kazhdyj-dom", title: "Праздник в каждый дом" },
+  { slug: "psihologiya-otnoshenij", title: "Психология отношений" },
+  { slug: "prekrasnaya-ya", title: "Прекрасная Я" },
+];
 
 function usePath() {
   const [path, setPath] = useState(window.location.pathname);
@@ -168,45 +187,106 @@ function usePath() {
 }
 
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
+  const cities = ["Пенза", "Москва", "Санкт-Петербург", "Онлайн"];
+  const [city, setCity] = useState("Пенза");
+
   const nav = [
-    ["/", "Главная"], ["/about", "О клубе"], ["/events", "Мероприятия"], ["/news", "Новости"],
-    ["/gallery", "Галерея"], ["/join", "Вступить"], ["/contacts", "Контакты"],
+    ["/", "Главная"],
+    ["/about", "О нас"],
+    ["/poster", "Афиша"],
+    ["/team", "Команда"],
+    ["/partners", "Партнеры"],
+    ["/news", "Новости"],
+    ["/contacts", "Контакты"],
   ];
+
+  const SocialIcon = ({ label, href, children }) => (
+    <a className="social-link" href={href} target="_blank" rel="noreferrer" aria-label={label}>
+      {children}
+    </a>
+  );
 
   return (
     <div className="site">
       <header className="header">
-        <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
-        <button
-          className={`burger ${mobileMenuOpen ? "open" : ""}`}
-          onClick={() => setMobileMenuOpen((prev) => !prev)}
-          aria-label="Открыть меню"
-        >
-          ☰
-        </button>
-        <nav className={mobileMenuOpen ? "open" : ""}>
-          {nav.map(([href, label]) => (
+        <div className="header-top">
+          <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
+          <div className="header-meta">
+            <label className="city-picker">
+              <span>Город</span>
+              <select value={city} onChange={(e) => setCity(e.target.value)}>
+                {cities.map((item) => <option key={item}>{item}</option>)}
+              </select>
+            </label>
+            <div className="socials">
+              <SocialIcon label="VK" href="https://vk.com">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
+              </SocialIcon>
+              <SocialIcon label="MAX" href="#">
+                <span className="max-icon">MAX</span>
+              </SocialIcon>
+              <SocialIcon label="Telegram" href="https://t.me">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 4.9c.31-.12.64.16.56.5l-2.85 13.43c-.07.34-.43.53-.75.4l-4.15-1.7-2.1 2.03c-.24.22-.64.1-.7-.22l-.66-3.42 7.48-6.92-9.25 5.76-3.41-1.4c-.34-.14-.34-.62 0-.76L21.6 4.9Z" fill="currentColor" /></svg>
+              </SocialIcon>
+            </div>
+          </div>
+          <button
+            className={`burger ${mobileMenuOpen ? "open" : ""}`}
+            onClick={() => setMobileMenuOpen((prev) => !prev)}
+            aria-label="Открыть меню"
+          >
+            ☰
+          </button>
+        </div>
+
+        <div className={`header-menu ${mobileMenuOpen ? "open" : ""}`}>
+          <nav className="nav-main">
+            {nav.map(([href, label]) => (
+              <button
+                key={href}
+                className={`nav-link ${path === href || (href === "/poster" && path.startsWith("/events")) ? "active" : ""}`}
+                onClick={() => {
+                  goTo(href);
+                  setMobileMenuOpen(false);
+                }}
+              >
+                {label}
+              </button>
+            ))}
             <button
-              key={href}
-              className={`nav-link ${path === href ? "active" : ""}`}
+              className="btn btn-small nav-cta"
               onClick={() => {
-                goTo(href);
+                goTo("/join");
                 setMobileMenuOpen(false);
               }}
             >
-              {label}
+              Подать заявку
             </button>
-          ))}
-        </nav>
-        <button
-          className="btn btn-small"
-          onClick={() => {
-            goTo("/join");
-            setMobileMenuOpen(false);
-          }}
-        >
-          Подать заявку
-        </button>
+          </nav>
+
+          <div className="mega-nav">
+            <div className="mega-group">
+              <p>Видеопроекты</p>
+              <div className="mega-links">
+                {mediaProjects.map((item) => (
+                  <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div className="mega-group">
+              <p>Проекты организации</p>
+              <div className="mega-links">
+                {clubProjects.map((item) => (
+                  <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
       </header>
       <main>{children}</main>
       <footer className="footer">
@@ -227,7 +307,7 @@ function Hero({ goTo }) {
         <h1>EVTENIA — пространство развития, знакомств и сильного окружения</h1>
         <p className="lead">События, бизнес-встречи, образовательные форматы и поддерживающее сообщество для женщин, которые хотят расти в своём темпе и масштабе.</p>
         <div className="actions">
-          <button className="btn" onClick={() => goTo("/events")}>Смотреть мероприятия</button>
+          <button className="btn" onClick={() => goTo("/poster")}>Смотреть афишу</button>
           <button className="btn btn-ghost" onClick={() => goTo("/join")}>Оставить заявку</button>
         </div>
         <ul className="bullets">
@@ -249,7 +329,7 @@ function Home({ goTo }) {
       </section>
 
       <section>
-        <div className="section-head"><h2>Ближайшие мероприятия</h2><button onClick={() => goTo("/events")}>Все события →</button></div>
+        <div className="section-head"><h2>Ближайшие мероприятия</h2><button onClick={() => goTo("/poster")}>Вся афиша →</button></div>
         <div className="cards grid-3">{events.filter((e) => e.status === "future").slice(0, 4).map((e) => <EventCard key={e.slug} event={e} goTo={goTo} />)}</div>
       </section>
 
@@ -314,7 +394,7 @@ function EventsPage({ goTo }) {
   const filtered = events.filter((e) => (status === "all" ? true : e.status === status) && (category === "all" ? true : e.category === category));
   return (
     <div className="page">
-      <h1>Мероприятия EVTENIA</h1>
+      <h1>Афиша EVTENIA</h1>
       <div className="filters">
         <label>Статус <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
         <label>Категория <select value={category} onChange={(e) => setCategory(e.target.value)}>{categories.map((c) => <option key={c}>{c}</option>)}</select></label>
@@ -330,7 +410,7 @@ function EventDetail({ slug, goTo }) {
   const related = events.filter((e) => e.slug !== slug).slice(0, 3);
   return (
     <div className="page">
-      <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
+      <div className="breadcrumbs">Главная / Афиша / {event.title}</div>
       <h1>{event.title}</h1>
       <img className="detail-cover" src={event.image} alt={event.title} />
       <p><strong>Дата и время:</strong> {event.date}, {event.time}</p>
@@ -391,7 +471,7 @@ function NewsDetail({ slug, goTo }) {
 function AboutPage() {
   return (
     <div className="page">
-      <h1>О клубе EVTENIA</h1>
+      <h1>О нас</h1>
       <p>EVTENIA создан для женщин, которым важно профессиональное развитие, круг поддержки и эстетичное живое сообщество. Мы соединяем деловые, образовательные и lifestyle-форматы в одной платформе.</p>
       <div className="cards grid-2">
         <article className="card"><h3>Миссия</h3><p>Создавать сильную и безопасную среду, где женщины растут, знакомятся и реализуют проекты.</p></article>
@@ -465,6 +545,36 @@ function SimplePage({ title, text }) {
   return <div className="page"><h1>{title}</h1><p>{text}</p></div>;
 }
 
+function VideoProjectPage({ slug }) {
+  const project = mediaProjects.find((item) => item.slug === slug);
+  if (!project) return <SimplePage title="Проект не найден" text="Попробуйте открыть проект из меню в шапке." />;
+  return (
+    <div className="page">
+      <h1>{project.title}</h1>
+      <p>{project.description}</p>
+      <div className="card">
+        <h3>Где смотреть</h3>
+        <p>Этот видеопроект доступен на RuTube. Здесь будет размещен плейлист, выпуски и анонсы новых серий.</p>
+      </div>
+    </div>
+  );
+}
+
+function OrgProjectPage({ slug }) {
+  const project = clubProjects.find((item) => item.slug === slug);
+  if (!project) return <SimplePage title="Проект не найден" text="Попробуйте открыть проект из меню в шапке." />;
+  return (
+    <div className="page">
+      <h1>{project.title}</h1>
+      <p>Отдельная страница проекта с описанием формата, командой, ближайшими наборами и кнопкой участия.</p>
+      <div className="cards grid-2">
+        <article className="card"><h3>Для кого</h3><p>Для участниц клуба и гостей, которым важны системное развитие и качественное окружение.</p></article>
+        <article className="card"><h3>Формат</h3><p>Живые встречи, образовательные модули и регулярная поддержка от сообщества.</p></article>
+      </div>
+    </div>
+  );
+}
+
 function TeamPage() {
   return (
     <div className="page">
@@ -531,9 +641,13 @@ export default function App() {
   useEffect(() => {
     const matched = path.startsWith("/events/")
       ? pageSeo["/events"]
+      : path.startsWith("/video/")
+        ? { title: "Видеопроекты EVTENIA", description: "Видео-проекты клуба EVTENIA на RuTube: интервью, лайфстайл и вдохновение." }
+        : path.startsWith("/projects/")
+          ? { title: "Проекты EVTENIA", description: "Направления и проекты организации EVTENIA для развития и сообщества." }
       : path.startsWith("/news/")
         ? pageSeo["/news"]
-        : pageSeo[path] || pageSeo["/"];
+      : pageSeo[path] || pageSeo["/"];
     document.title = matched.title;
 
     let description = document.querySelector('meta[name="description"]');
@@ -564,8 +678,10 @@ export default function App() {
   const page = useMemo(() => {
     if (path === "/") return <Home goTo={goTo} />;
     if (path === "/about") return <AboutPage />;
-    if (path === "/events") return <EventsPage goTo={goTo} />;
+    if (path === "/events" || path === "/poster") return <EventsPage goTo={goTo} />;
     if (path.startsWith("/events/")) return <EventDetail slug={path.split("/events/")[1]} goTo={goTo} />;
+    if (path.startsWith("/video/")) return <VideoProjectPage slug={path.split("/video/")[1]} />;
+    if (path.startsWith("/projects/")) return <OrgProjectPage slug={path.split("/projects/")[1]} />;
     if (path === "/news") return <NewsPage goTo={goTo} />;
     if (path.startsWith("/news/")) return <NewsDetail slug={path.split("/news/")[1]} goTo={goTo} />;
     if (path === "/gallery") return <GalleryPage />;
