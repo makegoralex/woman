@@ -190,8 +190,31 @@ const clubProjects = [
 const projectDetails = {
   "fitnes-dlya-mozga": {
     lead: { name: "Елена Матвеева", photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80", bio: "Коуч по обучению взрослых, помогает системно развивать мышление и навыки концентрации.", socials: ["t.me/elena_m", "vk.com/elenamind"] },
-    description: "Направление про развитие интеллектуальной выносливости, навыков обучения и уверенного публичного выступления.",
-    photo: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1200&q=80",
+    description: "В наше время принято тренировать своё тело. И это замечательно! Но и наш мозг нуждается в тренировке. К сожалению, люди часто спохватываются и начинают что-либо делать для развития умственных способностей слишком поздно.",
+    photo: "/content/fitnes-dlya-mozga/kozedub_1.jpg",
+    gallery: [
+      "/content/fitnes-dlya-mozga/kozedub_1.jpg",
+      "/content/fitnes-dlya-mozga/kozedub_2.jpg",
+      "/content/fitnes-dlya-mozga/kozedub_3.jpg",
+    ],
+    forWhom: [
+      "забываете бытовые мелочи",
+      "не помните, кто звонил и о чем шёл разговор",
+      "испытываете трудности при запоминании",
+      "теряетесь в потоке информации и чувствуете перенапряжение",
+      "живёте в режиме многозадачности",
+      "не знаете, как эффективно помочь в учёбе детям и внукам",
+      "потеряли творческое вдохновение",
+    ],
+    results: [
+      "освоите техники развития памяти, мышления и воображения",
+      "научитесь поддерживать свой мозг в тонусе",
+      "узнаете, как работать без выгораний и стрессов",
+      "освоите упражнения по восстановлению энергии",
+      "сможете помогать детям и внукам в учёбе",
+      "получите заряд мотивации и освоите эффективные методы для формирования полезных привычек",
+    ],
+    programNote: "Курс состоит из 30 заданий, доступ к обучающей платформе рассчитан на 60 дней. В расписании — ежедневные задания на обучающей платформе с обязательной обратной связью.",
     video: "rutube.ru/video/fitnes-dlya-mozga-demo",
     testimonials: ["После цикла занятий мне стало проще выступать и структурировать мысли.", "Система маленьких шагов реально помогает учиться без выгорания."],
   },
@@ -836,8 +859,37 @@ function OrgProjectPage({ slug, goTo }) {
             <h3>Описание направления</h3>
             <p>{details.description}</p>
             <img src={details.photo} alt={project.title} />
+            {details.forWhom && (
+              <>
+                <h4>Если вы:</h4>
+                <ul>
+                  {details.forWhom.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </>
+            )}
+            {details.results && (
+              <>
+                <h4>За 1 месяц вы:</h4>
+                <ul>
+                  {details.results.map((item) => <li key={item}>{item}</li>)}
+                </ul>
+              </>
+            )}
+            {details.programNote && <p><strong>{details.programNote}</strong></p>}
             <p>Видео: {details.video}</p>
           </section>
+          {details.gallery && (
+            <section>
+              <h2>Фотографии направления</h2>
+              <div className="gallery-grid">
+                {details.gallery.map((photo, idx) => (
+                  <figure key={photo}>
+                    <img src={photo} alt={`${project.title} ${idx + 1}`} />
+                  </figure>
+                ))}
+              </div>
+            </section>
+          )}
         </>
       )}
       <section>
