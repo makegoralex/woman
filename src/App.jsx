@@ -908,7 +908,7 @@ function OrgProjectPage({ slug, goTo }) {
               <div className="gallery-grid">
                 {details.gallery.map((photo, idx) => (
                   <figure key={photo}>
-                    <img src={photo} alt={`${project.title} ${idx + 1}`} />
+                    <img src={photo} alt={`${project.title} ${idx + 1}`} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = details.photo; }} />
                   </figure>
                 ))}
               </div>
