@@ -170,11 +170,10 @@ const pageSeo = {
 };
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
-const brainFitnessGalleryRoot = "/public/content/fitnes-dlya-mozga/";
 const brainFitnessGallery = [
-  `${brainFitnessGalleryRoot}kozedub_1.jpg`,
-  `${brainFitnessGalleryRoot}kozedub_2.jpg`,
-  `${brainFitnessGalleryRoot}kozedub_3.jpg`,
+  "https://s10.iimage.su/s/08/g1l3vhkxbkBjzFJSvljZzSBJo0nUZI2bBo1Bf633l.jpg",
+  "https://s10.iimage.su/s/08/gUDySdSxdaipYcha04T26GCGYb8UcGfIltzUzT4BB.jpg",
+  "https://s10.iimage.su/s/08/gzRQx7GxmshYzD0hTAJGtgCTliaJpZ9Dp8qIoMqLv.jpg",
 ];
 
 const mediaProjects = [
