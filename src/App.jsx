@@ -170,7 +170,7 @@ const pageSeo = {
 };
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
-const brainFitnessGalleryRoot = "/content/fitnes-dlya-mozga/";
+const brainFitnessGalleryRoot = "/public/content/fitnes-dlya-mozga/";
 const brainFitnessGallery = [
   `${brainFitnessGalleryRoot}kozedub_1.jpg`,
   `${brainFitnessGalleryRoot}kozedub_2.jpg`,
