@@ -172,9 +172,9 @@ const pageSeo = {
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
 const brainFitnessGalleryPath = (fileName) => `/content/fitnes-dlya-mozga/${fileName}`;
 const brainFitnessGallery = [
-  brainFitnessGalleryPath("kozedub_1.jpg"),
-  brainFitnessGalleryPath("kozedub_2.jpg"),
-  brainFitnessGalleryPath("kozedub_3.jpg"),
+  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_1.jpg"),
+  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_2.jpg"),
+  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_3.jpg"),
 ];
 
 const mediaProjects = [
