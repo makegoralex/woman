@@ -170,6 +170,11 @@ const pageSeo = {
 };
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
+const brainFitnessGallery = [
+  { src: brainFitnessPhoto, alt: "Елена Козедуб — портрет", position: "70% center" },
+  { src: brainFitnessPhoto, alt: "Фитнес для мозга — тренинг", position: "52% center" },
+  { src: brainFitnessPhoto, alt: "Фитнес для мозга — ведущая курса", position: "82% center" },
+];
 
 const mediaProjects = [
   { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
@@ -199,6 +204,7 @@ const projectDetails = {
     },
     description: "В наше время принято тренировать своё тело. И это замечательно! Но и наш мозг нуждается в тренировке. К сожалению, люди часто спохватываются и начинают что-либо делать для развития умственных способностей слишком поздно.",
     photo: brainFitnessPhoto,
+    gallery: brainFitnessGallery,
     links: [
       { label: "Сообщество во ВК", href: "https://vk.com/elenakozedub" },
       { label: "Сайт тренинга", href: "https://taplink.cc/elenaakozedub" },
@@ -901,11 +907,18 @@ function OrgProjectPage({ slug, goTo }) {
             <section>
               <h2>Фотографии направления</h2>
               <div className="gallery-grid">
-                {details.gallery.map((photo, idx) => (
-                  <figure key={photo}>
-                    <img src={photo} alt={`${project.title} ${idx + 1}`} />
-                  </figure>
-                ))}
+                {details.gallery.map((photo, idx) => {
+                  const galleryPhoto = typeof photo === "string" ? { src: photo } : photo;
+                  return (
+                    <figure key={`${galleryPhoto.src}-${idx}`}>
+                      <img
+                        src={galleryPhoto.src}
+                        alt={galleryPhoto.alt || `${project.title} ${idx + 1}`}
+                        style={galleryPhoto.position ? { objectPosition: galleryPhoto.position } : undefined}
+                      />
+                    </figure>
+                  );
+                })}
               </div>
             </section>
           )}
