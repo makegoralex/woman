@@ -171,9 +171,9 @@ const pageSeo = {
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
 const brainFitnessGallery = [
-  { src: brainFitnessPhoto, alt: "Елена Козедуб — портрет", position: "70% center" },
-  { src: brainFitnessPhoto, alt: "Фитнес для мозга — тренинг", position: "52% center" },
-  { src: brainFitnessPhoto, alt: "Фитнес для мозга — ведущая курса", position: "82% center" },
+  "/content/fitnes-dlya-mozga/kozedub_1.jpg",
+  "/content/fitnes-dlya-mozga/kozedub_2.jpg",
+  "/content/fitnes-dlya-mozga/kozedub_3.jpg",
 ];
 
 const mediaProjects = [
@@ -876,7 +876,6 @@ function OrgProjectPage({ slug, goTo }) {
           <section className="card project-detail-card">
             <h3>Описание направления</h3>
             <p>{details.description}</p>
-            <img className="project-main-photo" src={details.photo} alt={project.title} />
             {details.forWhom && (
               <>
                 <h4>Если вы:</h4>

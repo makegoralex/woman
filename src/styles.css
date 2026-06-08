@@ -200,15 +200,6 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 }
 .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
 .project-detail-card { display: grid; gap: 14px; }
-.card img.project-main-photo {
-  width: 100%;
-  height: clamp(220px, 30vw, 360px);
-  object-fit: cover;
-  object-position: 70% center;
-  border-radius: 18px;
-  border: 1px solid var(--border);
-  margin: 6px 0 4px;
-}
 .external-links {
   display: flex;
   flex-wrap: wrap;
