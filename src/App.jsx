@@ -170,11 +170,11 @@ const pageSeo = {
 };
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
-const brainFitnessGalleryPath = (fileName) => `/content/fitnes-dlya-mozga/${fileName}`;
+const brainFitnessGalleryRoot = "/content/fitnes-dlya-mozga/";
 const brainFitnessGallery = [
-  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_1.jpg"),
-  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_2.jpg"),
-  brainFitnessGalleryPath("public/content/fitnes-dlya-mozga/kozedub_3.jpg"),
+  `${brainFitnessGalleryRoot}kozedub_1.jpg`,
+  `${brainFitnessGalleryRoot}kozedub_2.jpg`,
+  `${brainFitnessGalleryRoot}kozedub_3.jpg`,
 ];
 
 const mediaProjects = [
