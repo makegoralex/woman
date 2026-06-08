@@ -171,9 +171,9 @@ const pageSeo = {
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
 const brainFitnessGallery = [
-  "/content/fitnes-dlya-mozga/kozedub_1.jpg",
-  "/content/fitnes-dlya-mozga/kozedub_2.jpg",
-  "/content/fitnes-dlya-mozga/kozedub_3.jpg",
+  "public/content/fitnes-dlya-mozga/kozedub_1.jpg",
+  "public/content/fitnes-dlya-mozga/kozedub_2.jpg",
+  "public/content/fitnes-dlya-mozga/kozedub_3.jpg",
 ];
 
 const mediaProjects = [
