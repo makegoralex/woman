@@ -199,6 +199,23 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   padding: 16px;
 }
 .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 12px; margin-bottom: 10px; }
+.project-detail-card { display: grid; gap: 14px; }
+.card img.project-main-photo {
+  width: 100%;
+  height: clamp(220px, 30vw, 360px);
+  object-fit: cover;
+  object-position: 70% center;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  margin: 6px 0 4px;
+}
+.external-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+.external-links a { text-decoration: none; }
 .card p { color: var(--muted); }
 .card button { border: 0; background: transparent; color: var(--accent); cursor: pointer; font-weight: 600; }
 .title-link {
@@ -218,6 +235,11 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   gap: 12px;
   align-items: start;
 }
+.leader-block {
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  gap: 22px;
+  align-items: center;
+}
 .leader-block img,
 .branch-leader-item img {
   width: 88px;
@@ -226,6 +248,13 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   object-fit: cover;
   margin: 0;
 }
+.leader-block img {
+  width: 100%;
+  height: 140px;
+  object-position: 70% center;
+}
+.leader-block p:first-child { margin-top: 0; }
+.leader-block p:last-child { margin-bottom: 0; }
 .branch-card h4 { margin: 10px 0 8px; }
 .branch-leaders { display: grid; gap: 10px; }
 .founder-card { background: linear-gradient(135deg, #fff8f4 0%, #f8ebe6 100%); }
@@ -250,7 +279,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   gap: 14px;
 }
 .gallery-grid figure { margin: 0; }
-.gallery-grid img { width: 100%; height: 260px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); }
+.gallery-grid img { width: 100%; height: 240px; object-fit: cover; border-radius: 16px; border: 1px solid var(--border); }
 .gallery-grid figcaption { margin-top: 8px; color: var(--muted); }
 
 .join {
@@ -412,6 +441,8 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   .sub-link { white-space: nowrap; }
   .founder-layout { grid-template-columns: 1fr; }
   .founder-layout img { width: 100%; height: 280px; }
+  .leader-block { grid-template-columns: 1fr; }
+  .leader-block img { max-width: 220px; height: 180px; }
   .footer { grid-template-columns: 1fr; }
   .cookie-banner { flex-direction: column; align-items: flex-start; }
 }
