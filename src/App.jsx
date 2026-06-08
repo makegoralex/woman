@@ -169,6 +169,13 @@ const pageSeo = {
   "/admin": { title: "Админка EVTENIA (демо)", description: "Демо-панель управления контентом EVTENIA." },
 };
 
+const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
+const brainFitnessGallery = [
+  "https://s10.iimage.su/s/08/g1l3vhkxbkBjzFJSvljZzSBJo0nUZI2bBo1Bf633l.jpg",
+  "https://s10.iimage.su/s/08/gUDySdSxdaipYcha04T26GCGYb8UcGfIltzUzT4BB.jpg",
+  "https://s10.iimage.su/s/08/gzRQx7GxmshYzD0hTAJGtgCTliaJpZ9Dp8qIoMqLv.jpg",
+];
+
 const mediaProjects = [
   { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
   { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и женские истории." },
@@ -189,13 +196,18 @@ const clubProjects = [
 
 const projectDetails = {
   "fitnes-dlya-mozga": {
-    lead: { name: "Елена Матвеева", photo: "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=800&q=80", bio: "Коуч по обучению взрослых, помогает системно развивать мышление и навыки концентрации.", socials: ["t.me/elena_m", "vk.com/elenamind"] },
+    lead: {
+      name: "Елена Козедуб",
+      photo: brainFitnessPhoto,
+      bio: "Автор и ведущая тренинга «Фитнес для мозга». Помогает развивать память, мышление, воображение и сохранять ясность в потоке информации.",
+      socials: ["vk.com/elenakozedub", "taplink.cc/elenaakozedub"],
+    },
     description: "В наше время принято тренировать своё тело. И это замечательно! Но и наш мозг нуждается в тренировке. К сожалению, люди часто спохватываются и начинают что-либо делать для развития умственных способностей слишком поздно.",
-    photo: "/content/fitnes-dlya-mozga/kozedub_1.jpg",
-    gallery: [
-      "/content/fitnes-dlya-mozga/kozedub_1.jpg",
-      "/content/fitnes-dlya-mozga/kozedub_2.jpg",
-      "/content/fitnes-dlya-mozga/kozedub_3.jpg",
+    photo: brainFitnessPhoto,
+    gallery: brainFitnessGallery,
+    links: [
+      { label: "Сообщество во ВК", href: "https://vk.com/elenakozedub" },
+      { label: "Сайт тренинга", href: "https://taplink.cc/elenaakozedub" },
     ],
     forWhom: [
       "забываете бытовые мелочи",
@@ -214,9 +226,8 @@ const projectDetails = {
       "сможете помогать детям и внукам в учёбе",
       "получите заряд мотивации и освоите эффективные методы для формирования полезных привычек",
     ],
-    programNote: "Курс состоит из 30 заданий, доступ к обучающей платформе рассчитан на 60 дней. В расписании — ежедневные задания на обучающей платформе с обязательной обратной связью.",
-    video: "rutube.ru/video/fitnes-dlya-mozga-demo",
-    testimonials: ["После цикла занятий мне стало проще выступать и структурировать мысли.", "Система маленьких шагов реально помогает учиться без выгорания."],
+    programNote: "Курс состоит из 30 заданий, доступ к обучающей платформе рассчитан на 60 дней. В расписании — каждодневные задания на обучающей платформе с обязательной обратной связью.",
+    testimonials: ["Стало легче запоминать информацию и держать фокус.", "Упражнения помогли встроить тренировки мозга в ежедневный ритм."],
   },
   "networking": {
     lead: { name: "Анна Климова", photo: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80", bio: "Модератор деловых сообществ, развивает безопасный и результативный нетворкинг.", socials: ["t.me/anna_network", "vk.com/annaklimova"] },
@@ -852,13 +863,19 @@ function OrgProjectPage({ slug, goTo }) {
                 <p><strong>{details.lead.name}</strong></p>
                 <p>{details.lead.bio}</p>
                 <p>Соцсети: {details.lead.socials.join(" · ")}</p>
+                {details.links && (
+                  <div className="external-links">
+                    {details.links.map((link) => (
+                      <a key={link.href} className="btn btn-small" href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </section>
-          <section className="card">
+          <section className="card project-detail-card">
             <h3>Описание направления</h3>
             <p>{details.description}</p>
-            <img src={details.photo} alt={project.title} />
             {details.forWhom && (
               <>
                 <h4>Если вы:</h4>
@@ -876,7 +893,14 @@ function OrgProjectPage({ slug, goTo }) {
               </>
             )}
             {details.programNote && <p><strong>{details.programNote}</strong></p>}
-            <p>Видео: {details.video}</p>
+            {details.links && (
+              <div className="external-links">
+                {details.links.map((link) => (
+                  <a key={link.href} className="btn" href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+                ))}
+              </div>
+            )}
+            {details.video && <p>Видео: {details.video}</p>}
           </section>
           {details.gallery && (
             <section>
