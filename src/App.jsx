@@ -907,18 +907,11 @@ function OrgProjectPage({ slug, goTo }) {
             <section>
               <h2>Фотографии направления</h2>
               <div className="gallery-grid">
-                {details.gallery.map((photo, idx) => {
-                  const galleryPhoto = typeof photo === "string" ? { src: photo } : photo;
-                  return (
-                    <figure key={`${galleryPhoto.src}-${idx}`}>
-                      <img
-                        src={galleryPhoto.src}
-                        alt={galleryPhoto.alt || `${project.title} ${idx + 1}`}
-                        style={galleryPhoto.position ? { objectPosition: galleryPhoto.position } : undefined}
-                      />
-                    </figure>
-                  );
-                })}
+                {details.gallery.map((photo, idx) => (
+                  <figure key={photo}>
+                    <img src={photo} alt={`${project.title} ${idx + 1}`} onError={(event) => { event.currentTarget.onerror = null; event.currentTarget.src = details.photo; }} />
+                  </figure>
+                ))}
               </div>
             </section>
           )}
