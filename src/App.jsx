@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
 
+const vkUrl = "https://vk.com/evtenia_happy_lady";
+const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
+const founderLeftPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80";
+const founderRightPhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80";
+
 const events = [
   {
     slug: "business-breakfast-march",
@@ -15,8 +20,8 @@ const events = [
     status: "future",
     image: "https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1200&q=80",
     short: "Практическая встреча о позиционировании, репутации и росте экспертности.",
-    program: ["Нетворкинг и welcome-coffee", "Панель с основательницами бизнесов", "Q&A + закрытый клубный круг"],
-    audience: "Предпринимательницы, эксперты, руководительницы команд.",
+    program: ["Нетворкинг и welcome-coffee", "Панель с основателями бизнесов", "Q&A + закрытое обсуждение"],
+    audience: "Предприниматели, эксперты, руководители команд.",
   },
   {
     slug: "networking-evening-april",
@@ -32,21 +37,21 @@ const events = [
     image: "https://images.unsplash.com/photo-1497215842964-222b430dc094?auto=format&fit=crop&w=1200&q=80",
     short: "Интеллигентный вечер знакомств, мини-питчи и новые партнерства.",
     program: ["Круг знакомств", "Формат быстрых диалогов", "After-talk с модератором клуба"],
-    audience: "Для участниц, которые хотят расширить деловой и личный круг общения.",
+    audience: "Для участников, которые хотят расширить деловой и личный круг общения.",
   },
   {
     slug: "wellbeing-circle",
-    title: "Женский круг: энергия, опора, баланс",
+    title: "Круг поддержки: энергия, опора, баланс",
     date: "7 мая 2026",
     time: "18:30–21:00",
     place: "Пенза, клубное пространство EVTENIA",
     city: "Пенза",
     format: "Оффлайн",
-    category: "Женские встречи",
+    category: "Встречи сообщества",
     projectSlug: "perezagruzka",
     status: "future",
     image: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1200&q=80",
-    short: "Камерная встреча для глубокой перезагрузки и поддержки в кругу женщин.",
+    short: "Камерная встреча для глубокой перезагрузки и поддержки в сообществе.",
     program: ["Практика заземления", "Тематическое обсуждение", "Чайная церемония"],
     audience: "Для тех, кому важно бережное и вдохновляющее окружение.",
   },
@@ -64,11 +69,11 @@ const events = [
     image: "https://images.unsplash.com/photo-1517502884422-41eaead166d4?auto=format&fit=crop&w=1200&q=80",
     short: "Тренировка публичных выступлений и подачи себя перед аудиторией.",
     program: ["Разбор структуры речи", "Практика на камеру", "Индивидуальная обратная связь"],
-    audience: "Для спикеров, основательниц и экспертов.",
+    audience: "Для спикеров, основателей и экспертов.",
   },
   {
     slug: "autumn-forum-2025",
-    title: "Итоги форума EVTENIA: женщины в новой экономике",
+    title: "Итоги форума EVTENIA: люди в новой экономике",
     date: "18 ноября 2025",
     time: "11:00–18:00",
     place: "Пенза, LOFT#7",
@@ -78,9 +83,9 @@ const events = [
     projectSlug: "business-i-zhenshina",
     status: "past",
     image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1200&q=80",
-    short: "Большой клубный форум с 300+ участницами, экспертами и партнерами.",
+    short: "Большой форум с 300+ участниками, экспертами и партнерами.",
     program: ["Пленарная сессия", "Экспертные панели", "Вечерний networking"],
-    audience: "Открытое мероприятие для участниц и гостей клуба.",
+    audience: "Открытое мероприятие для участников и гостей клуба.",
   },
   {
     slug: "charity-culture-night",
@@ -94,21 +99,21 @@ const events = [
     projectSlug: "prazdnik-v-kazhdyj-dom",
     status: "past",
     image: "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1200&q=80",
-    short: "Музыка, искусство и сбор средств в поддержку женских образовательных проектов.",
+    short: "Музыка, искусство и сбор средств в поддержку образовательных проектов.",
     program: ["Камерный концерт", "Арт-аукцион", "Партнерские выступления"],
-    audience: "Для участниц клуба и партнеров EVTENIA.",
+    audience: "Для участников и партнеров EVTENIA.",
   },
 ];
 
 const posts = [
   { slug: "march-community-results", title: "Как прошёл март в EVTENIA: 4 встречи и 120 новых знакомств", category: "Новости клуба", date: "20 марта 2026", excerpt: "Подвели итоги месяца и собрали лучшие моменты встреч в одном материале." },
-  { slug: "career-shifts", title: "Бизнес и карьера: как мягко расти в период изменений", category: "Бизнес и карьера", date: "16 марта 2026", excerpt: "Практические подходы от участниц клуба, которые масштабируют проекты без выгорания." },
-  { slug: "interview-founder", title: "Интервью с основательницей EVTENIA: зачем нам клубная культура", category: "Интервью", date: "10 марта 2026", excerpt: "О миссии сообщества, ценностях и том, как рождаются сильные женские связи." },
+  { slug: "career-shifts", title: "Бизнес и карьера: как мягко расти в период изменений", category: "Бизнес и карьера", date: "16 марта 2026", excerpt: "Практические подходы от участников сообщества, которые масштабируют проекты без выгорания." },
+  { slug: "interview-founder", title: "Интервью с основателем EVTENIA: зачем нам культура сообщества", category: "Интервью", date: "10 марта 2026", excerpt: "О миссии сообщества, ценностях и том, как рождаются сильные связи." },
   { slug: "event-announcement-april", title: "Анонс апреля: нетворкинг-вечер и лаборатория выступлений", category: "Мероприятия", date: "5 марта 2026", excerpt: "Две новые встречи, на которых можно заявить о себе и найти партнеров." },
-  { slug: "member-story-anastasia", title: "История участницы: как клуб помог запустить второй бизнес", category: "Истории участниц", date: "28 февраля 2026", excerpt: "Личный кейс о поддержке, окружении и смелости выйти на новый уровень." },
-  { slug: "wellbeing-habits", title: "Полезные материалы: 7 ритуалов ресурсного утра", category: "Женское развитие", date: "21 февраля 2026", excerpt: "Небольшие привычки, которые помогают сохранять ясность и энергию." },
+  { slug: "member-story-anastasia", title: "История участника: как сообщество помогло запустить второй бизнес", category: "Истории участников", date: "28 февраля 2026", excerpt: "Личный кейс о поддержке, окружении и смелости выйти на новый уровень." },
+  { slug: "wellbeing-habits", title: "Полезные материалы: 7 ритуалов ресурсного утра", category: "Развитие", date: "21 февраля 2026", excerpt: "Небольшие привычки, которые помогают сохранять ясность и энергию." },
   { slug: "partners-open-call", title: "Открыт набор партнёров на летнюю программу клуба", category: "Новости клуба", date: "15 февраля 2026", excerpt: "Приглашаем бренды и экспертов к совместным образовательным форматам." },
-  { slug: "safe-networking", title: "Как строить нетворкинг в безопасной женской среде", category: "Полезные материалы", date: "10 февраля 2026", excerpt: "Принципы общения и форматы знакомств, которые работают вдолгую." },
+  { slug: "safe-networking", title: "Как строить нетворкинг в безопасной поддерживающей среде", category: "Полезные материалы", date: "10 февраля 2026", excerpt: "Принципы общения и форматы знакомств, которые работают вдолгую." },
 ];
 
 const galleryAlbums = [
@@ -118,7 +123,7 @@ const galleryAlbums = [
     cover: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&w=1000&q=80",
   },
   {
-    title: "Камерный вечер историй участниц",
+    title: "Камерный вечер историй участников",
     date: "февраль 2026",
     cover: "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=80",
   },
@@ -130,10 +135,10 @@ const galleryAlbums = [
 ];
 
 const testimonials = [
-  { quote: "Я пришла за новыми контактами, а получила сильное окружение и поддержку на каждом этапе.", name: "Екатерина С.", role: "предпринимательница" },
-  { quote: "В EVTENIA комфортно говорить о росте, сомнениях и идеях — тебя действительно слышат.", name: "Мария Л.", role: "участница клуба" },
+  { quote: "Я пришла за новыми контактами, а получила сильное окружение и поддержку на каждом этапе.", name: "Екатерина С.", role: "предприниматель" },
+  { quote: "В EVTENIA комфортно говорить о росте, сомнениях и идеях — тебя действительно слышат.", name: "Мария Л.", role: "участник сообщества" },
   { quote: "После двух встреч я нашла партнера для нового проекта и уверенность выступать публично.", name: "Анна Р.", role: "маркетинг-консультант" },
-  { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основательница бренда" },
+  { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основатель бренда" },
 ];
 
 const teamMembers = {
@@ -150,22 +155,33 @@ const teamMembers = {
   ],
 };
 
+
+const partners = [
+  { name: "Счастливый дом", href: "https://home58.ru/" },
+  { name: "Строительство домов Evtenia", href: "https://dom.evtenia.ru/" },
+  { name: "Агентство недвижимости Evtenia", href: "https://evtenia.ru/" },
+  { name: "Блог основателя АНО Evtenia", href: "https://vk.com/greatbusinesslady" },
+  { name: "Опора России Пензенское отделение", href: "https://opora58.ru/" },
+  { name: "Фитнес для мозга", href: "https://taplink.cc/elenaakozedub" },
+  { name: "Ювелирка Evtnenia", href: "https://evtenia.store/" },
+];
+
 const pageSeo = {
-  "/": { title: "EVTENIA — женский клуб, события и развитие", description: "Современный женский клуб EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
-  "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для женщин, которые растут в бизнесе и жизни." },
+  "/": { title: "EVTENIA — клуб для всех, события и развитие", description: "Современное сообщество EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
+  "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для всех, кто растёт в бизнесе и жизни." },
   "/events": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
   "/poster": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
   "/regions": { title: "Регионы EVTENIA", description: "Региональные отделения EVTENIA: руководители, контакты и новости по городам." },
-  "/news": { title: "Новости и блог EVTENIA", description: "Новости клуба, статьи, интервью и полезные материалы для участниц EVTENIA." },
-  "/gallery": { title: "Галерея EVTENIA", description: "Фотоотчеты и атмосфера мероприятий женского клуба EVTENIA." },
-  "/join": { title: "Вступить в клуб EVTENIA", description: "Подать заявку на участие в женском клубе EVTENIA: анкета, форматы участия и преимущества." },
+  "/news": { title: "Новости и блог EVTENIA", description: "Новости клуба, статьи, интервью и полезные материалы для участников EVTENIA." },
+  "/gallery": { title: "Галерея EVTENIA", description: "Фотоотчеты и атмосфера мероприятий сообщества EVTENIA." },
+  "/join": { title: "Вступить в EVTENIA", description: "Подать заявку на участие в сообществе EVTENIA: анкета, форматы участия и преимущества." },
   "/contacts": { title: "Контакты EVTENIA", description: "Контакты, соцсети, обратная связь и партнерские запросы клуба EVTENIA." },
   "/privacy": { title: "Политика конфиденциальности — EVTENIA", description: "Политика обработки персональных данных сайта EVTENIA." },
   "/consent": { title: "Согласие на обработку персональных данных — EVTENIA", description: "Согласие пользователя на обработку персональных данных для заявок EVTENIA." },
-  "/partners": { title: "Партнеры EVTENIA", description: "Партнеры и открытые форматы сотрудничества с женским клубом EVTENIA." },
-  "/stories": { title: "Истории участниц EVTENIA", description: "Отзывы и истории участниц сообщества EVTENIA." },
+  "/partners": { title: "Партнеры EVTENIA", description: "Партнеры и открытые форматы сотрудничества с сообществом EVTENIA." },
+  "/stories": { title: "Истории участников EVTENIA", description: "Отзывы и истории участников сообщества EVTENIA." },
   "/faq": { title: "FAQ EVTENIA", description: "Ответы на частые вопросы о вступлении и участии в клубе EVTENIA." },
-  "/team": { title: "Команда EVTENIA", description: "Основательница и команда, которые создают сообщество EVTENIA." },
+  "/team": { title: "Команда EVTENIA", description: "Основатель и команда, которые создают сообщество EVTENIA." },
   "/admin": { title: "Админка EVTENIA (демо)", description: "Демо-панель управления контентом EVTENIA." },
 };
 
@@ -178,7 +194,7 @@ const brainFitnessGallery = [
 
 const mediaProjects = [
   { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
-  { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и женские истории." },
+  { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и истории людей." },
   { slug: "blagodaryu-s-evtenia", title: "Благодарю с Evtenia", description: "Проект про благодарность, поддержку и внутреннюю устойчивость в ежедневности." },
 ];
 
@@ -187,7 +203,7 @@ const clubProjects = [
   { slug: "networking", title: "Нетворкинг" },
   { slug: "sozdanie-meropriyatij", title: "Создание мероприятий" },
   { slug: "intellekt-mental-health", title: "Интеллектуальное развитие и ментальное здоровье" },
-  { slug: "business-i-zhenshina", title: "Бизнес и женщина" },
+  { slug: "business-i-zhenshina", title: "Бизнес и развитие" },
   { slug: "perezagruzka", title: "Перезагрузка" },
   { slug: "prazdnik-v-kazhdyj-dom", title: "Праздник в каждый дом" },
   { slug: "psihologiya-otnoshenij", title: "Психология отношений" },
@@ -200,15 +216,10 @@ const projectDetails = {
       name: "Елена Козедуб",
       photo: brainFitnessPhoto,
       bio: "Автор и ведущая тренинга «Фитнес для мозга». Помогает развивать память, мышление, воображение и сохранять ясность в потоке информации.",
-      socials: ["vk.com/elenakozedub", "taplink.cc/elenaakozedub"],
     },
     description: "В наше время принято тренировать своё тело. И это замечательно! Но и наш мозг нуждается в тренировке. К сожалению, люди часто спохватываются и начинают что-либо делать для развития умственных способностей слишком поздно.",
     photo: brainFitnessPhoto,
     gallery: brainFitnessGallery,
-    links: [
-      { label: "Сообщество во ВК", href: "https://vk.com/elenakozedub" },
-      { label: "Сайт тренинга", href: "https://taplink.cc/elenaakozedub" },
-    ],
     forWhom: [
       "забываете бытовые мелочи",
       "не помните, кто звонил и о чем шёл разговор",
@@ -230,56 +241,56 @@ const projectDetails = {
     testimonials: ["Стало легче запоминать информацию и держать фокус.", "Упражнения помогли встроить тренировки мозга в ежедневный ритм."],
   },
   "networking": {
-    lead: { name: "Анна Климова", photo: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80", bio: "Модератор деловых сообществ, развивает безопасный и результативный нетворкинг.", socials: ["t.me/anna_network", "vk.com/annaklimova"] },
+    lead: { name: "Анна Климова", photo: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80", bio: "Модератор деловых сообществ, развивает безопасный и результативный нетворкинг.", socials: [vkUrl] },
     description: "Практика знакомств и партнерств: от первого контакта до совместных проектов и коллабораций.",
     photo: "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/networking-demo",
     testimonials: ["Нашла двух партнеров для запуска сезонной линейки.", "Формат быстрых диалогов помог собраться и смело говорить о проекте."],
   },
   "sozdanie-meropriyatij": {
-    lead: { name: "Светлана Громова", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", bio: "Продюсер событий с опытом запуска городских и камерных форматов для женских сообществ.", socials: ["t.me/svetlana_events", "vk.com/svetlana.events"] },
+    lead: { name: "Светлана Громова", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", bio: "Продюсер событий с опытом запуска городских и камерных форматов для сообществ.", socials: [vkUrl] },
     description: "Направление о том, как проектировать сильные события: от идеи и программы до партнерств и post-аналитики.",
     photo: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/sozdanie-meropriyatij-demo",
     testimonials: ["Собрала первое мероприятие на 60 гостей без стресса.", "Появилась четкая система подготовки и работы с партнерами."],
   },
   "intellekt-mental-health": {
-    lead: { name: "Ирина Белова", photo: "https://images.unsplash.com/photo-1542382257-80dedb725088?auto=format&fit=crop&w=800&q=80", bio: "Психолог и модератор интеллектуальных клубов, работает на стыке развития мышления и эмоциональной устойчивости.", socials: ["t.me/irina_mindcare", "vk.com/irina.belova"] },
+    lead: { name: "Ирина Белова", photo: "https://images.unsplash.com/photo-1542382257-80dedb725088?auto=format&fit=crop&w=800&q=80", bio: "Психолог и модератор интеллектуальных клубов, работает на стыке развития мышления и эмоциональной устойчивости.", socials: [vkUrl] },
     description: "Практики ментального здоровья, интеллектуальные встречи и техники, которые помогают сохранять ясность и ресурсность.",
     photo: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/intellekt-mental-health-demo",
     testimonials: ["Снизился уровень тревоги, появилось больше фокуса и энергии.", "Встречи помогли выстроить здоровый ритм работы и отдыха."],
   },
   "business-i-zhenshina": {
-    lead: { name: "Ольга Смирнова", photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80", bio: "Бизнес-наставник для предпринимательниц, помогает масштабировать проекты и команды.", socials: ["t.me/olga_business", "vk.com/olga.smirnova"] },
-    description: "Направление для женщин в бизнесе: стратегия роста, управленческие решения, личный бренд и партнерские коллаборации.",
+    lead: { name: "Ольга Смирнова", photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80", bio: "Бизнес-наставник для предпринимателей, помогает масштабировать проекты и команды.", socials: [vkUrl] },
+    description: "Направление для людей в бизнесе: стратегия роста, управленческие решения, личный бренд и партнерские коллаборации.",
     photo: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/business-i-zhenshina-demo",
     testimonials: ["За 2 месяца пересобрала воронку и увеличила заявки.", "Получила работающую систему делегирования и уверенность в роли лидера."],
   },
   "perezagruzka": {
-    lead: { name: "Наталья Кравцова", photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&w=800&q=80", bio: "Куратор wellbeing-программ, специализируется на восстановлении ресурса и профилактике выгорания.", socials: ["t.me/natalia_reset", "vk.com/natalia.reset"] },
+    lead: { name: "Наталья Кравцова", photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&w=800&q=80", bio: "Куратор wellbeing-программ, специализируется на восстановлении ресурса и профилактике выгорания.", socials: [vkUrl] },
     description: "Перезагрузка для тех, кому важен баланс: телесные и дыхательные практики, поддерживающие встречи и мягкий ритм восстановления.",
     photo: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/perezagruzka-demo",
     testimonials: ["После программы вернулась мотивация и спокойный рабочий темп.", "Научилась восстанавливаться без чувства вины."],
   },
   "prazdnik-v-kazhdyj-dom": {
-    lead: { name: "Дарья Новикова", photo: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80", bio: "Организатор культурных и благотворительных проектов, развивает социальные инициативы сообщества.", socials: ["t.me/daria_charity", "vk.com/daria.novikova"] },
+    lead: { name: "Дарья Новикова", photo: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80", bio: "Организатор культурных и благотворительных проектов, развивает социальные инициативы сообщества.", socials: [vkUrl] },
     description: "Социально-культурное направление: благотворительные и семейные инициативы, праздничные форматы и городские коллаборации.",
     photo: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/prazdnik-v-kazhdyj-dom-demo",
     testimonials: ["Впервые организовала благотворительный вечер с партнерами.", "Проект помог включиться в городские социальные инициативы."],
   },
   "psihologiya-otnoshenij": {
-    lead: { name: "Вера Андреева", photo: "https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=800&q=80", bio: "Семейный психолог, ведет практики экологичной коммуникации и построения зрелых отношений.", socials: ["t.me/vera_relationships", "vk.com/vera.andreeva"] },
+    lead: { name: "Вера Андреева", photo: "https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=800&q=80", bio: "Семейный психолог, ведет практики экологичной коммуникации и построения зрелых отношений.", socials: [vkUrl] },
     description: "Направление о зрелых отношениях: границы, диалог, доверие и эмоциональная близость в семье и партнерстве.",
     photo: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/psihologiya-otnoshenij-demo",
     testimonials: ["Улучшилось общение с партнером и снизилось количество конфликтов.", "Получила ясные инструменты для спокойного диалога."],
   },
   "prekrasnaya-ya": {
-    lead: { name: "Екатерина Власова", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80", bio: "Стилист-имиджмейкер и коуч по самоценности, помогает выстраивать внешний и внутренний образ.", socials: ["t.me/ekaterina_style", "vk.com/ekaterina.vlasova"] },
+    lead: { name: "Екатерина Власова", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80", bio: "Стилист-имиджмейкер и коуч по самоценности, помогает выстраивать внешний и внутренний образ.", socials: [vkUrl] },
     description: "Про самоощущение и образ: стиль, уверенность, голос, визуальная подача и бережная работа с самоценностью.",
     photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/prekrasnaya-ya-demo",
@@ -293,20 +304,20 @@ const regionalBranches = [
     city: "Пенза",
     cover: "https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&w=1000&q=80",
     leaders: [
-      { name: "Евгения Тарасова", role: "Руководитель отделения", contact: "+7 (900) 123-45-67 · @evtenia_penza", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_penza", "t.me/evtenia_penza"] },
-      { name: "Марина Орлова", role: "Куратор программ", contact: "+7 (900) 765-43-21 · @marina_orlova", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/marina.ev", "t.me/marina_ev"] },
+      { name: "Евгения Тарасова", role: "Руководитель отделения", contact: "+7 (900) 123-45-67 · @evtenia_penza", photo: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80", socials: [vkUrl] },
+      { name: "Марина Орлова", role: "Куратор программ", contact: "+7 (900) 765-43-21 · @marina_orlova", photo: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80", socials: [vkUrl] },
     ],
     news: [
       {
         slug: "may-business-program",
-        title: "Открыт набор в майский поток «Бизнес и женщина»",
+        title: "Открыт набор в майский поток «Бизнес и развитие»",
         date: "14 апреля 2026",
         excerpt: "Новый поток стартует 3 мая и включает мастермайнды, менторские встречи и закрытый чат.",
-        body: "Руководитель отделения открыл прием заявок до 30 апреля. В программе — 4 офлайн-встречи, 2 онлайн-сессии с экспертами и индивидуальный разбор целей участниц.",
+        body: "Руководитель отделения открыл прием заявок до 30 апреля. В программе — 4 офлайн-встречи, 2 онлайн-сессии с экспертами и индивидуальный разбор целей участников.",
       },
       {
         slug: "city-community-chat",
-        title: "Запущен городской чат участниц и партнеров отделения",
+        title: "Запущен городской чат участников и партнеров отделения",
         date: "8 апреля 2026",
         excerpt: "Внутри чата публикуются локальные анонсы, запросы на партнерства и новости по проектам.",
         body: "Куратор программ модерирует тематические ветки и публикует еженедельный дайджест возможностей: вакансии, коллаборации, анонсы мероприятий и образовательные форматы.",
@@ -318,14 +329,14 @@ const regionalBranches = [
     city: "Москва",
     cover: "https://images.unsplash.com/photo-1524041255072-7da0525d6b30?auto=format&fit=crop&w=1000&q=80",
     leaders: [
-      { name: "Алина Петрова", role: "Руководитель отделения", contact: "+7 (901) 222-11-00 · @evtenia_msk", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", socials: ["vk.com/evtenia_msk", "t.me/evtenia_msk"] },
+      { name: "Алина Петрова", role: "Руководитель отделения", contact: "+7 (901) 222-11-00 · @evtenia_msk", photo: "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=500&q=80", socials: [vkUrl] },
     ],
     news: [
       {
         slug: "june-leadership-forum",
-        title: "Анонсирован форум «Женщина и лидерство» на июнь",
+        title: "Анонсирован форум «Лидерство и развитие» на июнь",
         date: "11 апреля 2026",
-        excerpt: "Форум объединит предпринимательниц, управленцев и экспертов по карьерному росту.",
+        excerpt: "Форум объединит предпринимателей, управленцев и экспертов по карьерному росту.",
         body: "Программа форума включает панельные дискуссии, нетворкинг-сессии и практикум по развитию личного бренда. Регистрация откроется в конце апреля.",
       },
       {
@@ -357,17 +368,19 @@ function usePath() {
 }
 
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const nav = [
     ["/", "Главная"],
-    ["/about", "О нас"],
     ["/poster", "Афиша"],
     ["/regions", "Регионы"],
+    ["/news", "Новости"],
+  ];
+
+  const serviceNav = [
+    ["/about", "О нас"],
     ["/team", "Команда"],
     ["/partners", "Партнеры"],
-    ["/news", "Новости"],
     ["/contacts", "Контакты"],
   ];
 
@@ -377,15 +390,19 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     </a>
   );
 
-  const visibleProjects = showAllProjects ? clubProjects : clubProjects.slice(0, 6);
-  const hiddenProjectsCount = clubProjects.length - visibleProjects.length;
+  const regularProjects = clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom");
 
   return (
     <div className="site">
       <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
         <div className="header-main">
+          <div className="founder-peek founder-peek-left">
+            <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
-          <nav className="nav-main">
+
+          <nav className="nav-main" aria-label="Основная навигация">
             {nav.map(([href, label]) => (
               <button
                 key={href}
@@ -400,21 +417,18 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             ))}
           </nav>
 
-          <div className="header-controls">
+          <div className="header-actions">
             <div className="socials">
-              <SocialIcon label="VK" href="https://vk.com">
+              <SocialIcon label="VK" href={vkUrl}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
               </SocialIcon>
-              <SocialIcon label="MAX" href="#">
+              <SocialIcon label="MAX" href={maxUrl}>
                 <span className="max-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24">
                     <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
                     <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
                   </svg>
                 </span>
-              </SocialIcon>
-              <SocialIcon label="Telegram" href="https://t.me">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21.6 4.9c.31-.12.64.16.56.5l-2.85 13.43c-.07.34-.43.53-.75.4l-4.15-1.7-2.1 2.03c-.24.22-.64.1-.7-.22l-.66-3.42 7.48-6.92-9.25 5.76-3.41-1.4c-.34-.14-.34-.62 0-.76L21.6 4.9Z" fill="currentColor" /></svg>
               </SocialIcon>
             </div>
             <button
@@ -428,6 +442,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             </button>
           </div>
 
+          <div className="founder-peek founder-peek-right">
+            <img src={founderRightPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
           <button
             className={`burger ${mobileMenuOpen ? "open" : ""}`}
@@ -438,34 +456,42 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           </button>
         </div>
 
-        <div className="quick-links-bar">
-          <div className="quick-group-inline">
-            <p>Видеопроекты</p>
-            <div className="quick-links">
-              {mediaProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
-                  {item.title}
-                </button>
+        <div className="mega-bar" aria-label="Каталог разделов">
+          <details className="mega-details">
+            <summary>Разделы</summary>
+            <div className="mega-panel service-panel">
+              {serviceNav.map(([href, label]) => (
+                <button key={href} className={path === href ? "active" : ""} onClick={() => { goTo(href); setMobileMenuOpen(false); }}>{label}</button>
               ))}
             </div>
-          </div>
+          </details>
 
-          <div className="quick-group-inline">
-            <p>Проекты</p>
-            <div className="quick-links">
-              {visibleProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+          <details className="mega-details wide">
+            <summary>Проекты</summary>
+            <div className="mega-panel mega-grid">
+              <button className={`mega-card special-project-card ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
+                <span>Спецпроект</span>
+                Благотворительный проект
+              </button>
+              {regularProjects.map((item) => (
+                <button key={item.slug} className={`mega-card ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
                   {item.title}
                 </button>
               ))}
-              {hiddenProjectsCount > 0 && (
-                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(true)}>Еще {hiddenProjectsCount}</button>
-              )}
-              {showAllProjects && (
-                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(false)}>Свернуть</button>
-              )}
             </div>
-          </div>
+          </details>
+
+          <details className="mega-details wide">
+            <summary>Видеопроекты</summary>
+            <div className="mega-panel mega-grid media-grid">
+              {mediaProjects.map((item) => (
+                <button key={item.slug} className={`mega-card ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
+                  <span>Видео</span>
+                  {item.title}
+                </button>
+              ))}
+            </div>
+          </details>
         </div>
       </header>
       <main>{children}</main>
@@ -510,16 +536,16 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
 function Hero({ goTo }) {
   return (
     <section className="hero">
-      <div>
-        <p className="eyebrow">Женский клуб и медиаплатформа</p>
+      <div className="hero-content">
+        <p className="eyebrow">Клуб для всех и медиаплатформа</p>
         <h1>EVTENIA — пространство развития, знакомств и сильного окружения</h1>
-        <p className="lead">События, бизнес-встречи, образовательные форматы и поддерживающее сообщество для женщин, которые хотят расти в своём темпе и масштабе.</p>
+        <p className="lead">События, бизнес-встречи, образовательные форматы и поддерживающее сообщество для всех, кто хочет расти в своём темпе и масштабе.</p>
         <div className="actions">
           <button className="btn" onClick={() => goTo("/poster")}>Смотреть афишу</button>
           <button className="btn btn-ghost" onClick={() => goTo("/join")}>Оставить заявку</button>
         </div>
         <ul className="bullets">
-          <li>женские встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
+          <li>открытые встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
         </ul>
       </div>
       <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80" alt="Атмосфера клубного пространства EVTENIA" />
@@ -675,7 +701,7 @@ function EventDetail({ slug, goTo }) {
       <p><strong>Описание:</strong> {event.short}</p>
       <h2>Программа</h2>
       <ul>{event.program.map((item) => <li key={item}>{item}</li>)}</ul>
-      <h3>Спикеры</h3><p>Основательница клуба, приглашённые эксперты и участницы с практическими кейсами.</p>
+      <h3>Спикеры</h3><p>Основатель клуба, приглашённые эксперты и участники с практическими кейсами.</p>
       <button className="btn" onClick={() => goTo("/join")}>Записаться</button>
 
       <section>
@@ -685,7 +711,7 @@ function EventDetail({ slug, goTo }) {
 
       <section>
         <h2>FAQ</h2>
-        <p><strong>Можно прийти впервые?</strong> Да, формат открыт для новых участниц.</p>
+        <p><strong>Можно прийти впервые?</strong> Да, формат открыт для новых участников.</p>
         <p><strong>Как подтвердить участие?</strong> После заявки менеджер свяжется с вами в течение 24 часов.</p>
         <p><strong>Условия участия:</strong> Предварительная регистрация обязательна.</p>
       </section>
@@ -737,9 +763,9 @@ function NewsDetail({ slug, goTo }) {
       <h1>{post.title}</h1>
       <p className="lead">{post.category} · {post.date}</p>
       <h2>Почему это важно для сообщества</h2>
-      <p>EVTENIA создаёт пространство, где женщины находят не только события, но и ощущение опоры, уверенности и практических возможностей для роста.</p>
+      <p>EVTENIA создаёт пространство, где люди находят не только события, но и ощущение опоры, уверенности и практических возможностей для роста.</p>
       <h3>Что внутри материала</h3>
-      <ul><li>Ключевые выводы по теме.</li><li>Рекомендации от участниц и кураторов клуба.</li><li>Приглашение в следующие форматы сообщества.</li></ul>
+      <ul><li>Ключевые выводы по теме.</li><li>Рекомендации от участников и кураторов клуба.</li><li>Приглашение в следующие форматы сообщества.</li></ul>
       <p>Это демо-материал для презентации контентной структуры и будущего редакционного наполнения клуба.</p>
       <button onClick={() => goTo("/news")}>← К списку материалов</button>
     </div>
@@ -750,11 +776,11 @@ function AboutPage() {
   return (
     <div className="page">
       <h1>О нас</h1>
-      <p>EVTENIA создан для женщин, которым важно профессиональное развитие, круг поддержки и эстетичное живое сообщество. Мы соединяем деловые, образовательные и lifestyle-форматы в одной платформе.</p>
+      <p>EVTENIA создан для людей, которым важно профессиональное развитие, круг поддержки и эстетичное живое сообщество. Мы соединяем деловые, образовательные и lifestyle-форматы в одной платформе.</p>
       <div className="cards grid-2">
-        <article className="card"><h3>Миссия</h3><p>Создавать сильную и безопасную среду, где женщины растут, знакомятся и реализуют проекты.</p></article>
+        <article className="card"><h3>Миссия</h3><p>Создавать сильную и безопасную среду, где люди растут, знакомятся и реализуют проекты.</p></article>
         <article className="card"><h3>Ценности</h3><p>Уважение, интеллект, поддержка, качество общения и этика партнерства.</p></article>
-        <article className="card"><h3>Для кого клуб</h3><p>Для предпринимательниц, экспертов, руководительниц и активных женщин, которые хотят развиваться в сильном окружении.</p></article>
+        <article className="card"><h3>Для кого клуб</h3><p>Для предпринимателей, экспертов, руководителей и активных людей, которые хотят развиваться в сильном окружении.</p></article>
         <article className="card"><h3>Форматы участия</h3><p>Открытые мероприятия, клубное членство, спец-программы и партнёрские коллаборации.</p></article>
       </div>
     </div>
@@ -764,7 +790,7 @@ function AboutPage() {
 function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
-      <h2>{compact ? "Оставьте заявку" : "Вступить в клуб EVTENIA"}</h2>
+      <h2>{compact ? "Оставьте заявку" : "Вступить в EVTENIA"}</h2>
       <p>Расскажите о себе — мы подберём подходящий формат участия.</p>
       <form className="form" onSubmit={(e) => { e.preventDefault(); alert("Спасибо! Заявка отправлена."); }}>
         <input required placeholder="Имя" />
@@ -774,7 +800,7 @@ function JoinForm({ compact = false, goTo }) {
         {!compact && <input placeholder="Чем занимаетесь" />}
         <select defaultValue=""> 
           <option value="" disabled>Что интересует</option>
-          <option>Участие в клубе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
+          <option>Участие в сообществе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
         </select>
         <textarea placeholder="Комментарий" rows="4" />
         <small className="form-note">
@@ -794,8 +820,8 @@ function JoinPage({ goTo }) {
     <div className="page">
       <h1>Вступить / подать заявку</h1>
       <div className="cards grid-3">
-        <article className="card"><h3>Зачем вступать</h3><p>Чтобы быть в окружении женщин, которые растут и поддерживают друг друга.</p></article>
-        <article className="card"><h3>Что получает участница</h3><p>Доступ к событиям, закрытым форматам, контенту и клубным знакомствам.</p></article>
+        <article className="card"><h3>Зачем вступать</h3><p>Чтобы быть в окружении людей, которые растут и поддерживают друг друга.</p></article>
+        <article className="card"><h3>Что получает участник</h3><p>Доступ к событиям, закрытым форматам, контенту и клубным знакомствам.</p></article>
         <article className="card"><h3>Форматы участия</h3><p>Гостевой визит, резидентство, партнёрские пакеты и special events.</p></article>
       </div>
       <JoinForm goTo={goTo} />
@@ -817,7 +843,7 @@ function ContactsPage({ goTo }) {
     <div className="page">
       <h1>Контакты</h1>
       <div className="cards grid-2">
-        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />Telegram: @evtenia_club<br />WhatsApp: +7 (900) 000-00-00</p></article>
+        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />VK: vk.com/evtenia_happy_lady<br />MAX: max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY<br />WhatsApp: +7 (900) 000-00-00</p></article>
         <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Московская, 12<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
       <JoinForm compact goTo={goTo} />
@@ -862,7 +888,7 @@ function OrgProjectPage({ slug, goTo }) {
               <div>
                 <p><strong>{details.lead.name}</strong></p>
                 <p>{details.lead.bio}</p>
-                <p>Соцсети: {details.lead.socials.join(" · ")}</p>
+                {details.lead.socials?.length > 0 && <p>Соцсети: {details.lead.socials.join(" · ")}</p>}
                 {details.links && (
                   <div className="external-links">
                     {details.links.map((link) => (
@@ -1082,8 +1108,26 @@ function TeamPage() {
   );
 }
 
+
+function PartnersPage() {
+  return (
+    <div className="page">
+      <h1>Партнеры</h1>
+      <p className="lead">EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами.</p>
+      <div className="cards grid-3 partners-grid">
+        {partners.map((partner) => (
+          <article className="card partner-card" key={partner.href}>
+            <h3>{partner.name}</h3>
+            <a className="btn btn-small" href={partner.href} target="_blank" rel="noreferrer">Открыть сайт</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StoriesPage() {
-  return <div className="page"><h1>Отзывы / истории участниц</h1><div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div></div>;
+  return <div className="page"><h1>Отзывы / истории участников</h1><div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div></div>;
 }
 
 function FaqPage() {
@@ -1191,9 +1235,9 @@ export default function App() {
     if (path === "/gallery") return <GalleryPage />;
     if (path === "/join") return <JoinPage goTo={goTo} />;
     if (path === "/contacts") return <ContactsPage goTo={goTo} />;
-    if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в клубе." />;
+    if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в сообществе." />;
     if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
-    if (path === "/partners") return <SimplePage title="Партнеры" text="EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами." />;
+    if (path === "/partners") return <PartnersPage />;
     if (path === "/stories") return <StoriesPage />;
     if (path === "/faq") return <FaqPage />;
     if (path === "/team") return <TeamPage />;
