@@ -3,8 +3,6 @@ import "./styles.css";
 
 const vkUrl = "https://vk.com/evtenia_happy_lady";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
-const founderLeftPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80";
-const founderRightPhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80";
 
 const events = [
   {
@@ -421,7 +419,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     </a>
   );
 
-  const regularProjects = clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom");
 
   return (
     <div className="site">
@@ -487,37 +484,23 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           </button>
         </div>
 
-        <div className="mega-bar" aria-label="Каталог разделов">
-          <details className="mega-details">
-            <summary>Разделы</summary>
-            <div className="mega-panel service-panel">
-              {serviceNav.map(([href, label]) => (
-                <button key={href} className={path === href ? "active" : ""} onClick={() => { goTo(href); setMobileMenuOpen(false); }}>{label}</button>
-              ))}
-            </div>
-          </details>
-
-          <details className="mega-details wide">
-            <summary>Проекты</summary>
-            <div className="mega-panel mega-grid">
-              <button className={`mega-card special-project-card ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
-                <span>Спецпроект</span>
-                Благотворительный проект
-              </button>
-              {regularProjects.map((item) => (
-                <button key={item.slug} className={`mega-card ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+        <div className="quick-links-bar" aria-label="Быстрые разделы">
+          <div className="quick-group-inline">
+            <p>Видеопроекты</p>
+            <div className="quick-links">
+              {mediaProjects.map((item) => (
+                <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
                   {item.title}
                 </button>
               ))}
             </div>
           </details>
 
-          <details className="mega-details wide">
-            <summary>Видеопроекты</summary>
-            <div className="mega-panel mega-grid media-grid">
-              {mediaProjects.map((item) => (
-                <button key={item.slug} className={`mega-card ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
-                  <span>Видео</span>
+          <div className="quick-group-inline">
+            <p>Проекты</p>
+            <div className="quick-links">
+              {clubProjects.map((item) => (
+                <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
                   {item.title}
                 </button>
               ))}
