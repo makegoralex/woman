@@ -403,12 +403,15 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
 
   const nav = [
     ["/", "Главная"],
-    ["/about", "О нас"],
     ["/poster", "Афиша"],
     ["/regions", "Регионы"],
+    ["/news", "Новости"],
+  ];
+
+  const serviceNav = [
+    ["/about", "О нас"],
     ["/team", "Команда"],
     ["/partners", "Партнеры"],
-    ["/news", "Новости"],
     ["/contacts", "Контакты"],
   ];
 
@@ -568,7 +571,7 @@ function Hero({ goTo }) {
           <li>открытые встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
         </ul>
       </div>
-      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80" alt="Атмосфера клубного пространства EVTENIA" />
+      <img className="hero-founder hero-founder-right" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80" alt="Основатель EVTENIA" />
     </section>
   );
 }

@@ -490,6 +490,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 @media (max-width: 1000px) {
   .grid-3, .gallery-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero { grid-template-columns: 1fr; }
+  .hero-founder { min-height: 300px; max-height: 420px; }
   .footer { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .header { grid-template-columns: 110px minmax(0, 1fr) 110px; }
   .header-center { padding: 14px 12px 10px; }
