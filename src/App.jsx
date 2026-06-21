@@ -155,6 +155,17 @@ const teamMembers = {
   ],
 };
 
+
+const partners = [
+  { name: "Счастливый дом", href: "https://home58.ru/" },
+  { name: "Строительство домов Evtenia", href: "https://dom.evtenia.ru/" },
+  { name: "Агентство недвижимости Evtenia", href: "https://evtenia.ru/" },
+  { name: "Блог основателя АНО Evtenia", href: "https://vk.com/greatbusinesslady" },
+  { name: "Опора России Пензенское отделение", href: "https://opora58.ru/" },
+  { name: "Фитнес для мозга", href: "https://taplink.cc/elenaakozedub" },
+  { name: "Ювелирка Evtnenia", href: "https://evtenia.store/" },
+];
+
 const pageSeo = {
   "/": { title: "EVTENIA — клуб для всех, события и развитие", description: "Современное сообщество EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для всех, кто растёт в бизнесе и жизни." },
@@ -1097,6 +1108,24 @@ function TeamPage() {
   );
 }
 
+
+function PartnersPage() {
+  return (
+    <div className="page">
+      <h1>Партнеры</h1>
+      <p className="lead">EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами.</p>
+      <div className="cards grid-3 partners-grid">
+        {partners.map((partner) => (
+          <article className="card partner-card" key={partner.href}>
+            <h3>{partner.name}</h3>
+            <a className="btn btn-small" href={partner.href} target="_blank" rel="noreferrer">Открыть сайт</a>
+          </article>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 function StoriesPage() {
   return <div className="page"><h1>Отзывы / истории участников</h1><div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div></div>;
 }
@@ -1208,7 +1237,7 @@ export default function App() {
     if (path === "/contacts") return <ContactsPage goTo={goTo} />;
     if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в сообществе." />;
     if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
-    if (path === "/partners") return <SimplePage title="Партнеры" text="EVTENIA открыта к партнерским проектам с брендами, экспертами и образовательными платформами." />;
+    if (path === "/partners") return <PartnersPage />;
     if (path === "/stories") return <StoriesPage />;
     if (path === "/faq") return <FaqPage />;
     if (path === "/team") return <TeamPage />;
