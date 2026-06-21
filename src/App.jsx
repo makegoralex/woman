@@ -3,6 +3,8 @@ import "./styles.css";
 
 const vkUrl = "https://vk.com/evtenia_happy_lady";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
+const founderLeftPhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=520&q=80";
+const founderRightPhoto = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=520&q=80";
 
 const events = [
   {
@@ -423,89 +425,96 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   return (
     <div className="site">
       <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
-        <div className="header-main">
-          <div className="founder-peek founder-peek-left">
-            <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
-          </div>
+        <div className="header-founder header-founder-left">
+          <span>Вариант 1</span>
+          <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
+        </div>
 
-          <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
+        <div className="header-center">
+          <div className="header-main">
+            <button className="logo logo-stacked" onClick={() => goTo("/")}>
+              <span className="logo-mark" aria-hidden="true">✦</span>
+              <span>EVTENIA</span>
+              <small>проекты для роста и гармонии</small>
+            </button>
 
-          <nav className="nav-main" aria-label="Основная навигация">
-            {nav.map(([href, label]) => (
+            <nav className="nav-main" aria-label="Основная навигация">
+              {nav.map(([href, label]) => (
+                <button
+                  key={href}
+                  className={`nav-link ${path === href || (href === "/poster" && path.startsWith("/events")) ? "active" : ""}`}
+                  onClick={() => {
+                    goTo(href);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+
+            <div className="header-actions">
+              <div className="socials">
+                <SocialIcon label="VK" href={vkUrl}>
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
+                </SocialIcon>
+                <SocialIcon label="MAX" href={maxUrl}>
+                  <span className="max-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
+                      <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
+                    </svg>
+                  </span>
+                </SocialIcon>
+              </div>
               <button
-                key={href}
-                className={`nav-link ${path === href || (href === "/poster" && path.startsWith("/events")) ? "active" : ""}`}
+                className="btn btn-small header-cta"
                 onClick={() => {
-                  goTo(href);
+                  goTo("/join");
                   setMobileMenuOpen(false);
                 }}
               >
-                {label}
+                Подать заявку
               </button>
-            ))}
-          </nav>
-
-          <div className="header-actions">
-            <div className="socials">
-              <SocialIcon label="VK" href={vkUrl}>
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
-              </SocialIcon>
-              <SocialIcon label="MAX" href={maxUrl}>
-                <span className="max-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
-                    <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
-                  </svg>
-                </span>
-              </SocialIcon>
             </div>
+
+            <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
             <button
-              className="btn btn-small header-cta"
-              onClick={() => {
-                goTo("/join");
-                setMobileMenuOpen(false);
-              }}
+              className={`burger ${mobileMenuOpen ? "open" : ""}`}
+              onClick={() => setMobileMenuOpen((prev) => !prev)}
+              aria-label="Открыть меню"
             >
-              Подать заявку
+              ☰
             </button>
           </div>
 
-          <div className="founder-peek founder-peek-right">
-            <img src={founderRightPhoto} alt="Основатель EVTENIA" />
-          </div>
+          <div className="header-catalog" aria-label="Быстрые разделы">
+            <details className="catalog-group video-catalog" open>
+              <summary>Видеопроекты</summary>
+              <div className="catalog-panel video-panel">
+                {mediaProjects.map((item) => (
+                  <button key={item.slug} className={`catalog-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </details>
 
-          <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
-          <button
-            className={`burger ${mobileMenuOpen ? "open" : ""}`}
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            aria-label="Открыть меню"
-          >
-            ☰
-          </button>
+            <details className="catalog-group projects-catalog" open>
+              <summary>Проекты</summary>
+              <div className="catalog-panel projects-panel">
+                {clubProjects.map((item) => (
+                  <button key={item.slug} className={`catalog-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+                    {item.title}
+                  </button>
+                ))}
+              </div>
+            </details>
+          </div>
         </div>
 
-        <div className="quick-links-bar" aria-label="Быстрые разделы">
-          <div className="quick-group-inline">
-            <p>Видеопроекты</p>
-            <div className="quick-links">
-              {mediaProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
-                  {item.title}
-                </button>
-              ))}
-            </div>
-          </details>
-
-          <div className="quick-group-inline">
-            <p>Проекты</p>
-            <div className="quick-links">
-              {clubProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
-                  {item.title}
-                </button>
-              ))}
-            </div>
-          </details>
+        <div className="header-founder header-founder-right">
+          <img src={founderRightPhoto} alt="Основатель EVTENIA" />
         </div>
       </header>
       <main>{children}</main>
