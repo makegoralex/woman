@@ -824,7 +824,7 @@ function AboutPage() {
 function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
-      <h2>{compact ? "Оставьте заявку" : "Вступить в EVTENIA"}</h2>
+      <h2>{compact ? "Написать Президенту" : "Вступить в EVTENIA"}</h2>
       <p>Расскажите о себе — мы подберём подходящий формат участия.</p>
       <form className="form" onSubmit={(e) => { e.preventDefault(); alert("Спасибо! Заявка отправлена."); }}>
         <input required placeholder="Имя" />
@@ -877,8 +877,8 @@ function ContactsPage({ goTo }) {
     <div className="page">
       <h1>Контакты</h1>
       <div className="cards grid-2">
-        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />VK: vk.com/evtenia_happy_lady<br />MAX: max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY<br />WhatsApp: +7 (900) 000-00-00</p></article>
-        <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Московская, 12<br />По предварительной записи на мероприятия и встречи.</p></article>
+        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />VK: vk.com/evtenia_happy_lady<br />MAX: max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY<br />Телефон: 8-841-279-92-79</p></article>
+        <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Карпинского 40А<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
       <JoinForm compact goTo={goTo} />
     </div>
