@@ -241,57 +241,64 @@ const projectDetails = {
     testimonials: ["Стало легче запоминать информацию и держать фокус.", "Упражнения помогли встроить тренировки мозга в ежедневный ритм."],
   },
   "networking": {
-    lead: { name: "Анна Климова", photo: "https://images.unsplash.com/photo-1544717297-fa95b6ee9643?auto=format&fit=crop&w=800&q=80", bio: "Модератор деловых сообществ, развивает безопасный и результативный нетворкинг.", socials: [vkUrl] },
-    description: "Практика знакомств и партнерств: от первого контакта до совместных проектов и коллабораций.",
+    leaders: [
+      { name: "Кислякова Евгения", role: "сооснователь АНО" },
+      { name: "Иванчина Светлана", role: "сооснователь АНО" },
+    ],
+    description: "Нетворкинг помогает участникам быстро находить полезные контакты, обмениваться опытом и превращать знакомства в совместные проекты, партнерства и поддержку в деловой среде.",
     photo: "https://images.unsplash.com/photo-1515169067868-5387ec356754?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/networking-demo",
     testimonials: ["Нашла двух партнеров для запуска сезонной линейки.", "Формат быстрых диалогов помог собраться и смело говорить о проекте."],
   },
   "sozdanie-meropriyatij": {
-    lead: { name: "Светлана Громова", photo: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80", bio: "Продюсер событий с опытом запуска городских и камерных форматов для сообществ.", socials: [vkUrl] },
-    description: "Направление о том, как проектировать сильные события: от идеи и программы до партнерств и post-аналитики.",
+    leaders: [
+      { name: "Кислякова Евгения", role: "сооснователь АНО" },
+      { name: "Иванчина Светлана", role: "сооснователь АНО" },
+      { name: "Козедуб Елена", role: "руководитель направления «Фитнес для мозга»" },
+    ],
+    description: "Создание мероприятий — направление для тех, кто хочет собирать содержательные встречи: от идеи и сценария до команды, партнеров, продвижения и понятного результата для гостей.",
     photo: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/sozdanie-meropriyatij-demo",
     testimonials: ["Собрала первое мероприятие на 60 гостей без стресса.", "Появилась четкая система подготовки и работы с партнерами."],
   },
   "intellekt-mental-health": {
-    lead: { name: "Ирина Белова", photo: "https://images.unsplash.com/photo-1542382257-80dedb725088?auto=format&fit=crop&w=800&q=80", bio: "Психолог и модератор интеллектуальных клубов, работает на стыке развития мышления и эмоциональной устойчивости.", socials: [vkUrl] },
-    description: "Практики ментального здоровья, интеллектуальные встречи и техники, которые помогают сохранять ясность и ресурсность.",
+    description: "Интеллектуальное развитие и ментальное здоровье объединяет практики для ясности мышления, эмоциональной устойчивости и бережного отношения к своему ресурсу в повседневной жизни.",
     photo: "https://images.unsplash.com/photo-1516534775068-ba3e7458af70?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/intellekt-mental-health-demo",
     testimonials: ["Снизился уровень тревоги, появилось больше фокуса и энергии.", "Встречи помогли выстроить здоровый ритм работы и отдыха."],
   },
   "business-i-zhenshina": {
-    lead: { name: "Ольга Смирнова", photo: "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80", bio: "Бизнес-наставник для предпринимателей, помогает масштабировать проекты и команды.", socials: [vkUrl] },
-    description: "Направление для людей в бизнесе: стратегия роста, управленческие решения, личный бренд и партнерские коллаборации.",
+    description: "Бизнес и развитие — пространство для обсуждения стратегий роста, управленческих решений, личного бренда и партнерских коллабораций без лишней формальности.",
     photo: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/business-i-zhenshina-demo",
     testimonials: ["За 2 месяца пересобрала воронку и увеличила заявки.", "Получила работающую систему делегирования и уверенность в роли лидера."],
   },
   "perezagruzka": {
-    lead: { name: "Наталья Кравцова", photo: "https://images.unsplash.com/photo-1489424731084-a5d8b219a5bb?auto=format&fit=crop&w=800&q=80", bio: "Куратор wellbeing-программ, специализируется на восстановлении ресурса и профилактике выгорания.", socials: [vkUrl] },
-    description: "Перезагрузка для тех, кому важен баланс: телесные и дыхательные практики, поддерживающие встречи и мягкий ритм восстановления.",
+    leaders: [
+      { name: "Кислякова Евгения", role: "сооснователь АНО" },
+    ],
+    description: "Перезагрузка — мягкое направление про восстановление сил, смену фокуса и возвращение к спокойному темпу через поддерживающие встречи и практики для повседневного баланса.",
     photo: "https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/perezagruzka-demo",
     testimonials: ["После программы вернулась мотивация и спокойный рабочий темп.", "Научилась восстанавливаться без чувства вины."],
   },
   "prazdnik-v-kazhdyj-dom": {
-    lead: { name: "Дарья Новикова", photo: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?auto=format&fit=crop&w=800&q=80", bio: "Организатор культурных и благотворительных проектов, развивает социальные инициативы сообщества.", socials: [vkUrl] },
-    description: "Социально-культурное направление: благотворительные и семейные инициативы, праздничные форматы и городские коллаборации.",
+    description: "Праздник в каждый дом — благотворительный проект о заботе, участии и маленьких радостях, которые помогают создавать теплую атмосферу для семей и городских сообществ.",
     photo: "https://images.unsplash.com/photo-1464366400600-7168b8af9bc3?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/prazdnik-v-kazhdyj-dom-demo",
     testimonials: ["Впервые организовала благотворительный вечер с партнерами.", "Проект помог включиться в городские социальные инициативы."],
   },
   "psihologiya-otnoshenij": {
-    lead: { name: "Вера Андреева", photo: "https://images.unsplash.com/photo-1541534401786-2077eed87a72?auto=format&fit=crop&w=800&q=80", bio: "Семейный психолог, ведет практики экологичной коммуникации и построения зрелых отношений.", socials: [vkUrl] },
-    description: "Направление о зрелых отношениях: границы, диалог, доверие и эмоциональная близость в семье и партнерстве.",
+    leaders: [
+      { name: "Иванчина Светлана", role: "сооснователь АНО" },
+    ],
+    description: "Психология отношений помогает разбираться в коммуникации, границах, доверии и поддержке, чтобы выстраивать более спокойный диалог с близкими, коллегами и собой.",
     photo: "https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/psihologiya-otnoshenij-demo",
     testimonials: ["Улучшилось общение с партнером и снизилось количество конфликтов.", "Получила ясные инструменты для спокойного диалога."],
   },
   "prekrasnaya-ya": {
-    lead: { name: "Екатерина Власова", photo: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80", bio: "Стилист-имиджмейкер и коуч по самоценности, помогает выстраивать внешний и внутренний образ.", socials: [vkUrl] },
-    description: "Про самоощущение и образ: стиль, уверенность, голос, визуальная подача и бережная работа с самоценностью.",
+    description: "Прекрасная Я — направление про образ, уверенность и бережное отношение к себе: стиль, самопрезентация, внутреннее состояние и ощущение собственной ценности.",
     photo: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=1200&q=80",
     video: "rutube.ru/video/prekrasnaya-ya-demo",
     testimonials: ["Собрала базовый гардероб под задачи и стиль жизни.", "Стало легче проявляться публично и говорить о себе уверенно."],
@@ -632,12 +639,14 @@ function EventCard({ event, goTo }) {
 
 function ProjectPreviewCard({ project, goTo }) {
   const details = projectDetails[project.slug];
+  const leadersText = details?.leaders?.map((leader) => `${leader.name} — ${leader.role}`).join("; ");
   return (
     <article className="card">
       {details?.photo && <img src={details.photo} alt={project.title} />}
       <h3><button className="title-link" onClick={() => goTo(`/projects/${project.slug}`)}>{project.title}</button></h3>
       <p>{details ? details.description : "Описание направления в разработке."}</p>
-      <small>{details ? `Ведет: ${details.lead.name}` : "Куратор будет назначен"}</small>
+      {details?.lead && <small>Ведет: {details.lead.name}</small>}
+      {leadersText && <small>Руководители: {leadersText}</small>}
       <button onClick={() => goTo(`/projects/${project.slug}`)}>Открыть направление</button>
     </article>
   );
@@ -881,24 +890,36 @@ function OrgProjectPage({ slug, goTo }) {
       {!details && <p>Демо-страница проекта. Данные для этого направления пока не заполнены.</p>}
       {details && (
         <>
-          <section className="card">
-            <h3>Кто ведет</h3>
-            <div className="leader-block">
-              <img src={details.lead.photo} alt={details.lead.name} />
-              <div>
-                <p><strong>{details.lead.name}</strong></p>
-                <p>{details.lead.bio}</p>
-                {details.lead.socials?.length > 0 && <p>Соцсети: {details.lead.socials.join(" · ")}</p>}
-                {details.links && (
-                  <div className="external-links">
-                    {details.links.map((link) => (
-                      <a key={link.href} className="btn btn-small" href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
-                    ))}
-                  </div>
-                )}
+          {details.lead && (
+            <section className="card">
+              <h3>Кто ведет</h3>
+              <div className="leader-block">
+                <img src={details.lead.photo} alt={details.lead.name} />
+                <div>
+                  <p><strong>{details.lead.name}</strong></p>
+                  <p>{details.lead.bio}</p>
+                  {details.lead.socials?.length > 0 && <p>Соцсети: {details.lead.socials.join(" · ")}</p>}
+                  {details.links && (
+                    <div className="external-links">
+                      {details.links.map((link) => (
+                        <a key={link.href} className="btn btn-small" href={link.href} target="_blank" rel="noreferrer">{link.label}</a>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          </section>
+            </section>
+          )}
+          {details.leaders && (
+            <section className="card">
+              <h3>Руководители</h3>
+              <div className="project-leaders-list">
+                {details.leaders.map((leader) => (
+                  <p key={`${leader.name}-${leader.role}`}><strong>{leader.name}</strong> — {leader.role}</p>
+                ))}
+              </div>
+            </section>
+          )}
           <section className="card project-detail-card">
             <h3>Описание направления</h3>
             <p>{details.description}</p>

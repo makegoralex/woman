@@ -311,6 +311,8 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 }
 .leader-block p:first-child { margin-top: 0; }
 .leader-block p:last-child { margin-bottom: 0; }
+.project-leaders-list { display: grid; gap: 8px; }
+.project-leaders-list p { margin: 0; color: var(--muted); }
 .branch-card h4 { margin: 10px 0 8px; }
 .branch-leaders { display: grid; gap: 10px; }
 .founder-card { background: linear-gradient(135deg, #fff8f4 0%, #f8ebe6 100%); }
