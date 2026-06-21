@@ -426,7 +426,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     <div className="site">
       <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
         <div className="header-founder header-founder-left">
-          <span>Вариант 1</span>
           <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
         </div>
 
@@ -503,7 +502,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             <details className="catalog-group projects-catalog" open>
               <summary>Проекты</summary>
               <div className="catalog-panel projects-panel">
-                {clubProjects.map((item) => (
+                <button className={`catalog-link special-catalog-link ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
+                  Благотворительный проект
+                </button>
+                {clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom").map((item) => (
                   <button key={item.slug} className={`catalog-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
                     {item.title}
                   </button>
