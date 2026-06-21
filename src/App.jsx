@@ -3,6 +3,8 @@ import "./styles.css";
 
 const vkUrl = "https://vk.com/evtenia_happy_lady";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
+const founderLeftPhoto = "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=240&q=80";
+const founderRightPhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=240&q=80";
 
 const events = [
   {
@@ -355,17 +357,19 @@ function usePath() {
 }
 
 function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
-  const [showAllProjects, setShowAllProjects] = useState(false);
   const [cookieAccepted, setCookieAccepted] = useState(false);
 
   const nav = [
     ["/", "Главная"],
-    ["/about", "О нас"],
     ["/poster", "Афиша"],
     ["/regions", "Регионы"],
+    ["/news", "Новости"],
+  ];
+
+  const serviceNav = [
+    ["/about", "О нас"],
     ["/team", "Команда"],
     ["/partners", "Партнеры"],
-    ["/news", "Новости"],
     ["/contacts", "Контакты"],
   ];
 
@@ -376,15 +380,18 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   );
 
   const regularProjects = clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom");
-  const visibleProjects = showAllProjects ? regularProjects : regularProjects.slice(0, 6);
-  const hiddenProjectsCount = regularProjects.length - visibleProjects.length;
 
   return (
     <div className="site">
       <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
         <div className="header-main">
+          <div className="founder-peek founder-peek-left">
+            <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
-          <nav className="nav-main">
+
+          <nav className="nav-main" aria-label="Основная навигация">
             {nav.map(([href, label]) => (
               <button
                 key={href}
@@ -399,7 +406,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             ))}
           </nav>
 
-          <div className="header-controls">
+          <div className="header-actions">
             <div className="socials">
               <SocialIcon label="VK" href={vkUrl}>
                 <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
@@ -424,6 +431,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             </button>
           </div>
 
+          <div className="founder-peek founder-peek-right">
+            <img src={founderRightPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
           <button
             className={`burger ${mobileMenuOpen ? "open" : ""}`}
@@ -434,43 +445,42 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           </button>
         </div>
 
-        <div className="quick-links-bar">
-          <div className="quick-group-inline">
-            <p>Видеопроекты</p>
-            <div className="quick-links">
-              {mediaProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
-                  {item.title}
-                </button>
+        <div className="mega-bar" aria-label="Каталог разделов">
+          <details className="mega-details">
+            <summary>Разделы</summary>
+            <div className="mega-panel service-panel">
+              {serviceNav.map(([href, label]) => (
+                <button key={href} className={path === href ? "active" : ""} onClick={() => { goTo(href); setMobileMenuOpen(false); }}>{label}</button>
               ))}
             </div>
-          </div>
+          </details>
 
-          <div className="quick-group-inline special-project-inline">
-            <p>Спецпроект</p>
-            <div className="quick-links">
-              <button className={`sub-link special-project-link ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
+          <details className="mega-details wide">
+            <summary>Проекты</summary>
+            <div className="mega-panel mega-grid">
+              <button className={`mega-card special-project-card ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
+                <span>Спецпроект</span>
                 Благотворительный проект
               </button>
-            </div>
-          </div>
-
-          <div className="quick-group-inline">
-            <p>Проекты</p>
-            <div className="quick-links">
-              {visibleProjects.map((item) => (
-                <button key={item.slug} className={`sub-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
+              {regularProjects.map((item) => (
+                <button key={item.slug} className={`mega-card ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
                   {item.title}
                 </button>
               ))}
-              {hiddenProjectsCount > 0 && (
-                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(true)}>Еще {hiddenProjectsCount}</button>
-              )}
-              {showAllProjects && (
-                <button className="sub-link sub-link-more" onClick={() => setShowAllProjects(false)}>Свернуть</button>
-              )}
             </div>
-          </div>
+          </details>
+
+          <details className="mega-details wide">
+            <summary>Видеопроекты</summary>
+            <div className="mega-panel mega-grid media-grid">
+              {mediaProjects.map((item) => (
+                <button key={item.slug} className={`mega-card ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
+                  <span>Видео</span>
+                  {item.title}
+                </button>
+              ))}
+            </div>
+          </details>
         </div>
       </header>
       <main>{children}</main>
@@ -515,7 +525,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
 function Hero({ goTo }) {
   return (
     <section className="hero">
-      <img className="hero-founder hero-founder-left" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=700&q=80" alt="Основатель EVTENIA" />
       <div className="hero-content">
         <p className="eyebrow">Клуб для всех и медиаплатформа</p>
         <h1>EVTENIA — пространство развития, знакомств и сильного окружения</h1>
