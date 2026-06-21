@@ -401,12 +401,15 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
 
   const nav = [
     ["/", "Главная"],
-    ["/about", "О нас"],
     ["/poster", "Афиша"],
     ["/regions", "Регионы"],
+    ["/news", "Новости"],
+  ];
+
+  const serviceNav = [
+    ["/about", "О нас"],
     ["/team", "Команда"],
     ["/partners", "Партнеры"],
-    ["/news", "Новости"],
     ["/contacts", "Контакты"],
   ];
 
@@ -421,6 +424,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     <div className="site">
       <header className={`header ${mobileMenuOpen ? "menu-open" : ""}`}>
         <div className="header-main">
+          <div className="founder-peek founder-peek-left">
+            <img src={founderLeftPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="logo" onClick={() => goTo("/")}>EVTENIA</button>
 
           <nav className="nav-main" aria-label="Основная навигация">
@@ -463,6 +470,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             </button>
           </div>
 
+          <div className="founder-peek founder-peek-right">
+            <img src={founderRightPhoto} alt="Основатель EVTENIA" />
+          </div>
+
           <button className="btn btn-small cta-mobile" onClick={() => goTo("/join")}>Заявка</button>
           <button
             className={`burger ${mobileMenuOpen ? "open" : ""}`}
@@ -483,7 +494,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                 </button>
               ))}
             </div>
-          </div>
+          </details>
 
           <div className="quick-group-inline">
             <p>Проекты</p>
@@ -494,7 +505,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                 </button>
               ))}
             </div>
-          </div>
+          </details>
         </div>
       </header>
       <main>{children}</main>
@@ -551,7 +562,7 @@ function Hero({ goTo }) {
           <li>открытые встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
         </ul>
       </div>
-      <img src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?auto=format&fit=crop&w=1200&q=80" alt="Атмосфера клубного пространства EVTENIA" />
+      <img className="hero-founder hero-founder-right" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80" alt="Основатель EVTENIA" />
     </section>
   );
 }
