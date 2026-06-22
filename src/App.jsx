@@ -3,8 +3,8 @@ import "./styles.css";
 
 const vkUrl = "https://vk.com/evtenia_happy_lady";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
-const founderLeftPhoto = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=520&q=80";
-const founderRightPhoto = "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=520&q=80";
+const founderLeftPhoto = "https://s10.iimage.su/s/22/gvPWh71xlYDOi4oSdcf0nWjnmVc2VA0S3w1SrEz6N.png";
+const founderRightPhoto = "https://s10.iimage.su/s/22/guNsQNexEI1a9Sdz4oCeDiaBCHUd4Qv3BRbNnsg1i.png";
 
 const events = [
   {
