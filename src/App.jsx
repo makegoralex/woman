@@ -470,6 +470,9 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                     <text x="28" y="16.4" fill="#fff" fontSize="10" fontWeight="800" fontFamily="Arial, sans-serif" letterSpacing="0.8">RUTUBE</text>
                   </svg>
                 </SocialIcon>
+                <SocialIcon label="Rutube" href={rutubeUrl} className="social-link-rutube">
+                  <span className="rutube-icon" aria-hidden="true">Ru</span>
+                </SocialIcon>
               </div>
               <button
                 className="btn btn-small header-cta"
