@@ -410,7 +410,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     ["/stories", "Отзывы"],
     ["/partners", "Партнеры"],
     ["/contacts", "Контакты"],
-    ["/regions", "Регионы"],
     ["/news", "Новости"],
   ];
 
@@ -419,8 +418,8 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
     ["/team", "Команда"],
   ];
 
-  const SocialIcon = ({ label, href, children }) => (
-    <a className="social-link" href={href} target="_blank" rel="noreferrer" aria-label={label}>
+  const SocialIcon = ({ label, href, children, className = "" }) => (
+    <a className={`social-link ${className}`.trim()} href={href} target="_blank" rel="noreferrer" aria-label={label}>
       {children}
     </a>
   );
@@ -461,7 +460,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                 <SocialIcon label="VK" href={vkUrl}>
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
                 </SocialIcon>
-                <SocialIcon label="MAX" href={maxUrl}>
+                <SocialIcon label="MAX" href={maxUrl} className="social-link-max">
                   <span className="max-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
                       <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
@@ -469,7 +468,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                     </svg>
                   </span>
                 </SocialIcon>
-                <SocialIcon label="Rutube" href={rutubeUrl}>
+                <SocialIcon label="Rutube" href={rutubeUrl} className="social-link-rutube">
                   <span className="rutube-icon" aria-hidden="true">Ru</span>
                 </SocialIcon>
               </div>
@@ -494,9 +493,15 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             </button>
           </div>
 
+          <div className="header-brandline" aria-label="О EVTENIA">
+            <span>Evtenia</span>
+            <i aria-hidden="true">|</i>
+            <span>АНО по развитию социальных инициатив</span>
+          </div>
+
           <div className="header-catalog" aria-label="Быстрые разделы">
-            <details className="catalog-group video-catalog" open>
-              <summary>Видеопроекты</summary>
+            <div className="catalog-group video-catalog">
+              <button className="catalog-summary" type="button">Видеопроекты</button>
               <div className="catalog-panel video-panel">
                 {mediaProjects.map((item) => (
                   <button key={item.slug} className={`catalog-link ${path === `/video/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/video/${item.slug}`); setMobileMenuOpen(false); }}>
@@ -504,10 +509,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                   </button>
                 ))}
               </div>
-            </details>
+            </div>
 
-            <details className="catalog-group projects-catalog" open>
-              <summary>Проекты</summary>
+            <div className="catalog-group projects-catalog">
+              <button className="catalog-summary" type="button">Проекты</button>
               <div className="catalog-panel projects-panel">
                 {clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom").map((item) => (
                   <button key={item.slug} className={`catalog-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
@@ -515,34 +520,34 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                   </button>
                 ))}
               </div>
-            </details>
+            </div>
 
-            <details className="catalog-group charity-catalog" open>
-              <summary>Благотворительность</summary>
+            <div className="catalog-group charity-catalog">
+              <button className="catalog-summary" type="button">Благотворительность</button>
               <div className="catalog-panel single-panel">
                 <button className={`catalog-link special-catalog-link ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
                   Благотворительный проект
                 </button>
               </div>
-            </details>
+            </div>
 
-            <details className="catalog-group committee-catalog" open>
-              <summary>Комитет</summary>
+            <div className="catalog-group committee-catalog">
+              <button className="catalog-summary" type="button">Комитет</button>
               <div className="catalog-panel single-panel">
                 <button className={`catalog-link ${path === `/housing-committee` ? "active" : ""}`} onClick={() => { goTo(`/housing-committee`); setMobileMenuOpen(false); }}>
                   Комитет по жилищной политике
                 </button>
               </div>
-            </details>
+            </div>
 
-            <details className="catalog-group programs-catalog" open>
-              <summary>Курсы</summary>
+            <div className="catalog-group programs-catalog">
+              <button className="catalog-summary" type="button">Курсы/программы</button>
               <div className="catalog-panel single-panel">
                 <button className={`catalog-link ${path === `/courses` ? "active" : ""}`} onClick={() => { goTo(`/courses`); setMobileMenuOpen(false); }}>
                   Курсы/программы
                 </button>
               </div>
-            </details>
+            </div>
           </div>
         </div>
 
