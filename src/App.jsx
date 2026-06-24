@@ -3,6 +3,7 @@ import "./styles.css";
 
 const vkUrl = "https://vk.com/evtenia_happy_lady";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
+const rutubeUrl = "https://rutube.ru/channel/38482316/";
 const founderLeftPhoto = "https://s10.iimage.su/s/22/gvPWh71xlYDOi4oSdcf0nWjnmVc2VA0S3w1SrEz6N.png";
 const founderRightPhoto = "https://s10.iimage.su/s/22/guNsQNexEI1a9Sdz4oCeDiaBCHUd4Qv3BRbNnsg1i.png";
 
@@ -169,8 +170,8 @@ const partners = [
 const pageSeo = {
   "/": { title: "EVTENIA — клуб для всех, события и развитие", description: "Современное сообщество EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для всех, кто растёт в бизнесе и жизни." },
-  "/events": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
-  "/poster": { title: "Афиша EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
+  "/events": { title: "Мероприятия EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
+  "/poster": { title: "Мероприятия EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
   "/regions": { title: "Регионы EVTENIA", description: "Региональные отделения EVTENIA: руководители, контакты и новости по городам." },
   "/news": { title: "Новости и блог EVTENIA", description: "Новости клуба, статьи, интервью и полезные материалы для участников EVTENIA." },
   "/gallery": { title: "Галерея EVTENIA", description: "Фотоотчеты и атмосфера мероприятий сообщества EVTENIA." },
@@ -183,6 +184,8 @@ const pageSeo = {
   "/faq": { title: "FAQ EVTENIA", description: "Ответы на частые вопросы о вступлении и участии в клубе EVTENIA." },
   "/team": { title: "Команда EVTENIA", description: "Основатель и команда, которые создают сообщество EVTENIA." },
   "/admin": { title: "Админка EVTENIA (демо)", description: "Демо-панель управления контентом EVTENIA." },
+  "/housing-committee": { title: "Комитет по жилищной политике", description: "Страница комитета по жилищной политике и городским инициативам." },
+  "/courses": { title: "Курсы/программы EVTENIA", description: "Курсы и программы EVTENIA: временная страница направления." },
 };
 
 const brainFitnessPhoto = "https://s10.iimage.su/s/07/gTXiVvPxBnnvlg2wAk0sLIFUmzpmklLQpUZQz95YX.jpg";
@@ -403,7 +406,10 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
 
   const nav = [
     ["/", "Главная"],
-    ["/poster", "Афиша"],
+    ["/poster", "Мероприятия"],
+    ["/stories", "Отзывы"],
+    ["/partners", "Партнеры"],
+    ["/contacts", "Контакты"],
     ["/regions", "Регионы"],
     ["/news", "Новости"],
   ];
@@ -411,8 +417,6 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
   const serviceNav = [
     ["/about", "О нас"],
     ["/team", "Команда"],
-    ["/partners", "Партнеры"],
-    ["/contacts", "Контакты"],
   ];
 
   const SocialIcon = ({ label, href, children }) => (
@@ -434,7 +438,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             <button className="logo logo-stacked" onClick={() => goTo("/")}>
               <span className="logo-mark" aria-hidden="true">✦</span>
               <span>EVTENIA</span>
-              <small>проекты для роста и гармонии</small>
+              <small>проекты для роста и развития</small>
             </button>
 
             <nav className="nav-main" aria-label="Основная навигация">
@@ -464,6 +468,9 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                       <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
                     </svg>
                   </span>
+                </SocialIcon>
+                <SocialIcon label="Rutube" href={rutubeUrl}>
+                  <span className="rutube-icon" aria-hidden="true">Ru</span>
                 </SocialIcon>
               </div>
               <button
@@ -502,14 +509,38 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
             <details className="catalog-group projects-catalog" open>
               <summary>Проекты</summary>
               <div className="catalog-panel projects-panel">
-                <button className={`catalog-link special-catalog-link ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
-                  Благотворительный проект
-                </button>
                 {clubProjects.filter((item) => item.slug !== "prazdnik-v-kazhdyj-dom").map((item) => (
                   <button key={item.slug} className={`catalog-link ${path === `/projects/${item.slug}` ? "active" : ""}`} onClick={() => { goTo(`/projects/${item.slug}`); setMobileMenuOpen(false); }}>
                     {item.title}
                   </button>
                 ))}
+              </div>
+            </details>
+
+            <details className="catalog-group charity-catalog" open>
+              <summary>Благотворительность</summary>
+              <div className="catalog-panel single-panel">
+                <button className={`catalog-link special-catalog-link ${path === `/projects/prazdnik-v-kazhdyj-dom` ? "active" : ""}`} onClick={() => { goTo(`/projects/prazdnik-v-kazhdyj-dom`); setMobileMenuOpen(false); }}>
+                  Благотворительный проект
+                </button>
+              </div>
+            </details>
+
+            <details className="catalog-group committee-catalog" open>
+              <summary>Комитет</summary>
+              <div className="catalog-panel single-panel">
+                <button className={`catalog-link ${path === `/housing-committee` ? "active" : ""}`} onClick={() => { goTo(`/housing-committee`); setMobileMenuOpen(false); }}>
+                  Комитет по жилищной политике
+                </button>
+              </div>
+            </details>
+
+            <details className="catalog-group programs-catalog" open>
+              <summary>Курсы</summary>
+              <div className="catalog-panel single-panel">
+                <button className={`catalog-link ${path === `/courses` ? "active" : ""}`} onClick={() => { goTo(`/courses`); setMobileMenuOpen(false); }}>
+                  Курсы/программы
+                </button>
               </div>
             </details>
           </div>
@@ -528,7 +559,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
         <div className="footer-col">
           <h5>Навигация</h5>
           <button onClick={() => goTo("/")}>Главная</button>
-          <button onClick={() => goTo("/poster")}>Афиша</button>
+          <button onClick={() => goTo("/poster")}>Мероприятия</button>
           <button onClick={() => goTo("/regions")}>Регионы</button>
           <button onClick={() => goTo("/news")}>Новости</button>
           <button onClick={() => goTo("/team")}>Команда</button>
@@ -695,7 +726,7 @@ function EventsPage({ goTo }) {
   );
   return (
     <div className="page">
-      <h1>Афиша EVTENIA</h1>
+      <h1>Мероприятия EVTENIA</h1>
       <div className="filters">
         <label>Статус <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
         <label>Направление
@@ -720,7 +751,7 @@ function EventDetail({ slug, goTo }) {
   const related = events.filter((e) => e.slug !== slug).slice(0, 3);
   return (
     <div className="page">
-      <div className="breadcrumbs">Главная / Афиша / {event.title}</div>
+      <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
       <h1>{event.title}</h1>
       <img className="detail-cover" src={event.image} alt={event.title} />
       <p><strong>Дата и время:</strong> {event.date}, {event.time}</p>
@@ -1163,12 +1194,64 @@ function PartnersPage() {
           </article>
         ))}
       </div>
+      <section className="join partner-application">
+        <h2>Стать партнером</h2>
+        <p>Оставьте заявку, если хотите провести совместное мероприятие, поддержать проект или предложить коллаборацию.</p>
+        <form className="form" onSubmit={(e) => { e.preventDefault(); alert("Спасибо! Заявка партнера отправлена."); }}>
+          <input required placeholder="Имя и фамилия" />
+          <input required placeholder="Компания / проект" />
+          <input required placeholder="Телефон или мессенджер" />
+          <input type="email" placeholder="Email" />
+          <select defaultValue="">
+            <option value="" disabled>Формат партнерства</option>
+            <option>Совместное мероприятие</option>
+            <option>Информационное партнерство</option>
+            <option>Спонсорство</option>
+            <option>Экспертная программа</option>
+          </select>
+          <textarea required placeholder="Коротко опишите предложение" rows="4" />
+          <button className="btn" type="submit">Отправить заявку партнера</button>
+        </form>
+      </section>
     </div>
   );
 }
 
 function StoriesPage() {
   return <div className="page"><h1>Отзывы / истории участников</h1><div className="cards grid-2">{testimonials.map((t) => <article className="card" key={t.name}><p>“{t.quote}”</p><strong>{t.name}</strong><small>{t.role}</small></article>)}</div></div>;
+}
+
+function HousingCommitteePage() {
+  return (
+    <div className="page">
+      <h1>Комитет по жилищной политике</h1>
+      <p className="lead">Раздел о проектах, обсуждениях и инициативах комитета по жилищной политике.</p>
+      <div className="cards grid-2">
+        <article className="card">
+          <h3>О направлении</h3>
+          <p>Здесь будет размещаться информация о встречах, экспертных материалах и городских инициативах, связанных с жилищной политикой.</p>
+        </article>
+        <article className="card">
+          <h3>Сообщество</h3>
+          <p>Актуальные новости комитета пока публикуются на странице VK.</p>
+          <a className="btn btn-small" href="https://vk.ru/committee_opora58" target="_blank" rel="noreferrer">Открыть VK</a>
+        </article>
+      </div>
+    </div>
+  );
+}
+
+function CoursesPage() {
+  return (
+    <div className="page">
+      <h1>Курсы/программы</h1>
+      <p className="lead">Курсы/программы</p>
+      <div className="card">
+        <h3>Скоро здесь появится расписание</h3>
+        <p>Мы готовим описание образовательных курсов, программ развития и форматов участия EVTENIA.</p>
+      </div>
+    </div>
+  );
 }
 
 function FaqPage() {
@@ -1280,6 +1363,8 @@ export default function App() {
     if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
     if (path === "/partners") return <PartnersPage />;
     if (path === "/stories") return <StoriesPage />;
+    if (path === "/housing-committee") return <HousingCommitteePage />;
+    if (path === "/courses") return <CoursesPage />;
     if (path === "/faq") return <FaqPage />;
     if (path === "/team") return <TeamPage />;
     if (path === "/admin") return <AdminPage />;

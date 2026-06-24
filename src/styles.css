@@ -133,6 +133,7 @@ body {
 .header-actions { display: flex; align-items: center; gap: 14px; }
 .socials { display: flex; gap: 12px; align-items: center; }
 .social-link {
+  min-width: 18px;
   width: 18px;
   height: 18px;
   border: none;
@@ -145,8 +146,23 @@ body {
 }
 .social-link:hover { color: var(--accent); transform: translateY(-1px); }
 .social-link svg { width: 15px; height: 15px; }
-.max-icon { width: 15px; height: 15px; display: inline-flex; }
-.max-icon svg { width: 15px; height: 15px; display: block; }
+.max-icon { width: 22px; height: 18px; display: inline-flex; }
+.max-icon svg { width: 22px; height: 18px; display: block; }
+.social-link:has(.max-icon) { width: 24px; min-width: 24px; }
+.rutube-icon {
+  min-width: 23px;
+  height: 16px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #111;
+  color: #fff;
+  font-size: 0.55rem;
+  font-weight: 800;
+  line-height: 1;
+}
+.social-link:has(.rutube-icon) { width: 25px; min-width: 25px; }
 .burger {
   display: none;
   border: 1px solid rgba(231, 220, 213, 0.9);
@@ -179,7 +195,7 @@ body {
 
 .header-catalog {
   display: grid;
-  grid-template-columns: minmax(140px, 0.5fr) minmax(360px, 1.5fr);
+  grid-template-columns: minmax(130px, 0.7fr) minmax(300px, 1.45fr) minmax(140px, 0.75fr) minmax(150px, 0.85fr) minmax(130px, 0.7fr);
   gap: 12px;
   align-items: start;
 }
@@ -206,7 +222,8 @@ body {
   box-shadow: 0 10px 24px rgba(93, 65, 58, 0.08);
   padding: 7px;
 }
-.video-panel {
+.video-panel,
+.single-panel {
   display: grid;
   grid-template-columns: 1fr;
   gap: 5px;
