@@ -44,7 +44,7 @@ body {
     radial-gradient(circle at 18% 0%, rgba(42, 101, 83, 0.65), transparent 34%),
     radial-gradient(circle at 78% 22%, rgba(25, 86, 72, 0.7), transparent 30%),
     linear-gradient(135deg, var(--forest-deep) 0%, var(--forest) 54%, #0d332b 100%);
-  border: 1px solid rgba(214, 165, 86, 0.42);
+  border: 0;
   box-shadow: 0 24px 52px rgba(2, 23, 18, 0.3);
   border-radius: 0 0 28px 28px;
 }
@@ -64,13 +64,7 @@ body {
   border-radius: 50%;
 }
 .header::after {
-  right: 18px;
-  bottom: 16px;
-  width: 180px;
-  height: 54px;
-  border-left: 0;
-  border-top: 0;
-  border-radius: 0 0 80px 0;
+  display: none;
 }
 .header-founder {
   position: relative;
@@ -80,6 +74,8 @@ body {
   background: linear-gradient(180deg, rgba(9, 42, 34, 0.7) 0%, rgba(2, 23, 18, 0.86) 100%);
   overflow: hidden;
 }
+.header-founder-left { border-radius: 0 0 0 28px; }
+.header-founder-right { border-radius: 0 0 28px 0; }
 .header-founder::after {
   content: "";
   position: absolute;
@@ -93,6 +89,7 @@ body {
   object-position: center top;
   filter: saturate(0.85) contrast(1.05);
   opacity: 0.82;
+  border-radius: inherit;
 }
 .header-founder-left img { object-position: center top; }
 .header-founder-right img { object-position: center top; }
@@ -193,6 +190,10 @@ body {
 }
 .social-link:hover { color: #fffaf0; transform: translateY(-1px); }
 .social-link svg { width: 15px; height: 15px; }
+.social-link-vk {
+  background: var(--gold);
+  color: #fff;
+}
 .max-icon {
   width: 36px;
   height: 22px;
@@ -208,11 +209,24 @@ body {
   line-height: 1;
 }
 .social-link-max { width: 38px; min-width: 38px; }
-.social-link .rutube-icon {
-  width: 72px;
-  height: 20px;
-  display: block;
-  color: var(--gold);
+.rutube-icon {
+  width: 76px;
+  height: 22px;
+  border-radius: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: var(--gold);
+  color: #fff;
+  font-size: 0.54rem;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+.rutube-play {
+  font-size: 0.52rem;
+  line-height: 1;
 }
 .social-link-rutube { width: 76px; min-width: 76px; }
 .burger {
@@ -256,9 +270,9 @@ body {
   gap: 16px;
   color: #fffaf0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(1.18rem, 2.55vw, 2.72rem);
-  letter-spacing: 0.105em;
-  line-height: 1.1;
+  font-size: clamp(0.95rem, 2.05vw, 2.18rem);
+  letter-spacing: 0.095em;
+  line-height: 1.18;
   text-align: center;
   text-transform: uppercase;
   text-shadow: 0 12px 28px rgba(0, 0, 0, 0.34);
