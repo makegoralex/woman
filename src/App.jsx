@@ -461,12 +461,14 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
                   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.8 7.5c.12 5.79 3.02 9.27 8.11 9.27h.29v-3.3c1.86.19 3.25 1.55 3.82 3.3h2.63c-.74-2.7-2.69-4.2-3.91-4.77 1.22-.7 2.93-2.4 3.33-4.5h-2.4c-.52 1.7-2.1 3.4-3.47 3.54V7.5h-2.4v6.2C9.4 13.36 7.6 11.5 7.52 7.5H4.8Z" fill="currentColor" /></svg>
                 </SocialIcon>
                 <SocialIcon label="MAX" href={maxUrl} className="social-link-max">
-                  <span className="max-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24">
-                      <rect x="2.5" y="2.5" width="19" height="19" rx="6" fill="currentColor" />
-                      <path d="M7.5 15V9.2h1.45l2.05 3.08 2.04-3.08h1.46V15h-1.47v-3.36L11 14.8l-2.08-3.17V15H7.5Zm8.25 0 2.1-2.96-1.96-2.84h1.71l1.11 1.7 1.13-1.7h1.68l-1.96 2.84L21.66 15h-1.71l-1.25-1.9L17.45 15h-1.7Z" fill="#fff" />
-                    </svg>
-                  </span>
+                  <span className="max-icon" aria-hidden="true">MAX</span>
+                </SocialIcon>
+                <SocialIcon label="Rutube" href={rutubeUrl} className="social-link-rutube">
+                  <svg className="rutube-icon" viewBox="0 0 88 24" aria-hidden="true" role="img">
+                    <rect width="88" height="24" rx="6" fill="currentColor" />
+                    <path d="M14 7.5v9l7-4.5-7-4.5Z" fill="#fff" />
+                    <text x="28" y="16.4" fill="#fff" fontSize="10" fontWeight="800" fontFamily="Arial, sans-serif" letterSpacing="0.8">RUTUBE</text>
+                  </svg>
                 </SocialIcon>
                 <SocialIcon label="Rutube" href={rutubeUrl} className="social-link-rutube">
                   <span className="rutube-icon" aria-hidden="true">Ru</span>
@@ -496,7 +498,7 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
           <div className="header-brandline" aria-label="О EVTENIA">
             <span>Evtenia</span>
             <i aria-hidden="true">|</i>
-            <span>АНО по развитию социальных инициатив</span>
+            <span>АНО по развитию<br />социальных инициатив</span>
           </div>
 
           <div className="header-catalog" aria-label="Быстрые разделы">
