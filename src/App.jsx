@@ -607,7 +607,7 @@ function Hero({ goTo }) {
           <li>открытые встречи</li><li>бизнес-сообщество</li><li>развитие и поддержка</li><li>события и знакомства</li>
         </ul>
       </div>
-      <img className="hero-founder hero-founder-right" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=700&q=80" alt="Основатель EVTENIA" />
+      <img className="hero-founder hero-founder-right" src="https://s10.iimage.su/s/24/gHWhn0kxsJSzTN37a4yEBZHtwIcRtRDgtI3KG7iGD.png" alt="Основатель EVTENIA" />
     </section>
   );
 }
