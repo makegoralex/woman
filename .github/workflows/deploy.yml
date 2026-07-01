@@ -16,4 +16,7 @@ jobs:
           host: 85.239.54.244
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          timeout: 120s
+          command_timeout: 20m
+          script_stop: true
           script: /var/www/people/deploy.sh
