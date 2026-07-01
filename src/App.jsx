@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import "./styles.css";
 
-const vkUrl = "https://vk.com/evtenia_happy_lady";
+const vkUrl = "https://vk.com/evtenia_people";
 const maxUrl = "https://max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY";
 const rutubeUrl = "https://rutube.ru/channel/38482316/";
 const founderLeftPhoto = "https://s10.iimage.su/s/22/gvPWh71xlYDOi4oSdcf0nWjnmVc2VA0S3w1SrEz6N.png";
@@ -161,10 +161,41 @@ const partners = [
   { name: "Счастливый дом", href: "https://home58.ru/" },
   { name: "Строительство домов Evtenia", href: "https://dom.evtenia.ru/" },
   { name: "Агентство недвижимости Evtenia", href: "https://evtenia.ru/" },
-  { name: "Блог основателя АНО Evtenia", href: "https://vk.com/greatbusinesslady" },
+  { name: "Блог основателя АНО Evtenia", href: vkUrl },
+  { name: "Комитет по жилищной политике", href: "https://vk.ru/committee_opora58" },
   { name: "Опора России Пензенское отделение", href: "https://opora58.ru/" },
   { name: "Фитнес для мозга", href: "https://taplink.cc/elenaakozedub" },
   { name: "Ювелирка Evtnenia", href: "https://evtenia.store/" },
+];
+
+
+const services = [
+  {
+    slug: "ask-expert",
+    title: "Спроси эксперта",
+    lead: "Короткая консультация по рабочему или личному запросу в безопасном нейтральном формате.",
+    description: [
+      "Услуга помогает сформулировать вопрос, получить первичную экспертную навигацию и понять следующие шаги без давления и навязанных решений.",
+      "Формат может подойти для предпринимателей, специалистов, авторов проектов и участников сообщества, которым нужен взгляд со стороны по развитию, коммуникациям, событиям или партнерствам.",
+    ],
+    items: ["предварительное уточнение запроса", "онлайн- или офлайн-консультация по договоренности", "краткие рекомендации и возможный план действий"],
+  },
+  {
+    slug: "marketing-support",
+    title: "Маркетинговая поддержка",
+    lead: "Бережная помощь с упаковкой идеи, коммуникацией и продвижением проекта.",
+    description: [
+      "Направление создано для проектов, которым важно яснее рассказать о себе аудитории, подготовить материалы к запуску или проверить текущие каналы коммуникации.",
+      "Поддержка может включать разбор позиционирования, структуры предложения, контента, визуальных акцентов и партнерских возможностей. Конкретный объем определяется после заявки.",
+    ],
+    items: ["аудит текущей коммуникации", "рекомендации по структуре предложения", "идеи для контента, партнерств и презентации"],
+  },
+];
+
+const serviceApplications = [
+  { name: "Консультация по самопрезентации", author: "Анна, эксперт по коммуникациям", status: "На модерации" },
+  { name: "Мини-разбор визуальной упаковки", author: "Мария, дизайнер", status: "Одобрено" },
+  { name: "Практикум по публичному выступлению", author: "Елена, тренер", status: "Требует правок" },
 ];
 
 const pageSeo = {
@@ -184,7 +215,10 @@ const pageSeo = {
   "/faq": { title: "FAQ EVTENIA", description: "Ответы на частые вопросы о вступлении и участии в клубе EVTENIA." },
   "/team": { title: "Команда EVTENIA", description: "Основатель и команда, которые создают сообщество EVTENIA." },
   "/admin": { title: "Админка EVTENIA (демо)", description: "Демо-панель управления контентом EVTENIA." },
-  "/housing-committee": { title: "Комитет по жилищной политике", description: "Страница комитета по жилищной политике и городским инициативам." },
+  "/services": { title: "Услуги EVTENIA", description: "Каталог услуг EVTENIA: экспертные консультации, маркетинговая поддержка и предложения экспертов." },
+  "/services/ask-expert": { title: "Спроси эксперта — EVTENIA", description: "Нейтральная страница услуги: консультации экспертов EVTENIA." },
+  "/services/marketing-support": { title: "Маркетинговая поддержка — EVTENIA", description: "Нейтральная страница услуги: маркетинговая поддержка проектов." },
+  "/services/propose-service": { title: "Предложить свою услугу — EVTENIA", description: "Форма предложения услуги для размещения на сайте после модерации." },
   "/courses": { title: "Курсы/программы EVTENIA", description: "Курсы и программы EVTENIA: временная страница направления." },
 };
 
@@ -209,6 +243,7 @@ const clubProjects = [
   { slug: "business-i-zhenshina", title: "Бизнес и развитие" },
   { slug: "perezagruzka", title: "Перезагрузка" },
   { slug: "prazdnik-v-kazhdyj-dom", title: "Праздник в каждый дом" },
+  { slug: "razvitie-i-tvorchestvo", title: "Развитие и творчество" },
   { slug: "psihologiya-otnoshenij", title: "Психология отношений" },
   { slug: "prekrasnaya-ya", title: "Прекрасная Я" },
 ];
@@ -308,6 +343,16 @@ const projectDetails = {
     ],
     photo: "https://images.unsplash.com/photo-1513151233558-d860c5398176?auto=format&fit=crop&w=1200&q=80",
     testimonials: ["Впервые организовала благотворительный вечер с партнерами.", "Проект помог включиться в городские социальные инициативы."],
+  },
+
+  "razvitie-i-tvorchestvo": {
+    description: [
+      "Развитие и творчество — направление для тех, кто хочет раскрывать идеи через практику, общение и мягкую творческую среду. Проект объединяет мастер-классы, открытые лаборатории, встречи с экспертами и камерные форматы, где можно пробовать новое без оценки и лишнего давления.",
+      "Участники могут работать с личными проектами, визуальными материалами, текстами, голосом, сценическим присутствием и другими формами самовыражения. Главная задача — помочь человеку увидеть свои сильные стороны, найти понятный способ проявления и превратить вдохновение в небольшой, но конкретный результат.",
+      "Форматы проекта подходят начинающим авторам, экспертам, предпринимателям, родителям и всем, кто хочет добавить в жизнь больше смысла, красоты и созидания. Мы делаем акцент на бережной обратной связи, регулярной практике и атмосфере, в которой творчество становится частью развития."
+    ],
+    photo: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=1200&q=80",
+    testimonials: ["Получилось вернуться к творчеству и оформить идею в понятный проект.", "Очень поддерживающая атмосфера: можно пробовать, ошибаться и расти."],
   },
   "psihologiya-otnoshenij": {
     leaders: [
@@ -529,11 +574,17 @@ function Layout({ children, goTo, path, mobileMenuOpen, setMobileMenuOpen }) {
               </div>
             </div>
 
-            <div className="catalog-group committee-catalog">
-              <button className="catalog-summary" type="button">Комитет</button>
+            <div className="catalog-group services-catalog">
+              <button className="catalog-summary" type="button">Услуги</button>
               <div className="catalog-panel single-panel">
-                <button className={`catalog-link ${path === `/housing-committee` ? "active" : ""}`} onClick={() => { goTo(`/housing-committee`); setMobileMenuOpen(false); }}>
-                  Комитет по жилищной политике
+                <button className={`catalog-link ${path === `/services/ask-expert` ? "active" : ""}`} onClick={() => { goTo(`/services/ask-expert`); setMobileMenuOpen(false); }}>
+                  Спроси эксперта
+                </button>
+                <button className={`catalog-link ${path === `/services/marketing-support` ? "active" : ""}`} onClick={() => { goTo(`/services/marketing-support`); setMobileMenuOpen(false); }}>
+                  Маркетинговая поддержка
+                </button>
+                <button className={`catalog-link ${path === `/services/propose-service` ? "active" : ""}`} onClick={() => { goTo(`/services/propose-service`); setMobileMenuOpen(false); }}>
+                  Предложить свою услугу
                 </button>
               </div>
             </div>
@@ -905,7 +956,7 @@ function ContactsPage({ goTo }) {
     <div className="page">
       <h1>Контакты</h1>
       <div className="cards grid-2">
-        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />VK: vk.com/evtenia_happy_lady<br />MAX: max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY<br />Телефон: 8-841-279-92-79</p></article>
+        <article className="card"><h3>Связаться</h3><p>Email: hello@evtenia.club<br />VK: <a href={vkUrl} target="_blank" rel="noreferrer">vk.com/evtenia_people</a><br />MAX: <a href={maxUrl} target="_blank" rel="noreferrer">max.ru/join/fYupCLkr__76YnzZS3QeOWJLGUjh9R2Qw3LRhWolNVY</a><br />Rutube: <a href={rutubeUrl} target="_blank" rel="noreferrer">rutube.ru/channel/38482316</a><br />Телефон: 8-841-279-92-79</p></article>
         <article className="card"><h3>Оффлайн-точка</h3><p>Пенза, ул. Карпинского 40А<br />По предварительной записи на мероприятия и встречи.</p></article>
       </div>
       <JoinForm compact goTo={goTo} />
@@ -1257,6 +1308,98 @@ function CoursesPage() {
   );
 }
 
+
+function LegalDocumentPage({ type }) {
+  const isPrivacy = type === "privacy";
+  return (
+    <div className="page article legal-page">
+      <h1>{isPrivacy ? "Политика конфиденциальности" : "Согласие на обработку персональных данных"}</h1>
+      <p className="lead">Оператор персональных данных: АВТОНОМНАЯ НЕКОММЕРЧЕСКАЯ ОРГАНИЗАЦИЯ ПО РАЗВИТИЮ СОЦИАЛЬНЫХ ИНИЦИАТИВ «ЕВТЕНИЯ», ОГРН 1265800002270, ИНН 5800021898.</p>
+      {isPrivacy ? (
+        <>
+          <h2>1. Общие положения</h2>
+          <p>Настоящая политика описывает порядок обработки персональных данных пользователей сайта EVTENIA при отправке заявок, обращений, партнерских предложений и использовании форм обратной связи.</p>
+          <h2>2. Какие данные обрабатываются</h2>
+          <p>Оператор может обрабатывать имя, фамилию, телефон, адрес электронной почты, мессенджер, название компании или проекта, текст обращения, а также технические данные, необходимые для корректной работы сайта.</p>
+          <h2>3. Цели обработки</h2>
+          <p>Данные используются для связи с пользователем, рассмотрения заявок, организации мероприятий, подготовки партнерских коммуникаций, обработки предложений услуг и улучшения качества работы сайта.</p>
+          <h2>4. Правовые основания и сроки</h2>
+          <p>Обработка выполняется на основании согласия пользователя и осуществляется не дольше, чем этого требуют заявленные цели, требования законодательства или до отзыва согласия.</p>
+          <h2>5. Передача и защита данных</h2>
+          <p>Оператор принимает организационные и технические меры защиты данных. Передача третьим лицам допускается только при необходимости исполнения заявки, по поручению оператора или в случаях, предусмотренных законом.</p>
+          <h2>6. Права пользователя</h2>
+          <p>Пользователь вправе запросить уточнение, блокирование или удаление персональных данных, а также отозвать согласие на обработку, направив обращение через контактные каналы сайта.</p>
+        </>
+      ) : (
+        <>
+          <p>Заполняя и отправляя формы на сайте, пользователь свободно, своей волей и в своем интересе дает согласие оператору на обработку персональных данных.</p>
+          <h2>1. Перечень данных</h2>
+          <p>Согласие распространяется на имя, фамилию, контактный телефон, email, мессенджер, сведения о компании или проекте, содержание обращения и иные данные, которые пользователь самостоятельно указывает в форме.</p>
+          <h2>2. Цели обработки</h2>
+          <p>Данные обрабатываются для рассмотрения заявки, обратной связи, регистрации на события, коммуникации по партнерству, модерации предложенных услуг и размещения одобренных материалов на сайте.</p>
+          <h2>3. Действия с данными</h2>
+          <p>Оператор вправе собирать, записывать, систематизировать, хранить, уточнять, использовать, передавать по поручению, обезличивать, блокировать и уничтожать персональные данные.</p>
+          <h2>4. Срок действия согласия</h2>
+          <p>Согласие действует до достижения целей обработки или до его отзыва пользователем. Отзыв можно направить оператору через контактные каналы сайта.</p>
+        </>
+      )}
+    </div>
+  );
+}
+
+function ServicesPage({ goTo }) {
+  return (
+    <div className="page">
+      <h1>Услуги</h1>
+      <p className="lead">Нейтральный каталог экспертных и партнерских услуг EVTENIA. Часть услуг размещается после модерации заявки.</p>
+      <div className="cards grid-3">
+        {services.map((service) => <ServiceCard key={service.slug} service={service} goTo={goTo} />)}
+        <article className="card"><h3>Предложить свою услугу</h3><p>Заполните форму, а команда проверит заявку и примет решение о размещении.</p><button onClick={() => goTo("/services/propose-service")}>Заполнить заявку</button></article>
+      </div>
+    </div>
+  );
+}
+
+function ServiceCard({ service, goTo }) {
+  return <article className="card"><h3>{service.title}</h3><p>{service.lead}</p><button onClick={() => goTo(`/services/${service.slug}`)}>Подробнее</button></article>;
+}
+
+function ServiceDetailPage({ slug, goTo }) {
+  const service = services.find((item) => item.slug === slug);
+  if (!service) return <NotFound goTo={goTo} />;
+  return (
+    <div className="page">
+      <h1>{service.title}</h1>
+      <p className="lead">{service.lead}</p>
+      <section className="card">
+        {service.description.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+        <h3>Что может входить</h3>
+        <ul>{service.items.map((item) => <li key={item}>{item}</li>)}</ul>
+      </section>
+      <JoinForm compact goTo={goTo} />
+    </div>
+  );
+}
+
+function ProposeServicePage() {
+  return (
+    <div className="page">
+      <h1>Предложить свою услугу</h1>
+      <p className="lead">Любой желающий может отправить описание услуги. Заявка попадает в админку, где ее можно одобрить, отклонить или изменить перед публикацией на сайте.</p>
+      <section className="join">
+        <form className="form" onSubmit={(e) => { e.preventDefault(); alert("Спасибо! Услуга отправлена на модерацию."); }}>
+          <input required placeholder="Ваше имя" />
+          <input required placeholder="Контакт для связи" />
+          <input required placeholder="Название услуги" />
+          <input placeholder="Стоимость или формат расчета" />
+          <textarea required placeholder="Кратко опишите услугу, пользу и для кого она подходит" rows="5" />
+          <button className="btn" type="submit">Отправить на модерацию</button>
+        </form>
+      </section>
+    </div>
+  );
+}
+
 function FaqPage() {
   return (
     <div className="page">
@@ -1273,6 +1416,7 @@ function AdminPage() {
     eventsCount: events.length,
     postsCount: posts.length,
     galleryCount: galleryAlbums.length,
+    serviceApplicationsCount: serviceApplications.length,
     seoReady: "Да",
     applicationsToday: 7,
   });
@@ -1287,12 +1431,27 @@ function AdminPage() {
         <article className="card"><h3>SEO-поля</h3><p>{state.seoReady}</p></article>
         <article className="card"><h3>Контакты</h3><p>Редактируются из CMS</p></article>
         <article className="card"><h3>Заявки за сегодня</h3><p>{state.applicationsToday}</p></article>
+        <article className="card"><h3>Заявки услуг</h3><p>{state.serviceApplicationsCount} на модерации и в работе</p></article>
         <article className="card"><h3>Отделения</h3><p>{regionalBranches.length} региональных карточек</p></article>
         <article className="card"><h3>Доступы</h3><p>Главный админ назначает руководителей отделений</p></article>
       </div>
       <label className="admin-input">Демо-поле: изменить количество заявок
         <input type="number" value={state.applicationsToday} onChange={(e) => setState((prev) => ({ ...prev, applicationsToday: Number(e.target.value) }))} />
       </label>
+      <section className="card">
+        <h2>Модерация услуг</h2>
+        <p>Администратор может одобрить, отклонить или изменить заявку перед публикацией.</p>
+        <div className="cards grid-3">
+          {serviceApplications.map((item) => (
+            <article className="card" key={item.name}>
+              <h3>{item.name}</h3>
+              <p>{item.author}</p>
+              <small>{item.status}</small>
+              <div className="admin-actions"><button>Одобрить</button><button>Изменить</button><button>Отклонить</button></div>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
@@ -1362,10 +1521,13 @@ export default function App() {
     if (path === "/gallery") return <GalleryPage />;
     if (path === "/join") return <JoinPage goTo={goTo} />;
     if (path === "/contacts") return <ContactsPage goTo={goTo} />;
-    if (path === "/privacy") return <SimplePage title="Политика конфиденциальности" text="Мы бережно относимся к персональным данным и используем их только для связи по заявкам и участия в сообществе." />;
-    if (path === "/consent") return <SimplePage title="Согласие на обработку персональных данных" text="Отправляя форму, вы подтверждаете согласие на обработку персональных данных в целях коммуникации по заявке." />;
+    if (path === "/privacy") return <LegalDocumentPage type="privacy" />;
+    if (path === "/consent") return <LegalDocumentPage type="consent" />;
     if (path === "/partners") return <PartnersPage />;
     if (path === "/stories") return <StoriesPage />;
+    if (path === "/services") return <ServicesPage goTo={goTo} />;
+    if (path === "/services/propose-service") return <ProposeServicePage />;
+    if (path.startsWith("/services/")) return <ServiceDetailPage slug={path.split("/services/")[1]} goTo={goTo} />;
     if (path === "/housing-committee") return <HousingCommitteePage />;
     if (path === "/courses") return <CoursesPage />;
     if (path === "/faq") return <FaqPage />;
