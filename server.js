@@ -60,6 +60,7 @@ async function getContentRequest(req, res, next) {
   }
 }
 
+app.get("/admin/content", getContentRequest);
 app.get("/cms/content", getContentRequest);
 app.get("/api/content", getContentRequest);
 
@@ -72,6 +73,8 @@ async function saveContentRequest(req, res, next) {
   }
 }
 
+app.post("/admin/content", saveContentRequest);
+app.put("/admin/content", saveContentRequest);
 app.post("/cms/content", saveContentRequest);
 app.put("/cms/content", saveContentRequest);
 app.post("/api/content", saveContentRequest);
@@ -99,6 +102,7 @@ async function uploadRequest(req, res, next) {
   }
 }
 
+app.post("/admin/upload", uploadRequest);
 app.post("/cms/upload", uploadRequest);
 app.post("/api/upload", uploadRequest);
 

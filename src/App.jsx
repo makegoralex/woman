@@ -485,7 +485,7 @@ function loadStoredCmsContent() {
 
 async function loadServerCmsContent() {
   try {
-    const response = await fetch("/cms/content");
+    const response = await fetch("/admin/content");
     if (!response.ok) return null;
     const content = await response.json();
     return content && Object.keys(content).length ? content : null;
@@ -496,7 +496,7 @@ async function loadServerCmsContent() {
 }
 
 async function saveServerCmsContent(content) {
-  const response = await fetch("/cms/content", {
+  const response = await fetch("/admin/content", {
     method: "POST",
     credentials: "same-origin",
     headers: { "Content-Type": "application/json" },
@@ -510,7 +510,7 @@ async function saveServerCmsContent(content) {
 
 async function uploadCmsImages(dataUrls) {
   try {
-    const response = await fetch("/cms/upload", {
+    const response = await fetch("/admin/upload", {
       method: "POST",
       credentials: "same-origin",
       headers: { "Content-Type": "application/json" },
