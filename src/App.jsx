@@ -922,7 +922,7 @@ function EventDetail({ slug, goTo }) {
     <div className="page">
       <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
       <h1>{event.title}</h1>
-      <img className="detail-cover event-detail-cover" src={event.image} alt={event.title} />
+      {eventGallery.length === 0 && event.image && <img className="detail-cover event-detail-cover" src={event.image} alt={event.title} />}
       {eventGallery.length > 0 && (
         <section className="event-gallery-section">
           <h2>Галерея мероприятия</h2>
@@ -1597,7 +1597,7 @@ const makeSlug = (value) => value
   .replace(/[^a-zа-я0-9]+/g, "-")
   .replace(/^-+|-+$/g, "") || `item-${Date.now()}`;
 
-function resizeImageFile(file, maxSize = 1200, quality = 0.72) {
+function resizeImageFile(file, maxSize = 900, quality = 0.68) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -1609,7 +1609,7 @@ function resizeImageFile(file, maxSize = 1200, quality = 0.72) {
         canvas.height = Math.round(image.height * scale);
         const context = canvas.getContext("2d");
         context.drawImage(image, 0, 0, canvas.width, canvas.height);
-        resolve(canvas.toDataURL("image/jpeg", quality));
+        resolve(canvas.toDataURL("image/webp", quality));
       };
       image.onerror = reject;
       image.src = reader.result;
@@ -1638,7 +1638,7 @@ function ImageDropzone({ label = "Фото", value, onChange, multiple = false }
       onDrop={(event) => { event.preventDefault(); setIsDragging(false); processFiles(event.dataTransfer.files); }}
     >
       <strong>{label}</strong>
-      <p>Перетащите фото сюда или выберите файл. Изображение автоматически уменьшается до 1200px.</p>
+      <p>Перетащите фото сюда или выберите файл. Изображение автоматически сжимается для загрузки больших галерей.</p>
       <input type="file" accept="image/*" multiple={multiple} onChange={(event) => processFiles(event.target.files)} />
       {!!values.length && (
         <div className="image-preview-grid">
@@ -1856,7 +1856,7 @@ function AdminPage() {
       applyCmsContent(nextContent);
       setSaveMessage(message);
     } catch (error) {
-      setSaveMessage(`Не удалось сохранить: ${error.message}. Если загружали много фото, удалите часть или уменьшите изображения.`);
+      setSaveMessage(`Не удалось сохранить: ${error.message}. Попробуйте нажать «Сохранить изменения» ещё раз после завершения загрузки всех изображений.`);
     }
   };
 
