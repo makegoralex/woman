@@ -6,8 +6,9 @@ APP_NAME="$(basename "$APP_DIR")"
 
 cd "$APP_DIR"
 
-echo "📥 Pull..."
-git pull origin main
+echo "📥 Sync..."
+git fetch origin main
+git reset --hard origin/main
 
 echo "📦 Install..."
 npm install
