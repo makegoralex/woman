@@ -7,7 +7,7 @@ const rutubeUrl = "https://rutube.ru/channel/38482316/";
 const founderLeftPhoto = "https://s10.iimage.su/s/22/gvPWh71xlYDOi4oSdcf0nWjnmVc2VA0S3w1SrEz6N.png";
 const founderRightPhoto = "https://s10.iimage.su/s/22/guNsQNexEI1a9Sdz4oCeDiaBCHUd4Qv3BRbNnsg1i.png";
 
-const events = [
+let events = [
   {
     slug: "business-breakfast-march",
     title: "Бизнес-завтрак: личный бренд 2026",
@@ -106,7 +106,7 @@ const events = [
   },
 ];
 
-const posts = [
+let posts = [
   { slug: "march-community-results", title: "Как прошёл март в EVTENIA: 4 встречи и 120 новых знакомств", category: "Новости клуба", date: "20 марта 2026", excerpt: "Подвели итоги месяца и собрали лучшие моменты встреч в одном материале." },
   { slug: "career-shifts", title: "Бизнес и карьера: как мягко расти в период изменений", category: "Бизнес и карьера", date: "16 марта 2026", excerpt: "Практические подходы от участников сообщества, которые масштабируют проекты без выгорания." },
   { slug: "interview-founder", title: "Интервью с основателем EVTENIA: зачем нам культура сообщества", category: "Интервью", date: "10 марта 2026", excerpt: "О миссии сообщества, ценностях и том, как рождаются сильные связи." },
@@ -117,7 +117,7 @@ const posts = [
   { slug: "safe-networking", title: "Как строить нетворкинг в безопасной поддерживающей среде", category: "Полезные материалы", date: "10 февраля 2026", excerpt: "Принципы общения и форматы знакомств, которые работают вдолгую." },
 ];
 
-const galleryAlbums = [
+let galleryAlbums = [
   {
     title: "Весенний business brunch",
     date: "март 2026",
@@ -135,14 +135,14 @@ const galleryAlbums = [
   },
 ];
 
-const testimonials = [
+let testimonials = [
   { quote: "Я пришла за новыми контактами, а получила сильное окружение и поддержку на каждом этапе.", name: "Екатерина С.", role: "предприниматель" },
   { quote: "В EVTENIA комфортно говорить о росте, сомнениях и идеях — тебя действительно слышат.", name: "Мария Л.", role: "участник сообщества" },
   { quote: "После двух встреч я нашла партнера для нового проекта и уверенность выступать публично.", name: "Анна Р.", role: "маркетинг-консультант" },
   { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основатель бренда" },
 ];
 
-const teamMembers = {
+let teamMembers = {
   founder: {
     name: "Евгения Тарасова",
     role: "Основатель сообщества EVTENIA",
@@ -157,7 +157,7 @@ const teamMembers = {
 };
 
 
-const partners = [
+let partners = [
   { name: "Счастливый дом", href: "https://home58.ru/" },
   { name: "Строительство домов Evtenia", href: "https://dom.evtenia.ru/" },
   { name: "Агентство недвижимости Evtenia", href: "https://evtenia.ru/" },
@@ -169,7 +169,7 @@ const partners = [
 ];
 
 
-const services = [
+let services = [
   {
     slug: "ask-expert",
     title: "Спроси эксперта",
@@ -192,13 +192,13 @@ const services = [
   },
 ];
 
-const serviceApplications = [
+let serviceApplications = [
   { name: "Консультация по самопрезентации", author: "Анна, эксперт по коммуникациям", status: "На модерации" },
   { name: "Мини-разбор визуальной упаковки", author: "Мария, дизайнер", status: "Одобрено" },
   { name: "Практикум по публичному выступлению", author: "Елена, тренер", status: "Требует правок" },
 ];
 
-const pageSeo = {
+let pageSeo = {
   "/": { title: "EVTENIA — клуб для всех, события и развитие", description: "Современное сообщество EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для всех, кто растёт в бизнесе и жизни." },
   "/events": { title: "Мероприятия EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
@@ -229,13 +229,13 @@ const brainFitnessGallery = [
   "https://s10.iimage.su/s/08/gzRQx7GxmshYzD0hTAJGtgCTliaJpZ9Dp8qIoMqLv.jpg",
 ];
 
-const mediaProjects = [
+let mediaProjects = [
   { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
   { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и истории людей." },
   { slug: "blagodaryu-s-evtenia", title: "Благодарю с Evtenia", description: "Проект про благодарность, поддержку и внутреннюю устойчивость в ежедневности." },
 ];
 
-const clubProjects = [
+let clubProjects = [
   { slug: "fitnes-dlya-mozga", title: "Фитнес для мозга" },
   { slug: "networking", title: "Нетворкинг" },
   { slug: "sozdanie-meropriyatij", title: "Создание мероприятий" },
@@ -248,7 +248,7 @@ const clubProjects = [
   { slug: "prekrasnaya-ya", title: "Прекрасная Я" },
 ];
 
-const projectDetails = {
+let projectDetails = {
   "fitnes-dlya-mozga": {
     lead: {
       name: "Елена Козедуб",
@@ -377,7 +377,7 @@ const projectDetails = {
   },
 };
 
-const regionalBranches = [
+let regionalBranches = [
   {
     slug: "penza",
     city: "Пенза",
@@ -428,6 +428,122 @@ const regionalBranches = [
     ],
   },
 ];
+
+const CMS_STORAGE_KEY = "evtenia_cms_content_v1";
+const ADMIN_SESSION_KEY = "evtenia_admin_session";
+const ADMIN_LOGIN = "admin";
+const ADMIN_PASSWORD = "Evtenia2026!";
+
+const initialCmsContent = JSON.parse(JSON.stringify({ events, posts, galleryAlbums, testimonials, teamMembers, partners, services, serviceApplications, regionalBranches, mediaProjects, clubProjects, projectDetails, pageSeo }));
+
+const cmsSections = [
+  { key: "events", title: "Мероприятия", type: "array" },
+  { key: "posts", title: "Новости", type: "array" },
+  { key: "galleryAlbums", title: "Галерея", type: "array" },
+  { key: "testimonials", title: "Отзывы", type: "array" },
+  { key: "teamMembers", title: "Команда", type: "object" },
+  { key: "partners", title: "Партнеры", type: "array" },
+  { key: "services", title: "Услуги", type: "array" },
+  { key: "serviceApplications", title: "Заявки услуг", type: "array" },
+  { key: "regionalBranches", title: "Отделения", type: "array" },
+  { key: "mediaProjects", title: "Видеопроекты", type: "array" },
+  { key: "clubProjects", title: "Проекты", type: "array" },
+  { key: "projectDetails", title: "Контент проектов", type: "object" },
+  { key: "pageSeo", title: "SEO страниц", type: "object" },
+];
+
+const getDefaultCmsContent = () => JSON.parse(JSON.stringify(initialCmsContent));
+
+function applyCmsContent(content) {
+  if (!content || typeof content !== "object") return;
+  events = Array.isArray(content.events) ? content.events : events;
+  posts = Array.isArray(content.posts) ? content.posts : posts;
+  galleryAlbums = Array.isArray(content.galleryAlbums) ? content.galleryAlbums : galleryAlbums;
+  testimonials = Array.isArray(content.testimonials) ? content.testimonials : testimonials;
+  teamMembers = content.teamMembers && typeof content.teamMembers === "object" ? content.teamMembers : teamMembers;
+  partners = Array.isArray(content.partners) ? content.partners : partners;
+  services = Array.isArray(content.services) ? content.services : services;
+  serviceApplications = Array.isArray(content.serviceApplications) ? content.serviceApplications : serviceApplications;
+  regionalBranches = Array.isArray(content.regionalBranches) ? content.regionalBranches : regionalBranches;
+  mediaProjects = Array.isArray(content.mediaProjects) ? content.mediaProjects : mediaProjects;
+  clubProjects = Array.isArray(content.clubProjects) ? content.clubProjects : clubProjects;
+  projectDetails = content.projectDetails && typeof content.projectDetails === "object" ? content.projectDetails : projectDetails;
+  pageSeo = content.pageSeo && typeof content.pageSeo === "object" ? content.pageSeo : pageSeo;
+}
+
+function loadStoredCmsContent() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(CMS_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (error) {
+    console.warn("Не удалось прочитать CMS-контент", error);
+    return null;
+  }
+}
+
+async function loadServerCmsContent() {
+  try {
+    const response = await fetch("/api/content");
+    if (!response.ok) return null;
+    const content = await response.json();
+    return content && Object.keys(content).length ? content : null;
+  } catch (error) {
+    console.warn("Не удалось загрузить CMS-контент с сервера", error);
+    return null;
+  }
+}
+
+async function saveServerCmsContent(content) {
+  const response = await fetch("/api/content", {
+    method: "PUT",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(content),
+  });
+  if (!response.ok) {
+    const details = await response.json().catch(() => ({}));
+    throw new Error(details.error || `сервер ответил ${response.status}`);
+  }
+}
+
+async function uploadCmsImages(dataUrls) {
+  try {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ files: dataUrls }),
+    });
+    if (!response.ok) throw new Error("сервер не принял изображения");
+    const result = await response.json();
+    return result.urls?.length ? result.urls : dataUrls;
+  } catch (error) {
+    console.warn("Не удалось загрузить изображения на сервер, используем локальные данные", error);
+    return dataUrls;
+  }
+}
+
+async function replaceEmbeddedImages(value) {
+  if (typeof value === "string") {
+    if (!value.startsWith("data:image/")) return value;
+    const urls = await uploadCmsImages([value]);
+    return urls[0] || value;
+  }
+  if (Array.isArray(value)) {
+    return Promise.all(value.map((item) => replaceEmbeddedImages(item)));
+  }
+  if (value && typeof value === "object") {
+    const entries = await Promise.all(Object.entries(value).map(async ([key, item]) => [key, await replaceEmbeddedImages(item)]));
+    return Object.fromEntries(entries);
+  }
+  return value;
+}
+
+if (typeof window !== "undefined") {
+  applyCmsContent(loadStoredCmsContent());
+}
 
 function usePath() {
   const [path, setPath] = useState(window.location.pathname);
@@ -663,6 +779,36 @@ function Hero({ goTo }) {
   );
 }
 
+const russianMonthNumbers = {
+  января: 0,
+  февраля: 1,
+  марта: 2,
+  апреля: 3,
+  мая: 4,
+  июня: 5,
+  июля: 6,
+  августа: 7,
+  сентября: 8,
+  октября: 9,
+  ноября: 10,
+  декабря: 11,
+};
+
+function parseEventDate(dateText) {
+  const match = String(dateText || "").trim().toLowerCase().match(/(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  const monthIndex = russianMonthNumbers[month];
+  if (monthIndex === undefined) return null;
+  return new Date(Number(year), monthIndex, Number(day), 23, 59, 59);
+}
+
+function getEventStatus(event) {
+  const eventDate = parseEventDate(event.date);
+  if (!eventDate) return "future";
+  return eventDate.getTime() >= Date.now() ? "future" : "past";
+}
+
 function Home({ goTo }) {
   return (
     <div className="page">
@@ -674,7 +820,7 @@ function Home({ goTo }) {
 
       <section>
         <div className="section-head"><h2>Ближайшие мероприятия</h2><button onClick={() => goTo("/poster")}>Вся афиша →</button></div>
-        <div className="cards grid-3">{events.filter((e) => e.status === "future").slice(0, 4).map((e) => <EventCard key={e.slug} event={e} goTo={goTo} />)}</div>
+        <div className="cards grid-3">{events.filter((e) => getEventStatus(e) === "future").slice(0, 4).map((e) => <EventCard key={e.slug} event={e} goTo={goTo} />)}</div>
       </section>
 
       <section>
@@ -774,7 +920,7 @@ function EventsPage({ goTo }) {
   const projects = ["all", ...clubProjects.map((p) => p.slug)];
   const cities = ["all", ...new Set(events.map((e) => e.city))];
   const filtered = events.filter((e) =>
-    (status === "all" ? true : e.status === status)
+    (status === "all" ? true : getEventStatus(e) === status)
     && (project === "all" ? true : e.projectSlug === project)
     && (city === "all" ? true : e.city === city)
   );
@@ -782,7 +928,7 @@ function EventsPage({ goTo }) {
     <div className="page">
       <h1>Мероприятия EVTENIA</h1>
       <div className="filters">
-        <label>Статус <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
+        <label>Период <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
         <label>Направление
           <select value={project} onChange={(e) => setProject(e.target.value)}>
             {projects.map((p) => <option key={p} value={p}>{p === "all" ? "Все направления" : clubProjects.find((item) => item.slug === p)?.title}</option>)}
@@ -799,21 +945,63 @@ function EventsPage({ goTo }) {
   );
 }
 
+function PhotoLightbox({ photos, index, onClose, onNavigate }) {
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowLeft") onNavigate(index === 0 ? photos.length - 1 : index - 1);
+      if (event.key === "ArrowRight") onNavigate(index === photos.length - 1 ? 0 : index + 1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [index, onClose, onNavigate, photos.length]);
+
+  if (!photos.length || index === null) return null;
+  const previousIndex = index === 0 ? photos.length - 1 : index - 1;
+  const nextIndex = index === photos.length - 1 ? 0 : index + 1;
+
+  return (
+    <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label="Галерея" onClick={onClose}>
+      <button className="photo-lightbox-close" onClick={onClose} aria-label="Закрыть">×</button>
+      <button className="photo-lightbox-nav prev" onClick={(event) => { event.stopPropagation(); onNavigate(previousIndex); }} aria-label="Предыдущее фото">‹</button>
+      <img src={photos[index]} alt={`Галерея ${index + 1}`} onClick={(event) => event.stopPropagation()} />
+      <button className="photo-lightbox-nav next" onClick={(event) => { event.stopPropagation(); onNavigate(nextIndex); }} aria-label="Следующее фото">›</button>
+    </div>
+  );
+}
+
 function EventDetail({ slug, goTo }) {
   const event = events.find((e) => e.slug === slug);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   if (!event) return <NotFound goTo={goTo} />;
+  const eventGallery = event.gallery || [];
   const related = events.filter((e) => e.slug !== slug).slice(0, 3);
   return (
     <div className="page">
       <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
       <h1>{event.title}</h1>
-      <img className="detail-cover" src={event.image} alt={event.title} />
+      {eventGallery.length === 0 && event.image && <img className="detail-cover event-detail-cover" src={event.image} alt={event.title} />}
+      {eventGallery.length > 0 && (
+        <section className="event-gallery-section">
+          <h2>Галерея мероприятия</h2>
+          <div className="album-photo-grid event-photo-grid">
+            {eventGallery.map((photo, index) => (
+              <figure key={`${event.slug}-photo-${index}`}>
+                <button className="gallery-photo-button" onClick={() => setLightboxIndex(index)} aria-label={`Открыть фото ${index + 1}`}>
+                  <img src={photo} alt={`${event.title} ${index + 1}`} />
+                </button>
+              </figure>
+            ))}
+          </div>
+          <PhotoLightbox photos={eventGallery} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
+        </section>
+      )}
       <p><strong>Дата и время:</strong> {event.date}, {event.time}</p>
       <p><strong>Место:</strong> {event.place}</p>
       <p><strong>Кому подойдёт:</strong> {event.audience}</p>
       <p><strong>Описание:</strong> {event.short}</p>
       <h2>Программа</h2>
-      <ul>{event.program.map((item) => <li key={item}>{item}</li>)}</ul>
+      <ul>{(event.program || []).map((item) => <li key={item}>{item}</li>)}</ul>
       <h3>Спикеры</h3><p>Основатель клуба, приглашённые эксперты и участники с практическими кейсами.</p>
       <button className="btn" onClick={() => goTo("/join")}>Записаться</button>
 
@@ -900,6 +1088,19 @@ function AboutPage() {
   );
 }
 
+function ConsentCheckbox({ goTo }) {
+  return (
+    <label className="consent-checkbox">
+      <input required type="checkbox" />
+      <span>Я соглашаюсь с {" "}
+        <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политикой конфиденциальности</button>
+        {" "}и даю {" "}
+        <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку персональных данных</button>.
+      </span>
+    </label>
+  );
+}
+
 function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
@@ -916,12 +1117,7 @@ function JoinForm({ compact = false, goTo }) {
           <option>Участие в сообществе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
         </select>
         <textarea placeholder="Комментарий" rows="4" />
-        <small className="form-note">
-          Отправляя форму, вы принимаете{" "}
-          <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политику конфиденциальности</button>
-          {" "}и{" "}
-          <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку данных</button>.
-        </small>
+        <ConsentCheckbox goTo={goTo} />
         <button className="btn" type="submit">Отправить заявку</button>
       </form>
     </section>
@@ -943,10 +1139,37 @@ function JoinPage({ goTo }) {
 }
 
 function GalleryPage() {
+  const [lightbox, setLightbox] = useState(null);
+  const galleryPhotos = galleryAlbums.flatMap((album) => (album.photos?.length ? album.photos : [album.cover]).filter(Boolean));
   return (
     <div className="page">
-      <h1>Галерея / фотоотчёты</h1>
-      <div className="gallery-grid">{galleryAlbums.map((album) => <figure key={album.title}><img src={album.cover} alt={album.title} /><figcaption>{album.title} · {album.date}</figcaption></figure>)}</div>
+      <h1>Галерея</h1>
+      <div className="gallery-grid">
+        {galleryAlbums.map((album, albumIndex) => {
+          const photos = (album.photos?.length ? album.photos : [album.cover]).filter(Boolean);
+          const firstPhotoIndex = galleryAlbums.slice(0, albumIndex).reduce((total, currentAlbum) => total + (currentAlbum.photos?.length ? currentAlbum.photos.length : currentAlbum.cover ? 1 : 0), 0);
+          return (
+            <figure key={album.title}>
+              <button className="gallery-photo-button" onClick={() => photos.length && setLightbox(firstPhotoIndex)} aria-label={`Открыть альбом ${album.title}`}>
+                <img src={album.cover || photos[0]} alt={album.title} />
+              </button>
+              <figcaption>{album.title} · {album.date}</figcaption>
+            </figure>
+          );
+        })}
+      </div>
+      {galleryPhotos.length > 0 && (
+        <div className="album-photo-grid">
+          {galleryPhotos.map((photo, index) => (
+            <figure key={`${photo.slice(0, 24)}-${index}`}>
+              <button className="gallery-photo-button" onClick={() => setLightbox(index)} aria-label={`Открыть фото ${index + 1}`}>
+                <img src={photo} alt={`Галерея ${index + 1}`} />
+              </button>
+            </figure>
+          ))}
+        </div>
+      )}
+      <PhotoLightbox photos={galleryPhotos} index={lightbox} onClose={() => setLightbox(null)} onNavigate={setLightbox} />
     </div>
   );
 }
@@ -1056,7 +1279,7 @@ function OrgProjectPage({ slug, goTo }) {
           </section>
           {details.gallery && (
             <section>
-              <h2>Фотографии направления</h2>
+              <h2>Галерея направления</h2>
               <div className="gallery-grid">
                 {details.gallery.map((photo, idx) => (
                   <figure key={photo}>
@@ -1076,7 +1299,7 @@ function OrgProjectPage({ slug, goTo }) {
         <section>
           <h2>Отзывы</h2>
           <div className="cards grid-2">
-            {details.testimonials.map((item) => <article key={item} className="card"><p>“{item}”</p></article>)}
+            {(details.testimonials || []).map((item) => <article key={item} className="card"><p>“{item}”</p></article>)}
           </div>
         </section>
       )}
@@ -1158,12 +1381,12 @@ function RegionDetailPage({ slug, goTo }) {
         {branch.leaders.map((leader) => (
           <article key={leader.name} className="card">
             <div className="branch-leader-item">
-              <img src={leader.photo} alt={leader.name} />
+              {leader.photo && <img src={leader.photo} alt={leader.name} />}
               <div>
                 <strong>{leader.name}</strong>
                 <p>{leader.role}</p>
                 <p>{leader.contact}</p>
-                <p>Соцсети: {leader.socials.join(" · ")}</p>
+                {leader.socials?.length > 0 && <p>Соцсети: {leader.socials.join(" · ")}</p>}
               </div>
             </div>
           </article>
@@ -1235,7 +1458,7 @@ function TeamPage() {
 }
 
 
-function PartnersPage() {
+function PartnersPage({ goTo }) {
   return (
     <div className="page">
       <h1>Партнеры</h1>
@@ -1264,6 +1487,7 @@ function PartnersPage() {
             <option>Экспертная программа</option>
           </select>
           <textarea required placeholder="Коротко опишите предложение" rows="4" />
+          <ConsentCheckbox goTo={goTo} />
           <button className="btn" type="submit">Отправить заявку партнера</button>
         </form>
       </section>
@@ -1381,7 +1605,7 @@ function ServiceDetailPage({ slug, goTo }) {
   );
 }
 
-function ProposeServicePage() {
+function ProposeServicePage({ goTo }) {
   return (
     <div className="page">
       <h1>Предложить свою услугу</h1>
@@ -1393,6 +1617,7 @@ function ProposeServicePage() {
           <input required placeholder="Название услуги" />
           <input placeholder="Стоимость или формат расчета" />
           <textarea required placeholder="Кратко опишите услугу, пользу и для кого она подходит" rows="5" />
+          <ConsentCheckbox goTo={goTo} />
           <button className="btn" type="submit">Отправить на модерацию</button>
         </form>
       </section>
@@ -1411,47 +1636,431 @@ function FaqPage() {
   );
 }
 
-function AdminPage() {
-  const [state, setState] = useState({
-    eventsCount: events.length,
-    postsCount: posts.length,
-    galleryCount: galleryAlbums.length,
-    serviceApplicationsCount: serviceApplications.length,
-    seoReady: "Да",
-    applicationsToday: 7,
+const makeSlug = (value) => value
+  .toLowerCase()
+  .trim()
+  .replace(/ё/g, "e")
+  .replace(/[^a-zа-я0-9]+/g, "-")
+  .replace(/^-+|-+$/g, "") || `item-${Date.now()}`;
+
+function resizeImageFile(file, maxSize = 900, quality = 0.68) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/webp", quality));
+      };
+      image.onerror = reject;
+      image.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
   });
+}
+
+function ImageDropzone({ label = "Фото", value, onChange, multiple = false }) {
+  const [isDragging, setIsDragging] = useState(false);
+  const values = multiple ? value || [] : value ? [value] : [];
+
+  const processFiles = async (files) => {
+    const images = Array.from(files).filter((file) => file.type.startsWith("image/"));
+    if (!images.length) return;
+    const resized = await Promise.all(images.map((file) => resizeImageFile(file)));
+    const uploaded = await uploadCmsImages(resized);
+    onChange(multiple ? [...values, ...uploaded] : uploaded[0]);
+  };
+
   return (
-    <div className="page">
-      <h1>Админка EVTENIA (демо)</h1>
-      <p>Панель показывает базовую структуру CMS для управления контентом и заявками.</p>
-      <div className="cards grid-3">
-        <article className="card"><h3>Мероприятия</h3><p>{state.eventsCount} карточек</p></article>
-        <article className="card"><h3>Новости</h3><p>{state.postsCount} публикаций</p></article>
-        <article className="card"><h3>Галерея</h3><p>{state.galleryCount} альбома</p></article>
-        <article className="card"><h3>SEO-поля</h3><p>{state.seoReady}</p></article>
-        <article className="card"><h3>Контакты</h3><p>Редактируются из CMS</p></article>
-        <article className="card"><h3>Заявки за сегодня</h3><p>{state.applicationsToday}</p></article>
-        <article className="card"><h3>Заявки услуг</h3><p>{state.serviceApplicationsCount} на модерации и в работе</p></article>
-        <article className="card"><h3>Отделения</h3><p>{regionalBranches.length} региональных карточек</p></article>
-        <article className="card"><h3>Доступы</h3><p>Главный админ назначает руководителей отделений</p></article>
-      </div>
-      <label className="admin-input">Демо-поле: изменить количество заявок
-        <input type="number" value={state.applicationsToday} onChange={(e) => setState((prev) => ({ ...prev, applicationsToday: Number(e.target.value) }))} />
-      </label>
-      <section className="card">
-        <h2>Модерация услуг</h2>
-        <p>Администратор может одобрить, отклонить или изменить заявку перед публикацией.</p>
-        <div className="cards grid-3">
-          {serviceApplications.map((item) => (
-            <article className="card" key={item.name}>
-              <h3>{item.name}</h3>
-              <p>{item.author}</p>
-              <small>{item.status}</small>
-              <div className="admin-actions"><button>Одобрить</button><button>Изменить</button><button>Отклонить</button></div>
-            </article>
+    <div
+      className={`image-dropzone ${isDragging ? "dragging" : ""}`}
+      onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }}
+      onDragLeave={() => setIsDragging(false)}
+      onDrop={(event) => { event.preventDefault(); setIsDragging(false); processFiles(event.dataTransfer.files); }}
+    >
+      <strong>{label}</strong>
+      <p>Перетащите фото сюда или выберите файл. Изображение автоматически сжимается для загрузки больших галерей.</p>
+      <input type="file" accept="image/*" multiple={multiple} onChange={(event) => processFiles(event.target.files)} />
+      {!!values.length && (
+        <div className="image-preview-grid">
+          {values.map((src, index) => (
+            <figure key={`${src.slice(0, 24)}-${index}`}>
+              <img src={src} alt={`${label} ${index + 1}`} />
+              {multiple && <button type="button" onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}>Удалить</button>}
+            </figure>
           ))}
         </div>
-      </section>
+      )}
+    </div>
+  );
+}
+
+function AdminTextField({ label, value, onChange, textarea = false }) {
+  return <label>{label}{textarea ? <textarea value={value || ""} onChange={(event) => onChange(event.target.value)} rows="4" /> : <input value={value || ""} onChange={(event) => onChange(event.target.value)} />}</label>;
+}
+
+function AdminItemSelector({ items, selectedIndex, onSelect, onAdd, getTitle, addLabel }) {
+  return (
+    <aside className="admin-item-selector">
+      <button className="btn btn-small" onClick={onAdd}>{addLabel}</button>
+      <div className="admin-item-list">
+        {items.map((item, index) => (
+          <button className={selectedIndex === index ? "active" : ""} key={`${getTitle(item)}-${index}`} onClick={() => onSelect(index)}>
+            {getTitle(item) || `Запись ${index + 1}`}
+          </button>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
+function EventsManager({ items, projects, onChange }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const event = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => {
+    onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", image: "", gallery: [], short: "", program: [], audience: "" }, ...items]);
+    setSelectedIndex(0);
+  };
+  const remove = () => {
+    onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex));
+    setSelectedIndex(Math.max(0, safeIndex - 1));
+  };
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Мероприятия</h2><p>Выберите мероприятие из списка и редактируйте только его.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить мероприятие" />
+        {event ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid">
+              <AdminTextField label="Название" value={event.title} onChange={(value) => update({ title: value, slug: event.slug || makeSlug(value) })} />
+              <AdminTextField label="URL slug" value={event.slug} onChange={(value) => update({ slug: makeSlug(value) })} />
+              <AdminTextField label="Дата" value={event.date} onChange={(value) => update({ date: value })} />
+              <AdminTextField label="Время" value={event.time} onChange={(value) => update({ time: value })} />
+              <AdminTextField label="Место" value={event.place} onChange={(value) => update({ place: value })} />
+              <AdminTextField label="Город" value={event.city} onChange={(value) => update({ city: value })} />
+              <label>Формат<select value={event.format || "Оффлайн"} onChange={(e) => update({ format: e.target.value })}><option>Оффлайн</option><option>Онлайн</option><option>Гибрид</option></select></label>
+              <label>Проект<select value={event.projectSlug || ""} onChange={(e) => update({ projectSlug: e.target.value })}>{projects.map((project) => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
+              <AdminTextField label="Категория" value={event.category} onChange={(value) => update({ category: value })} />
+            </div>
+            <AdminTextField label="Краткое описание" value={event.short} onChange={(value) => update({ short: value })} textarea />
+            <AdminTextField label="Для кого" value={event.audience} onChange={(value) => update({ audience: value })} textarea />
+            <AdminTextField label="Программа — каждый пункт с новой строки" value={(event.program || []).join("\n")} onChange={(value) => update({ program: value.split("\n").filter(Boolean) })} textarea />
+            <ImageDropzone label="Обложка мероприятия" value={event.image} onChange={(value) => update({ image: value })} />
+            <ImageDropzone label="Галерея мероприятия" value={event.gallery || []} multiple onChange={(value) => update({ gallery: value })} />
+            <p className="admin-note">После загрузки фото нажмите общую кнопку «Сохранить изменения» сверху. Статус «будущее/прошедшее» определяется автоматически по дате. Блок «Спикеры» пока фиксированный.</p>
+            <div className="admin-actions"><button onClick={remove}>Удалить</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет мероприятий.</p></article>}
+      </div>
+    </section>
+  );
+}
+
+function ProjectsManager({ projects, details, onProjectsChange, onDetailsChange }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(projects.length - 1, 0));
+  const project = projects[safeIndex];
+  const detail = project ? details[project.slug] || {} : {};
+  const leaders = detail.leaders || (detail.lead ? [detail.lead] : []);
+  const updateProject = (patch) => onProjectsChange(projects.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const updateDetails = (slug, patch) => onDetailsChange({ ...details, [slug]: { ...(details[slug] || {}), ...patch } });
+  const renameProjectSlug = (nextSlug) => {
+    const previousSlug = project.slug;
+    const normalizedSlug = makeSlug(nextSlug);
+    updateProject({ slug: normalizedSlug });
+    if (previousSlug === normalizedSlug) return;
+    const { [previousSlug]: previousDetails, ...restDetails } = details;
+    onDetailsChange({ ...restDetails, [normalizedSlug]: previousDetails || {} });
+  };
+  const removeProject = () => {
+    const { [project.slug]: _removedDetails, ...restDetails } = details;
+    onProjectsChange(projects.filter((_, itemIndex) => itemIndex !== safeIndex));
+    onDetailsChange(restDetails);
+    setSelectedIndex(Math.max(0, safeIndex - 1));
+  };
+  const add = () => {
+    const slug = `project-${Date.now()}`;
+    onProjectsChange([{ slug, title: "Новый проект" }, ...projects]);
+    onDetailsChange({ ...details, [slug]: { description: ["Описание проекта"], photo: "", leaders: [], gallery: [], testimonials: [] } });
+    setSelectedIndex(0);
+  };
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Проекты и направления</h2><p>Выберите проект из списка по названию.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={projects} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить проект" />
+        {project ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid">
+              <AdminTextField label="Название проекта" value={project.title} onChange={(value) => updateProject({ title: value })} />
+              <AdminTextField label="URL slug" value={project.slug} onChange={(value) => renameProjectSlug(value)} />
+            </div>
+            <AdminTextField label="Описание — абзацы с новой строки" value={Array.isArray(detail.description) ? detail.description.join("\n") : detail.description || ""} onChange={(value) => updateDetails(project.slug, { description: value.split("\n").filter(Boolean) })} textarea />
+            <AdminTextField label="Для кого / программа — пункты с новой строки" value={(detail.forWhom || []).join("\n")} onChange={(value) => updateDetails(project.slug, { forWhom: value.split("\n").filter(Boolean) })} textarea />
+            <AdminTextField label="Результаты — пункты с новой строки" value={(detail.results || []).join("\n")} onChange={(value) => updateDetails(project.slug, { results: value.split("\n").filter(Boolean) })} textarea />
+            <ImageDropzone label="Обложка проекта" value={detail.photo} onChange={(value) => updateDetails(project.slug, { photo: value })} />
+            <ImageDropzone label="Галерея проекта" value={detail.gallery || []} multiple onChange={(value) => updateDetails(project.slug, { gallery: value })} />
+            <div className="admin-nested-list"><h3>Руководители</h3>{leaders.map((leader, leaderIndex) => <div className="admin-form-grid" key={leaderIndex}><AdminTextField label="Имя" value={leader.name} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role || leader.bio} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /></div>)}<button onClick={() => updateDetails(project.slug, { leaders: [...leaders, { name: "", role: "" }] })}>Добавить руководителя</button></div>
+            <div className="admin-actions"><button onClick={removeProject}>Удалить проект</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет проектов.</p></article>}
+      </div>
+    </section>
+  );
+}
+
+function RegionsManager({ items, onChange }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const region = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => { onChange([{ slug: `region-${Date.now()}`, city: "Новый город", cover: "", leaders: [], news: [] }, ...items]); setSelectedIndex(0); };
+  const remove = () => { onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex)); setSelectedIndex(Math.max(0, safeIndex - 1)); };
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Отделения и руководители</h2><p>Выберите отделение из списка.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.city} addLabel="Добавить отделение" />
+        {region ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid"><AdminTextField label="Город" value={region.city} onChange={(value) => update({ city: value })} /><AdminTextField label="URL slug" value={region.slug} onChange={(value) => update({ slug: makeSlug(value) })} /></div>
+            <ImageDropzone label="Обложка отделения" value={region.cover} onChange={(value) => update({ cover: value })} />
+            <div className="admin-nested-list">
+              <h3>Руководители</h3>
+              {(region.leaders || []).map((leader, leaderIndex) => (
+                <div className="admin-leader-editor" key={leaderIndex}>
+                  <div className="admin-form-grid"><AdminTextField label="Имя" value={leader.name} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /><AdminTextField label="Контакт" value={leader.contact} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, contact: value } : item) })} /></div>
+                  <ImageDropzone label="Фото руководителя" value={leader.photo} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, photo: value } : item) })} />
+                  <button onClick={() => update({ leaders: region.leaders.filter((_, itemIndex) => itemIndex !== leaderIndex) })}>Удалить руководителя</button>
+                </div>
+              ))}
+              <button onClick={() => update({ leaders: [...(region.leaders || []), { name: "", role: "", contact: "", photo: "", socials: [] }] })}>Добавить руководителя</button>
+            </div>
+            <div className="admin-actions"><button onClick={remove}>Удалить отделение</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет отделений.</p></article>}
+      </div>
+    </section>
+  );
+}
+
+function GalleryManager({ items, onChange }) {
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const album = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => { onChange([{ title: "Новый альбом", date: "", cover: "", photos: [] }, ...items]); setSelectedIndex(0); };
+  const remove = () => { onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex)); setSelectedIndex(Math.max(0, safeIndex - 1)); };
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Галерея</h2><p>Выберите альбом из списка.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить альбом" />
+        {album ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid"><AdminTextField label="Название альбома" value={album.title} onChange={(value) => update({ title: value })} /><AdminTextField label="Дата" value={album.date} onChange={(value) => update({ date: value })} /></div>
+            <ImageDropzone label="Обложка альбома" value={album.cover} onChange={(value) => update({ cover: value })} />
+            <ImageDropzone label="Галерея альбома" value={album.photos || []} multiple onChange={(value) => update({ photos: value, cover: album.cover || value[0] || "" })} />
+            <p className="admin-note">После загрузки галереи нажмите «Сохранить изменения» сверху.</p>
+            <div className="admin-actions"><button onClick={remove}>Удалить альбом</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет альбомов.</p></article>}
+      </div>
+    </section>
+  );
+}
+
+function AdminPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(() => window.sessionStorage.getItem(ADMIN_SESSION_KEY) === "true");
+  const [loginForm, setLoginForm] = useState({ login: "", password: "" });
+  const [loginError, setLoginError] = useState("");
+  const [activeTool, setActiveTool] = useState("events");
+  const [activeSection, setActiveSection] = useState(cmsSections[0].key);
+  const [content, setContent] = useState(() => loadStoredCmsContent() || getDefaultCmsContent());
+  const [draftContent, setDraftContent] = useState(() => content);
+  const [draft, setDraft] = useState(() => JSON.stringify(content[cmsSections[0].key], null, 2));
+  const [editorError, setEditorError] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
+
+  useEffect(() => {
+    loadServerCmsContent().then((serverContent) => {
+      if (!serverContent) return;
+      setContent(serverContent);
+      setDraftContent(serverContent);
+      applyCmsContent(serverContent);
+      setDraft(JSON.stringify(serverContent[cmsSections[0].key], null, 2));
+    });
+  }, []);
+
+  const persistContent = async (nextContent, message = "Сохранено. Контент записан в серверную CMS и доступен всем посетителям.") => {
+    try {
+      setSaveMessage("Сохраняем изображения и контент на сервер...");
+      const serverContent = await replaceEmbeddedImages(nextContent);
+      await saveServerCmsContent(serverContent);
+      try {
+        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
+      } catch (cacheError) {
+        console.warn("Сервер сохранил контент, но локальный кеш переполнен", cacheError);
+      }
+      setContent(serverContent);
+      setDraftContent(serverContent);
+      applyCmsContent(serverContent);
+      setSaveMessage(message);
+    } catch (error) {
+      setSaveMessage(`Не удалось сохранить на сервер: ${error.message}. Проверьте доступ к админке и повторите сохранение.`);
+    }
+  };
+
+  const updateContentSection = (key, value) => {
+    setDraftContent((current) => ({ ...current, [key]: value }));
+    setSaveMessage("Есть несохраненные изменения — нажмите «Сохранить изменения».");
+  };
+
+  const saveVisualContent = () => {
+    persistContent(draftContent, "Сохранено. Все изменения, включая загруженные фотографии, записаны в серверной CMS.");
+  };
+
+  const summary = {
+    events: draftContent.events?.length || 0,
+    galleryAlbums: draftContent.galleryAlbums?.length || 0,
+    regionalBranches: draftContent.regionalBranches?.length || 0,
+    clubProjects: draftContent.clubProjects?.length || 0,
+    seoPages: Object.keys(draftContent.pageSeo || {}).length,
+  };
+
+  const selectSection = (key) => {
+    setActiveSection(key);
+    setDraft(JSON.stringify(draftContent[key], null, 2));
+    setEditorError("");
+    setSaveMessage("");
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    if (loginForm.login === ADMIN_LOGIN && loginForm.password === ADMIN_PASSWORD) {
+      window.sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
+      setIsAuthenticated(true);
+      setLoginError("");
+      return;
+    }
+    setLoginError("Неверный логин или пароль.");
+  };
+
+  const handleJsonSave = () => {
+    try {
+      const parsed = JSON.parse(draft);
+      persistContent({ ...draftContent, [activeSection]: parsed });
+      setEditorError("");
+    } catch (error) {
+      setEditorError(`Проверьте JSON: ${error.message}`);
+      setSaveMessage("");
+    }
+  };
+
+  const resetSection = () => {
+    const defaults = getDefaultCmsContent();
+    const nextContent = { ...content, [activeSection]: defaults[activeSection] };
+    persistContent(nextContent, "Раздел сброшен к исходному контенту.");
+    setDraft(JSON.stringify(nextContent[activeSection], null, 2));
+    setEditorError("");
+  };
+
+  const exportContent = () => {
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "evtenia-cms-content.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="page admin-login-page">
+        <section className="card admin-login-card">
+          <h1>Вход в CMS EVTENIA</h1>
+          <p className="lead">Админка защищена паролем. Введите учетные данные администратора.</p>
+          <form className="form" onSubmit={handleLogin}>
+            <input value={loginForm.login} onChange={(e) => setLoginForm((prev) => ({ ...prev, login: e.target.value }))} placeholder="Логин" autoComplete="username" />
+            <input value={loginForm.password} onChange={(e) => setLoginForm((prev) => ({ ...prev, password: e.target.value }))} placeholder="Пароль" type="password" autoComplete="current-password" />
+            {loginError && <p className="admin-error">{loginError}</p>}
+            <button className="btn" type="submit">Войти</button>
+          </form>
+        </section>
+      </div>
+    );
+  }
+
+  return (
+    <div className="page admin-page">
+      <div className="admin-heading">
+        <div>
+          <h1>CMS EVTENIA</h1>
+          <p className="lead">Рабочее управление контентом: добавляйте мероприятия, проекты, руководителей и адаптивные галереи. Фото можно перетащить мышью — CMS уменьшит их перед сохранением.</p>
+        </div>
+        <button className="btn btn-small" onClick={() => { window.sessionStorage.removeItem(ADMIN_SESSION_KEY); setIsAuthenticated(false); }}>Выйти</button>
+      </div>
+
+      <div className="cards grid-3 admin-stats">
+        <article className="card"><h3>Мероприятия</h3><p>{summary.events}</p></article>
+        <article className="card"><h3>Проекты</h3><p>{summary.clubProjects}</p></article>
+        <article className="card"><h3>Отделения</h3><p>{summary.regionalBranches}</p></article>
+        <article className="card"><h3>Альбомы</h3><p>{summary.galleryAlbums}</p></article>
+        <article className="card"><h3>SEO-страницы</h3><p>{summary.seoPages}</p></article>
+      </div>
+
+      <div className="admin-save-bar">
+        <p>Изменения в формах сначала попадают в черновик. Чтобы фотографии и тексты точно сохранились, нажмите кнопку сохранения.</p>
+        <button className="btn" onClick={saveVisualContent}>Сохранить изменения</button>
+      </div>
+
+      <div className="admin-tabs admin-main-tabs">
+        <button className={activeTool === "events" ? "active" : ""} onClick={() => setActiveTool("events")}>Мероприятия</button>
+        <button className={activeTool === "projects" ? "active" : ""} onClick={() => setActiveTool("projects")}>Проекты</button>
+        <button className={activeTool === "regions" ? "active" : ""} onClick={() => setActiveTool("regions")}>Отделения</button>
+        <button className={activeTool === "gallery" ? "active" : ""} onClick={() => setActiveTool("gallery")}>Галерея</button>
+        <button className={activeTool === "json" ? "active" : ""} onClick={() => setActiveTool("json")}>Расширенный JSON</button>
+        <button className="btn btn-small" onClick={exportContent}>Экспорт JSON</button>
+      </div>
+
+      {saveMessage && <p className="admin-success">{saveMessage}</p>}
+
+      {activeTool === "events" && <EventsManager items={draftContent.events || []} projects={draftContent.clubProjects || []} onChange={(value) => updateContentSection("events", value)} />}
+      {activeTool === "projects" && <ProjectsManager projects={draftContent.clubProjects || []} details={draftContent.projectDetails || {}} onProjectsChange={(value) => updateContentSection("clubProjects", value)} onDetailsChange={(value) => updateContentSection("projectDetails", value)} />}
+      {activeTool === "regions" && <RegionsManager items={draftContent.regionalBranches || []} onChange={(value) => updateContentSection("regionalBranches", value)} />}
+      {activeTool === "gallery" && <GalleryManager items={draftContent.galleryAlbums || []} onChange={(value) => updateContentSection("galleryAlbums", value)} />}
+
+      {activeTool === "json" && (
+        <section className="card admin-cms-card">
+          <div className="admin-cms-toolbar">
+            <div className="admin-tabs">
+              {cmsSections.map((section) => <button className={section.key === activeSection ? "active" : ""} key={section.key} onClick={() => selectSection(section.key)}>{section.title}</button>)}
+            </div>
+          </div>
+          <label className="admin-editor-label" htmlFor="cms-editor">Раздел: {cmsSections.find((section) => section.key === activeSection)?.title}</label>
+          <textarea id="cms-editor" className="admin-json-editor" value={draft} onChange={(e) => setDraft(e.target.value)} spellCheck="false" />
+          {editorError && <p className="admin-error">{editorError}</p>}
+          <div className="admin-actions">
+            <button className="btn" onClick={handleJsonSave}>Сохранить раздел</button>
+            <button onClick={() => setDraft(JSON.stringify(draftContent[activeSection], null, 2))}>Отменить правки</button>
+            <button onClick={resetSection}>Сбросить раздел</button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
@@ -1463,6 +2072,20 @@ function NotFound({ goTo }) {
 export default function App() {
   const { path, goTo } = usePath();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contentVersion, setContentVersion] = useState(0);
+
+  useEffect(() => {
+    loadServerCmsContent().then((serverContent) => {
+      if (!serverContent) return;
+      applyCmsContent(serverContent);
+      try {
+        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
+      } catch (cacheError) {
+        console.warn("Не удалось обновить локальный кеш CMS", cacheError);
+      }
+      setContentVersion((version) => version + 1);
+    });
+  }, []);
 
   useEffect(() => {
     const matched = path.startsWith("/events/")
@@ -1501,7 +2124,7 @@ export default function App() {
       document.head.appendChild(ogDesc);
     }
     ogDesc.setAttribute("content", matched.description);
-  }, [path]);
+  }, [path, contentVersion]);
 
   const page = useMemo(() => {
     if (path === "/") return <Home goTo={goTo} />;
@@ -1523,10 +2146,10 @@ export default function App() {
     if (path === "/contacts") return <ContactsPage goTo={goTo} />;
     if (path === "/privacy") return <LegalDocumentPage type="privacy" />;
     if (path === "/consent") return <LegalDocumentPage type="consent" />;
-    if (path === "/partners") return <PartnersPage />;
+    if (path === "/partners") return <PartnersPage goTo={goTo} />;
     if (path === "/stories") return <StoriesPage />;
     if (path === "/services") return <ServicesPage goTo={goTo} />;
-    if (path === "/services/propose-service") return <ProposeServicePage />;
+    if (path === "/services/propose-service") return <ProposeServicePage goTo={goTo} />;
     if (path.startsWith("/services/")) return <ServiceDetailPage slug={path.split("/services/")[1]} goTo={goTo} />;
     if (path === "/housing-committee") return <HousingCommitteePage />;
     if (path === "/courses") return <CoursesPage />;
@@ -1534,7 +2157,7 @@ export default function App() {
     if (path === "/team") return <TeamPage />;
     if (path === "/admin") return <AdminPage />;
     return <NotFound goTo={goTo} />;
-  }, [path]);
+  }, [path, contentVersion]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
