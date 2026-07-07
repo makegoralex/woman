@@ -895,7 +895,20 @@ function EventDetail({ slug, goTo }) {
     <div className="page">
       <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
       <h1>{event.title}</h1>
-      <img className="detail-cover" src={event.image} alt={event.title} />
+      <img className="detail-cover event-detail-cover" src={event.image} alt={event.title} />
+      {event.gallery?.length > 0 && (
+        <section className="event-gallery-section">
+          <h2>Галерея мероприятия</h2>
+          <p className="lead">{event.gallery.length} фото с мероприятия</p>
+          <div className="album-photo-grid event-photo-grid">
+            {event.gallery.map((photo, index) => (
+              <figure key={`${event.slug}-photo-${index}`}>
+                <img src={photo} alt={`${event.title} ${index + 1}`} />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
       <p><strong>Дата и время:</strong> {event.date}, {event.time}</p>
       <p><strong>Место:</strong> {event.place}</p>
       <p><strong>Кому подойдёт:</strong> {event.audience}</p>
