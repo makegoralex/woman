@@ -7,7 +7,7 @@ const rutubeUrl = "https://rutube.ru/channel/38482316/";
 const founderLeftPhoto = "https://s10.iimage.su/s/22/gvPWh71xlYDOi4oSdcf0nWjnmVc2VA0S3w1SrEz6N.png";
 const founderRightPhoto = "https://s10.iimage.su/s/22/guNsQNexEI1a9Sdz4oCeDiaBCHUd4Qv3BRbNnsg1i.png";
 
-const events = [
+let events = [
   {
     slug: "business-breakfast-march",
     title: "Бизнес-завтрак: личный бренд 2026",
@@ -106,7 +106,7 @@ const events = [
   },
 ];
 
-const posts = [
+let posts = [
   { slug: "march-community-results", title: "Как прошёл март в EVTENIA: 4 встречи и 120 новых знакомств", category: "Новости клуба", date: "20 марта 2026", excerpt: "Подвели итоги месяца и собрали лучшие моменты встреч в одном материале." },
   { slug: "career-shifts", title: "Бизнес и карьера: как мягко расти в период изменений", category: "Бизнес и карьера", date: "16 марта 2026", excerpt: "Практические подходы от участников сообщества, которые масштабируют проекты без выгорания." },
   { slug: "interview-founder", title: "Интервью с основателем EVTENIA: зачем нам культура сообщества", category: "Интервью", date: "10 марта 2026", excerpt: "О миссии сообщества, ценностях и том, как рождаются сильные связи." },
@@ -117,7 +117,7 @@ const posts = [
   { slug: "safe-networking", title: "Как строить нетворкинг в безопасной поддерживающей среде", category: "Полезные материалы", date: "10 февраля 2026", excerpt: "Принципы общения и форматы знакомств, которые работают вдолгую." },
 ];
 
-const galleryAlbums = [
+let galleryAlbums = [
   {
     title: "Весенний business brunch",
     date: "март 2026",
@@ -135,14 +135,14 @@ const galleryAlbums = [
   },
 ];
 
-const testimonials = [
+let testimonials = [
   { quote: "Я пришла за новыми контактами, а получила сильное окружение и поддержку на каждом этапе.", name: "Екатерина С.", role: "предприниматель" },
   { quote: "В EVTENIA комфортно говорить о росте, сомнениях и идеях — тебя действительно слышат.", name: "Мария Л.", role: "участник сообщества" },
   { quote: "После двух встреч я нашла партнера для нового проекта и уверенность выступать публично.", name: "Анна Р.", role: "маркетинг-консультант" },
   { quote: "Очень эстетичная и умная среда: без шума, но с реальными результатами.", name: "Ольга К.", role: "основатель бренда" },
 ];
 
-const teamMembers = {
+let teamMembers = {
   founder: {
     name: "Евгения Тарасова",
     role: "Основатель сообщества EVTENIA",
@@ -157,7 +157,7 @@ const teamMembers = {
 };
 
 
-const partners = [
+let partners = [
   { name: "Счастливый дом", href: "https://home58.ru/" },
   { name: "Строительство домов Evtenia", href: "https://dom.evtenia.ru/" },
   { name: "Агентство недвижимости Evtenia", href: "https://evtenia.ru/" },
@@ -169,7 +169,7 @@ const partners = [
 ];
 
 
-const services = [
+let services = [
   {
     slug: "ask-expert",
     title: "Спроси эксперта",
@@ -192,13 +192,13 @@ const services = [
   },
 ];
 
-const serviceApplications = [
+let serviceApplications = [
   { name: "Консультация по самопрезентации", author: "Анна, эксперт по коммуникациям", status: "На модерации" },
   { name: "Мини-разбор визуальной упаковки", author: "Мария, дизайнер", status: "Одобрено" },
   { name: "Практикум по публичному выступлению", author: "Елена, тренер", status: "Требует правок" },
 ];
 
-const pageSeo = {
+let pageSeo = {
   "/": { title: "EVTENIA — клуб для всех, события и развитие", description: "Современное сообщество EVTENIA: мероприятия, новости, нетворкинг, поддержка и заявки на участие." },
   "/about": { title: "О нас — EVTENIA", description: "Миссия, ценности и форматы клуба EVTENIA для всех, кто растёт в бизнесе и жизни." },
   "/events": { title: "Мероприятия EVTENIA", description: "Календарь ближайших и прошедших мероприятий клуба EVTENIA: бизнес, нетворкинг, обучение." },
@@ -229,7 +229,7 @@ const brainFitnessGallery = [
   "https://s10.iimage.su/s/08/gzRQx7GxmshYzD0hTAJGtgCTliaJpZ9Dp8qIoMqLv.jpg",
 ];
 
-const mediaProjects = [
+let mediaProjects = [
   { slug: "interview-evtenia", title: "Интервью с Evtenia", description: "Серия глубоких бесед с героинями о личном опыте, бизнесе и выборе." },
   { slug: "vkusno-s-evtenia", title: "Вкусно с Evtenia", description: "Видеопроект о вкусе к жизни: еда, эстетика, общение и истории людей." },
   { slug: "blagodaryu-s-evtenia", title: "Благодарю с Evtenia", description: "Проект про благодарность, поддержку и внутреннюю устойчивость в ежедневности." },
@@ -377,7 +377,7 @@ const projectDetails = {
   },
 };
 
-const regionalBranches = [
+let regionalBranches = [
   {
     slug: "penza",
     city: "Пенза",
@@ -428,6 +428,60 @@ const regionalBranches = [
     ],
   },
 ];
+
+const CMS_STORAGE_KEY = "evtenia_cms_content_v1";
+const ADMIN_SESSION_KEY = "evtenia_admin_session";
+const ADMIN_LOGIN = "admin";
+const ADMIN_PASSWORD = "Evtenia2026!";
+
+const initialCmsContent = JSON.parse(JSON.stringify({ events, posts, galleryAlbums, testimonials, teamMembers, partners, services, serviceApplications, regionalBranches, mediaProjects, pageSeo }));
+
+const cmsSections = [
+  { key: "events", title: "Мероприятия", type: "array" },
+  { key: "posts", title: "Новости", type: "array" },
+  { key: "galleryAlbums", title: "Галерея", type: "array" },
+  { key: "testimonials", title: "Отзывы", type: "array" },
+  { key: "teamMembers", title: "Команда", type: "object" },
+  { key: "partners", title: "Партнеры", type: "array" },
+  { key: "services", title: "Услуги", type: "array" },
+  { key: "serviceApplications", title: "Заявки услуг", type: "array" },
+  { key: "regionalBranches", title: "Отделения", type: "array" },
+  { key: "mediaProjects", title: "Видеопроекты", type: "array" },
+  { key: "pageSeo", title: "SEO страниц", type: "object" },
+];
+
+const getDefaultCmsContent = () => JSON.parse(JSON.stringify(initialCmsContent));
+
+function applyCmsContent(content) {
+  if (!content || typeof content !== "object") return;
+  events = Array.isArray(content.events) ? content.events : events;
+  posts = Array.isArray(content.posts) ? content.posts : posts;
+  galleryAlbums = Array.isArray(content.galleryAlbums) ? content.galleryAlbums : galleryAlbums;
+  testimonials = Array.isArray(content.testimonials) ? content.testimonials : testimonials;
+  teamMembers = content.teamMembers && typeof content.teamMembers === "object" ? content.teamMembers : teamMembers;
+  partners = Array.isArray(content.partners) ? content.partners : partners;
+  services = Array.isArray(content.services) ? content.services : services;
+  serviceApplications = Array.isArray(content.serviceApplications) ? content.serviceApplications : serviceApplications;
+  regionalBranches = Array.isArray(content.regionalBranches) ? content.regionalBranches : regionalBranches;
+  mediaProjects = Array.isArray(content.mediaProjects) ? content.mediaProjects : mediaProjects;
+  pageSeo = content.pageSeo && typeof content.pageSeo === "object" ? content.pageSeo : pageSeo;
+}
+
+function loadStoredCmsContent() {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(CMS_STORAGE_KEY);
+    if (!raw) return null;
+    return JSON.parse(raw);
+  } catch (error) {
+    console.warn("Не удалось прочитать CMS-контент", error);
+    return null;
+  }
+}
+
+if (typeof window !== "undefined") {
+  applyCmsContent(loadStoredCmsContent());
+}
 
 function usePath() {
   const [path, setPath] = useState(window.location.pathname);
@@ -1412,44 +1466,135 @@ function FaqPage() {
 }
 
 function AdminPage() {
-  const [state, setState] = useState({
-    eventsCount: events.length,
-    postsCount: posts.length,
-    galleryCount: galleryAlbums.length,
-    serviceApplicationsCount: serviceApplications.length,
-    seoReady: "Да",
-    applicationsToday: 7,
-  });
-  return (
-    <div className="page">
-      <h1>Админка EVTENIA (демо)</h1>
-      <p>Панель показывает базовую структуру CMS для управления контентом и заявками.</p>
-      <div className="cards grid-3">
-        <article className="card"><h3>Мероприятия</h3><p>{state.eventsCount} карточек</p></article>
-        <article className="card"><h3>Новости</h3><p>{state.postsCount} публикаций</p></article>
-        <article className="card"><h3>Галерея</h3><p>{state.galleryCount} альбома</p></article>
-        <article className="card"><h3>SEO-поля</h3><p>{state.seoReady}</p></article>
-        <article className="card"><h3>Контакты</h3><p>Редактируются из CMS</p></article>
-        <article className="card"><h3>Заявки за сегодня</h3><p>{state.applicationsToday}</p></article>
-        <article className="card"><h3>Заявки услуг</h3><p>{state.serviceApplicationsCount} на модерации и в работе</p></article>
-        <article className="card"><h3>Отделения</h3><p>{regionalBranches.length} региональных карточек</p></article>
-        <article className="card"><h3>Доступы</h3><p>Главный админ назначает руководителей отделений</p></article>
+  const [isAuthenticated, setIsAuthenticated] = useState(() => window.sessionStorage.getItem(ADMIN_SESSION_KEY) === "true");
+  const [loginForm, setLoginForm] = useState({ login: "", password: "" });
+  const [loginError, setLoginError] = useState("");
+  const [activeSection, setActiveSection] = useState(cmsSections[0].key);
+  const [content, setContent] = useState(() => loadStoredCmsContent() || getDefaultCmsContent());
+  const [draft, setDraft] = useState(() => JSON.stringify(content[cmsSections[0].key], null, 2));
+  const [editorError, setEditorError] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
+
+  const summary = {
+    events: content.events?.length || 0,
+    posts: content.posts?.length || 0,
+    galleryAlbums: content.galleryAlbums?.length || 0,
+    testimonials: content.testimonials?.length || 0,
+    partners: content.partners?.length || 0,
+    services: content.services?.length || 0,
+    serviceApplications: content.serviceApplications?.length || 0,
+    regionalBranches: content.regionalBranches?.length || 0,
+    mediaProjects: content.mediaProjects?.length || 0,
+    seoPages: Object.keys(content.pageSeo || {}).length,
+  };
+
+  const selectSection = (key) => {
+    setActiveSection(key);
+    setDraft(JSON.stringify(content[key], null, 2));
+    setEditorError("");
+    setSaveMessage("");
+  };
+
+  const handleLogin = (event) => {
+    event.preventDefault();
+    if (loginForm.login === ADMIN_LOGIN && loginForm.password === ADMIN_PASSWORD) {
+      window.sessionStorage.setItem(ADMIN_SESSION_KEY, "true");
+      setIsAuthenticated(true);
+      setLoginError("");
+      return;
+    }
+    setLoginError("Неверный логин или пароль.");
+  };
+
+  const handleSave = () => {
+    try {
+      const parsed = JSON.parse(draft);
+      const nextContent = { ...content, [activeSection]: parsed };
+      window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+      setContent(nextContent);
+      applyCmsContent(nextContent);
+      setEditorError("");
+      setSaveMessage("Сохранено. Изменения применятся на сайте после обновления страницы.");
+    } catch (error) {
+      setEditorError(`Проверьте JSON: ${error.message}`);
+      setSaveMessage("");
+    }
+  };
+
+  const resetSection = () => {
+    const defaults = getDefaultCmsContent();
+    const nextContent = { ...content, [activeSection]: defaults[activeSection] };
+    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+    setContent(nextContent);
+    setDraft(JSON.stringify(nextContent[activeSection], null, 2));
+    setEditorError("");
+    setSaveMessage("Раздел сброшен к исходному контенту.");
+  };
+
+  const exportContent = () => {
+    const blob = new Blob([JSON.stringify(content, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "evtenia-cms-content.json";
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="page admin-login-page">
+        <section className="card admin-login-card">
+          <h1>Вход в CMS EVTENIA</h1>
+          <p className="lead">Админка защищена паролем. Введите учетные данные администратора.</p>
+          <form className="form" onSubmit={handleLogin}>
+            <input value={loginForm.login} onChange={(e) => setLoginForm((prev) => ({ ...prev, login: e.target.value }))} placeholder="Логин" autoComplete="username" />
+            <input value={loginForm.password} onChange={(e) => setLoginForm((prev) => ({ ...prev, password: e.target.value }))} placeholder="Пароль" type="password" autoComplete="current-password" />
+            {loginError && <p className="admin-error">{loginError}</p>}
+            <button className="btn" type="submit">Войти</button>
+          </form>
+        </section>
       </div>
-      <label className="admin-input">Демо-поле: изменить количество заявок
-        <input type="number" value={state.applicationsToday} onChange={(e) => setState((prev) => ({ ...prev, applicationsToday: Number(e.target.value) }))} />
-      </label>
-      <section className="card">
-        <h2>Модерация услуг</h2>
-        <p>Администратор может одобрить, отклонить или изменить заявку перед публикацией.</p>
-        <div className="cards grid-3">
-          {serviceApplications.map((item) => (
-            <article className="card" key={item.name}>
-              <h3>{item.name}</h3>
-              <p>{item.author}</p>
-              <small>{item.status}</small>
-              <div className="admin-actions"><button>Одобрить</button><button>Изменить</button><button>Отклонить</button></div>
-            </article>
-          ))}
+    );
+  }
+
+  return (
+    <div className="page admin-page">
+      <div className="admin-heading">
+        <div>
+          <h1>CMS EVTENIA</h1>
+          <p className="lead">Редактируйте контент сайта в JSON: мероприятия, новости, галерею, команду, услуги, отделения, SEO и заявки.</p>
+        </div>
+        <button className="btn btn-small" onClick={() => { window.sessionStorage.removeItem(ADMIN_SESSION_KEY); setIsAuthenticated(false); }}>Выйти</button>
+      </div>
+
+      <div className="cards grid-3 admin-stats">
+        <article className="card"><h3>Мероприятия</h3><p>{summary.events}</p></article>
+        <article className="card"><h3>Новости</h3><p>{summary.posts}</p></article>
+        <article className="card"><h3>Галерея</h3><p>{summary.galleryAlbums}</p></article>
+        <article className="card"><h3>Отзывы</h3><p>{summary.testimonials}</p></article>
+        <article className="card"><h3>Партнеры</h3><p>{summary.partners}</p></article>
+        <article className="card"><h3>Услуги</h3><p>{summary.services}</p></article>
+        <article className="card"><h3>Заявки услуг</h3><p>{summary.serviceApplications}</p></article>
+        <article className="card"><h3>Отделения</h3><p>{summary.regionalBranches}</p></article>
+        <article className="card"><h3>SEO-страницы</h3><p>{summary.seoPages}</p></article>
+      </div>
+
+      <section className="card admin-cms-card">
+        <div className="admin-cms-toolbar">
+          <div className="admin-tabs">
+            {cmsSections.map((section) => <button className={section.key === activeSection ? "active" : ""} key={section.key} onClick={() => selectSection(section.key)}>{section.title}</button>)}
+          </div>
+          <button className="btn btn-small" onClick={exportContent}>Экспорт JSON</button>
+        </div>
+        <label className="admin-editor-label" htmlFor="cms-editor">Раздел: {cmsSections.find((section) => section.key === activeSection)?.title}</label>
+        <textarea id="cms-editor" className="admin-json-editor" value={draft} onChange={(e) => setDraft(e.target.value)} spellCheck="false" />
+        {editorError && <p className="admin-error">{editorError}</p>}
+        {saveMessage && <p className="admin-success">{saveMessage}</p>}
+        <div className="admin-actions">
+          <button className="btn" onClick={handleSave}>Сохранить раздел</button>
+          <button onClick={() => setDraft(JSON.stringify(content[activeSection], null, 2))}>Отменить правки</button>
+          <button onClick={resetSection}>Сбросить раздел</button>
         </div>
       </section>
     </div>
