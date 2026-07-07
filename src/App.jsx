@@ -483,47 +483,82 @@ function loadStoredCmsContent() {
   }
 }
 
+const CMS_CONTENT_ENDPOINTS = ["/api/content", "/admin/content", "/cms/content"];
+const CMS_UPLOAD_ENDPOINTS = ["/api/upload", "/admin/upload", "/cms/upload"];
+
+async function parseJsonResponse(response) {
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) return null;
+  return response.json();
+}
+
 async function loadServerCmsContent() {
-  try {
-    const response = await fetch("/admin/content");
-    if (!response.ok) return null;
-    const content = await response.json();
-    return content && Object.keys(content).length ? content : null;
-  } catch (error) {
-    console.warn("Не удалось загрузить CMS-контент с сервера", error);
-    return null;
+  for (const endpoint of CMS_CONTENT_ENDPOINTS) {
+    try {
+      const response = await fetch(endpoint, { credentials: "same-origin" });
+      if (!response.ok) continue;
+      const content = await parseJsonResponse(response);
+      if (content && Object.keys(content).length) return content;
+    } catch (error) {
+      console.warn(`Не удалось загрузить CMS-контент с ${endpoint}`, error);
+    }
   }
+  return null;
 }
 
 async function saveServerCmsContent(content) {
-  const response = await fetch("/admin/content", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(content),
-  });
-  if (!response.ok) {
-    const details = await response.json().catch(() => ({}));
-    throw new Error(details.error || `сервер ответил ${response.status}`);
+  let lastError = "сервер не принял запрос";
+
+  for (const endpoint of CMS_CONTENT_ENDPOINTS) {
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(content),
+      });
+      if (response.ok) return;
+
+      const details = await parseJsonResponse(response) || {};
+      lastError = details.error || `сервер ответил ${response.status} на ${endpoint}`;
+    } catch (error) {
+      lastError = error.message;
+      console.warn(`Не удалось сохранить CMS-контент через ${endpoint}`, error);
+    }
   }
+
+  throw new Error(lastError);
 }
 
 async function uploadCmsImages(dataUrls) {
   try {
-    const response = await fetch("/admin/upload", {
-      method: "POST",
-      credentials: "same-origin",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ files: dataUrls }),
-    });
-    if (!response.ok) throw new Error("сервер не принял изображения");
-    const result = await response.json();
-    return result.urls?.length ? result.urls : dataUrls;
+    let lastError = "сервер не принял загрузку";
+
+    for (const endpoint of CMS_UPLOAD_ENDPOINTS) {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ files: dataUrls }),
+      });
+
+      if (!response.ok) {
+        const details = await parseJsonResponse(response) || {};
+        lastError = details.error || `сервер ответил ${response.status} на ${endpoint}`;
+        continue;
+      }
+
+      const result = await parseJsonResponse(response);
+      return result?.urls?.length ? result.urls : dataUrls;
+    }
+
+    throw new Error(lastError);
   } catch (error) {
     console.warn("Не удалось загрузить изображения на сервер, используем локальные данные", error);
     return dataUrls;
   }
 }
+
 
 async function replaceEmbeddedImages(value) {
   if (typeof value === "string") {
