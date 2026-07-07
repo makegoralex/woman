@@ -1757,6 +1757,7 @@ function AdminPage() {
   const [activeTool, setActiveTool] = useState("events");
   const [activeSection, setActiveSection] = useState(cmsSections[0].key);
   const [content, setContent] = useState(() => loadStoredCmsContent() || getDefaultCmsContent());
+  const [draftContent, setDraftContent] = useState(() => content);
   const [draft, setDraft] = useState(() => JSON.stringify(content[cmsSections[0].key], null, 2));
   const [editorError, setEditorError] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
@@ -1764,23 +1765,31 @@ function AdminPage() {
   const persistContent = (nextContent, message = "Сохранено. Контент уже записан в CMS и применится на сайте после обновления страницы.") => {
     window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
     setContent(nextContent);
+    setDraftContent(nextContent);
     applyCmsContent(nextContent);
     setSaveMessage(message);
   };
 
-  const updateContentSection = (key, value) => persistContent({ ...content, [key]: value });
+  const updateContentSection = (key, value) => {
+    setDraftContent((current) => ({ ...current, [key]: value }));
+    setSaveMessage("Есть несохраненные изменения — нажмите «Сохранить изменения».");
+  };
+
+  const saveVisualContent = () => {
+    persistContent(draftContent, "Сохранено. Все изменения, включая загруженные фотографии, записаны в CMS.");
+  };
 
   const summary = {
-    events: content.events?.length || 0,
-    galleryAlbums: content.galleryAlbums?.length || 0,
-    regionalBranches: content.regionalBranches?.length || 0,
-    clubProjects: content.clubProjects?.length || 0,
-    seoPages: Object.keys(content.pageSeo || {}).length,
+    events: draftContent.events?.length || 0,
+    galleryAlbums: draftContent.galleryAlbums?.length || 0,
+    regionalBranches: draftContent.regionalBranches?.length || 0,
+    clubProjects: draftContent.clubProjects?.length || 0,
+    seoPages: Object.keys(draftContent.pageSeo || {}).length,
   };
 
   const selectSection = (key) => {
     setActiveSection(key);
-    setDraft(JSON.stringify(content[key], null, 2));
+    setDraft(JSON.stringify(draftContent[key], null, 2));
     setEditorError("");
     setSaveMessage("");
   };
@@ -1799,7 +1808,7 @@ function AdminPage() {
   const handleJsonSave = () => {
     try {
       const parsed = JSON.parse(draft);
-      persistContent({ ...content, [activeSection]: parsed });
+      persistContent({ ...draftContent, [activeSection]: parsed });
       setEditorError("");
     } catch (error) {
       setEditorError(`Проверьте JSON: ${error.message}`);
@@ -1860,6 +1869,11 @@ function AdminPage() {
         <article className="card"><h3>SEO-страницы</h3><p>{summary.seoPages}</p></article>
       </div>
 
+      <div className="admin-save-bar">
+        <p>Изменения в формах сначала попадают в черновик. Чтобы фотографии и тексты точно сохранились, нажмите кнопку сохранения.</p>
+        <button className="btn" onClick={saveVisualContent}>Сохранить изменения</button>
+      </div>
+
       <div className="admin-tabs admin-main-tabs">
         <button className={activeTool === "events" ? "active" : ""} onClick={() => setActiveTool("events")}>Мероприятия</button>
         <button className={activeTool === "projects" ? "active" : ""} onClick={() => setActiveTool("projects")}>Проекты</button>
@@ -1871,10 +1885,10 @@ function AdminPage() {
 
       {saveMessage && <p className="admin-success">{saveMessage}</p>}
 
-      {activeTool === "events" && <EventsManager items={content.events || []} projects={content.clubProjects || []} onChange={(value) => updateContentSection("events", value)} />}
-      {activeTool === "projects" && <ProjectsManager projects={content.clubProjects || []} details={content.projectDetails || {}} onProjectsChange={(value) => updateContentSection("clubProjects", value)} onDetailsChange={(value) => updateContentSection("projectDetails", value)} />}
-      {activeTool === "regions" && <RegionsManager items={content.regionalBranches || []} onChange={(value) => updateContentSection("regionalBranches", value)} />}
-      {activeTool === "gallery" && <GalleryManager items={content.galleryAlbums || []} onChange={(value) => updateContentSection("galleryAlbums", value)} />}
+      {activeTool === "events" && <EventsManager items={draftContent.events || []} projects={draftContent.clubProjects || []} onChange={(value) => updateContentSection("events", value)} />}
+      {activeTool === "projects" && <ProjectsManager projects={draftContent.clubProjects || []} details={draftContent.projectDetails || {}} onProjectsChange={(value) => updateContentSection("clubProjects", value)} onDetailsChange={(value) => updateContentSection("projectDetails", value)} />}
+      {activeTool === "regions" && <RegionsManager items={draftContent.regionalBranches || []} onChange={(value) => updateContentSection("regionalBranches", value)} />}
+      {activeTool === "gallery" && <GalleryManager items={draftContent.galleryAlbums || []} onChange={(value) => updateContentSection("galleryAlbums", value)} />}
 
       {activeTool === "json" && (
         <section className="card admin-cms-card">
@@ -1888,7 +1902,7 @@ function AdminPage() {
           {editorError && <p className="admin-error">{editorError}</p>}
           <div className="admin-actions">
             <button className="btn" onClick={handleJsonSave}>Сохранить раздел</button>
-            <button onClick={() => setDraft(JSON.stringify(content[activeSection], null, 2))}>Отменить правки</button>
+            <button onClick={() => setDraft(JSON.stringify(draftContent[activeSection], null, 2))}>Отменить правки</button>
             <button onClick={resetSection}>Сбросить раздел</button>
           </div>
         </section>
