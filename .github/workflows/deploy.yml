@@ -19,4 +19,26 @@ jobs:
           timeout: 120s
           command_timeout: 20m
           script_stop: true
-          script: /var/www/people/deploy.sh
+          script: |
+            set -euo pipefail
+
+            APP_DIR=/var/www/people
+            APP_NAME=people
+
+            cd "$APP_DIR"
+
+            echo "📥 Sync..."
+            git fetch origin main
+            git reset --hard origin/main
+
+            echo "📦 Install..."
+            npm install
+
+            echo "🏗 Build..."
+            npm run build
+
+            echo "🚀 Restart backend..."
+            pm2 restart "$APP_NAME" --update-env || pm2 start server.js --name "$APP_NAME"
+            pm2 save
+
+            echo "✅ Done"
