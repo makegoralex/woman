@@ -483,8 +483,8 @@ function loadStoredCmsContent() {
   }
 }
 
-const CMS_CONTENT_ENDPOINTS = ["/api/content", "/admin/content", "/cms/content"];
-const CMS_UPLOAD_ENDPOINTS = ["/api/upload", "/admin/upload", "/cms/upload"];
+const CMS_CONTENT_ENDPOINTS = ["/api/content"];
+const CMS_UPLOAD_ENDPOINTS = ["/api/upload"];
 
 async function parseJsonResponse(response) {
   const contentType = response.headers.get("content-type") || "";
