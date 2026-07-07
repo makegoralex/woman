@@ -483,6 +483,45 @@ function loadStoredCmsContent() {
   }
 }
 
+async function loadServerCmsContent() {
+  try {
+    const response = await fetch("/api/content");
+    if (!response.ok) return null;
+    const content = await response.json();
+    return content && Object.keys(content).length ? content : null;
+  } catch (error) {
+    console.warn("Не удалось загрузить CMS-контент с сервера", error);
+    return null;
+  }
+}
+
+async function saveServerCmsContent(content) {
+  const response = await fetch("/api/content", {
+    method: "PUT",
+    credentials: "same-origin",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(content),
+  });
+  if (!response.ok) throw new Error("сервер не сохранил контент");
+}
+
+async function uploadCmsImages(dataUrls) {
+  try {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ files: dataUrls }),
+    });
+    if (!response.ok) throw new Error("сервер не принял изображения");
+    const result = await response.json();
+    return result.urls?.length ? result.urls : dataUrls;
+  } catch (error) {
+    console.warn("Не удалось загрузить изображения на сервер, используем локальные данные", error);
+    return dataUrls;
+  }
+}
+
 if (typeof window !== "undefined") {
   applyCmsContent(loadStoredCmsContent());
 }
@@ -1627,7 +1666,8 @@ function ImageDropzone({ label = "Фото", value, onChange, multiple = false }
     const images = Array.from(files).filter((file) => file.type.startsWith("image/"));
     if (!images.length) return;
     const resized = await Promise.all(images.map((file) => resizeImageFile(file)));
-    onChange(multiple ? [...values, ...resized] : resized[0]);
+    const uploaded = await uploadCmsImages(resized);
+    onChange(multiple ? [...values, ...uploaded] : uploaded[0]);
   };
 
   return (
@@ -1848,15 +1888,30 @@ function AdminPage() {
   const [editorError, setEditorError] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
 
-  const persistContent = (nextContent, message = "Сохранено. Контент уже записан в CMS и применится на сайте после обновления страницы.") => {
+  useEffect(() => {
+    loadServerCmsContent().then((serverContent) => {
+      if (!serverContent) return;
+      setContent(serverContent);
+      setDraftContent(serverContent);
+      applyCmsContent(serverContent);
+      setDraft(JSON.stringify(serverContent[cmsSections[0].key], null, 2));
+    });
+  }, []);
+
+  const persistContent = async (nextContent, message = "Сохранено. Контент записан в серверную CMS и доступен всем посетителям.") => {
     try {
-      window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+      await saveServerCmsContent(nextContent);
+      try {
+        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+      } catch (cacheError) {
+        console.warn("Сервер сохранил контент, но локальный кеш переполнен", cacheError);
+      }
       setContent(nextContent);
       setDraftContent(nextContent);
       applyCmsContent(nextContent);
       setSaveMessage(message);
     } catch (error) {
-      setSaveMessage(`Не удалось сохранить: ${error.message}. Попробуйте нажать «Сохранить изменения» ещё раз после завершения загрузки всех изображений.`);
+      setSaveMessage(`Не удалось сохранить на сервер: ${error.message}. Проверьте доступ к админке и повторите сохранение.`);
     }
   };
 
@@ -1866,7 +1921,7 @@ function AdminPage() {
   };
 
   const saveVisualContent = () => {
-    persistContent(draftContent, "Сохранено. Все изменения, включая загруженные фотографии, записаны в CMS.");
+    persistContent(draftContent, "Сохранено. Все изменения, включая загруженные фотографии, записаны в серверной CMS.");
   };
 
   const summary = {
@@ -2008,6 +2063,20 @@ function NotFound({ goTo }) {
 export default function App() {
   const { path, goTo } = usePath();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contentVersion, setContentVersion] = useState(0);
+
+  useEffect(() => {
+    loadServerCmsContent().then((serverContent) => {
+      if (!serverContent) return;
+      applyCmsContent(serverContent);
+      try {
+        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
+      } catch (cacheError) {
+        console.warn("Не удалось обновить локальный кеш CMS", cacheError);
+      }
+      setContentVersion((version) => version + 1);
+    });
+  }, []);
 
   useEffect(() => {
     const matched = path.startsWith("/events/")
@@ -2046,7 +2115,7 @@ export default function App() {
       document.head.appendChild(ogDesc);
     }
     ogDesc.setAttribute("content", matched.description);
-  }, [path]);
+  }, [path, contentVersion]);
 
   const page = useMemo(() => {
     if (path === "/") return <Home goTo={goTo} />;
@@ -2079,7 +2148,7 @@ export default function App() {
     if (path === "/team") return <TeamPage />;
     if (path === "/admin") return <AdminPage />;
     return <NotFound goTo={goTo} />;
-  }, [path]);
+  }, [path, contentVersion]);
 
   useEffect(() => {
     setMobileMenuOpen(false);
