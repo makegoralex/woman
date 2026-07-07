@@ -52,13 +52,16 @@ function requireAdminAuth(req, res, next) {
   return res.status(401).send("Authentication required");
 }
 
-app.get("/api/content", async (req, res, next) => {
+async function getContentRequest(req, res, next) {
   try {
     res.json(await readContent() || {});
   } catch (error) {
     next(error);
   }
-});
+}
+
+app.get("/cms/content", getContentRequest);
+app.get("/api/content", getContentRequest);
 
 async function saveContentRequest(req, res, next) {
   try {
@@ -69,10 +72,12 @@ async function saveContentRequest(req, res, next) {
   }
 }
 
+app.post("/cms/content", saveContentRequest);
+app.put("/cms/content", saveContentRequest);
 app.post("/api/content", saveContentRequest);
 app.put("/api/content", saveContentRequest);
 
-app.post("/api/upload", async (req, res, next) => {
+async function uploadRequest(req, res, next) {
   try {
     await ensureStorage();
     const files = Array.isArray(req.body?.files) ? req.body.files : [];
@@ -92,7 +97,10 @@ app.post("/api/upload", async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-});
+}
+
+app.post("/cms/upload", uploadRequest);
+app.post("/api/upload", uploadRequest);
 
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 app.use("/public", express.static(path.join(__dirname, "public")));
