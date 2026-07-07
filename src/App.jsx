@@ -1552,7 +1552,7 @@ const makeSlug = (value) => value
   .replace(/[^a-zа-я0-9]+/g, "-")
   .replace(/^-+|-+$/g, "") || `item-${Date.now()}`;
 
-function resizeImageFile(file, maxSize = 1600, quality = 0.82) {
+function resizeImageFile(file, maxSize = 1200, quality = 0.72) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -1593,7 +1593,7 @@ function ImageDropzone({ label = "Фото", value, onChange, multiple = false }
       onDrop={(event) => { event.preventDefault(); setIsDragging(false); processFiles(event.dataTransfer.files); }}
     >
       <strong>{label}</strong>
-      <p>Перетащите фото сюда или выберите файл. Изображение автоматически уменьшается до 1600px.</p>
+      <p>Перетащите фото сюда или выберите файл. Изображение автоматически уменьшается до 1200px.</p>
       <input type="file" accept="image/*" multiple={multiple} onChange={(event) => processFiles(event.target.files)} />
       {!!values.length && (
         <div className="image-preview-grid">
@@ -1613,139 +1613,180 @@ function AdminTextField({ label, value, onChange, textarea = false }) {
   return <label>{label}{textarea ? <textarea value={value || ""} onChange={(event) => onChange(event.target.value)} rows="4" /> : <input value={value || ""} onChange={(event) => onChange(event.target.value)} />}</label>;
 }
 
+function AdminItemSelector({ items, selectedIndex, onSelect, onAdd, getTitle, addLabel }) {
+  return (
+    <aside className="admin-item-selector">
+      <button className="btn btn-small" onClick={onAdd}>{addLabel}</button>
+      <div className="admin-item-list">
+        {items.map((item, index) => (
+          <button className={selectedIndex === index ? "active" : ""} key={`${getTitle(item)}-${index}`} onClick={() => onSelect(index)}>
+            {getTitle(item) || `Запись ${index + 1}`}
+          </button>
+        ))}
+      </div>
+    </aside>
+  );
+}
+
 function EventsManager({ items, projects, onChange }) {
-  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
-  const add = () => onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", image: "", gallery: [], short: "", program: [], audience: "" }, ...items]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const event = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => {
+    onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", image: "", gallery: [], short: "", program: [], audience: "" }, ...items]);
+    setSelectedIndex(0);
+  };
+  const remove = () => {
+    onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex));
+    setSelectedIndex(Math.max(0, safeIndex - 1));
+  };
 
   return (
     <section className="admin-manager">
-      <div className="admin-manager-head"><h2>Мероприятия</h2><button className="btn btn-small" onClick={add}>Добавить мероприятие</button></div>
-      {items.map((event, index) => (
-        <article className="card admin-edit-card" key={event.slug || index}>
-          <div className="admin-form-grid">
-            <AdminTextField label="Название" value={event.title} onChange={(value) => update(index, { title: value, slug: event.slug || makeSlug(value) })} />
-            <AdminTextField label="URL slug" value={event.slug} onChange={(value) => update(index, { slug: makeSlug(value) })} />
-            <AdminTextField label="Дата" value={event.date} onChange={(value) => update(index, { date: value })} />
-            <AdminTextField label="Время" value={event.time} onChange={(value) => update(index, { time: value })} />
-            <AdminTextField label="Место" value={event.place} onChange={(value) => update(index, { place: value })} />
-            <AdminTextField label="Город" value={event.city} onChange={(value) => update(index, { city: value })} />
-            <label>Формат<select value={event.format || "Оффлайн"} onChange={(e) => update(index, { format: e.target.value })}><option>Оффлайн</option><option>Онлайн</option><option>Гибрид</option></select></label>
-            <label>Проект<select value={event.projectSlug || ""} onChange={(e) => update(index, { projectSlug: e.target.value })}>{projects.map((project) => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
-            <AdminTextField label="Категория" value={event.category} onChange={(value) => update(index, { category: value })} />
-          </div>
-          <AdminTextField label="Краткое описание" value={event.short} onChange={(value) => update(index, { short: value })} textarea />
-          <AdminTextField label="Для кого" value={event.audience} onChange={(value) => update(index, { audience: value })} textarea />
-          <AdminTextField label="Программа — каждый пункт с новой строки" value={(event.program || []).join("\n")} onChange={(value) => update(index, { program: value.split("\n").filter(Boolean) })} textarea />
-          <ImageDropzone label="Обложка мероприятия" value={event.image} onChange={(value) => update(index, { image: value })} />
-          <ImageDropzone label="Галерея мероприятия" value={event.gallery || []} multiple onChange={(value) => update(index, { gallery: value })} />
-          <p className="admin-note">Статус «будущее/прошедшее» определяется автоматически по дате мероприятия. Блок «Спикеры» пока фиксированный на сайте и в админке не редактируется.</p>
-          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить</button></div>
-        </article>
-      ))}
+      <div className="admin-manager-head"><h2>Мероприятия</h2><p>Выберите мероприятие из списка и редактируйте только его.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить мероприятие" />
+        {event ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid">
+              <AdminTextField label="Название" value={event.title} onChange={(value) => update({ title: value, slug: event.slug || makeSlug(value) })} />
+              <AdminTextField label="URL slug" value={event.slug} onChange={(value) => update({ slug: makeSlug(value) })} />
+              <AdminTextField label="Дата" value={event.date} onChange={(value) => update({ date: value })} />
+              <AdminTextField label="Время" value={event.time} onChange={(value) => update({ time: value })} />
+              <AdminTextField label="Место" value={event.place} onChange={(value) => update({ place: value })} />
+              <AdminTextField label="Город" value={event.city} onChange={(value) => update({ city: value })} />
+              <label>Формат<select value={event.format || "Оффлайн"} onChange={(e) => update({ format: e.target.value })}><option>Оффлайн</option><option>Онлайн</option><option>Гибрид</option></select></label>
+              <label>Проект<select value={event.projectSlug || ""} onChange={(e) => update({ projectSlug: e.target.value })}>{projects.map((project) => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
+              <AdminTextField label="Категория" value={event.category} onChange={(value) => update({ category: value })} />
+            </div>
+            <AdminTextField label="Краткое описание" value={event.short} onChange={(value) => update({ short: value })} textarea />
+            <AdminTextField label="Для кого" value={event.audience} onChange={(value) => update({ audience: value })} textarea />
+            <AdminTextField label="Программа — каждый пункт с новой строки" value={(event.program || []).join("\n")} onChange={(value) => update({ program: value.split("\n").filter(Boolean) })} textarea />
+            <ImageDropzone label="Обложка мероприятия" value={event.image} onChange={(value) => update({ image: value })} />
+            <ImageDropzone label="Галерея мероприятия" value={event.gallery || []} multiple onChange={(value) => update({ gallery: value })} />
+            <p className="admin-note">После загрузки фото нажмите общую кнопку «Сохранить изменения» сверху. Статус «будущее/прошедшее» определяется автоматически по дате. Блок «Спикеры» пока фиксированный.</p>
+            <div className="admin-actions"><button onClick={remove}>Удалить</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет мероприятий.</p></article>}
+      </div>
     </section>
   );
 }
 
 function ProjectsManager({ projects, details, onProjectsChange, onDetailsChange }) {
-  const updateProject = (index, patch) => onProjectsChange(projects.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(projects.length - 1, 0));
+  const project = projects[safeIndex];
+  const detail = project ? details[project.slug] || {} : {};
+  const leaders = detail.leaders || (detail.lead ? [detail.lead] : []);
+  const updateProject = (patch) => onProjectsChange(projects.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
   const updateDetails = (slug, patch) => onDetailsChange({ ...details, [slug]: { ...(details[slug] || {}), ...patch } });
-  const renameProjectSlug = (index, nextSlug) => {
-    const previousSlug = projects[index].slug;
+  const renameProjectSlug = (nextSlug) => {
+    const previousSlug = project.slug;
     const normalizedSlug = makeSlug(nextSlug);
-    updateProject(index, { slug: normalizedSlug });
+    updateProject({ slug: normalizedSlug });
     if (previousSlug === normalizedSlug) return;
     const { [previousSlug]: previousDetails, ...restDetails } = details;
     onDetailsChange({ ...restDetails, [normalizedSlug]: previousDetails || {} });
   };
-  const removeProject = (index) => {
-    const { [projects[index].slug]: _removedDetails, ...restDetails } = details;
-    onProjectsChange(projects.filter((_, itemIndex) => itemIndex !== index));
+  const removeProject = () => {
+    const { [project.slug]: _removedDetails, ...restDetails } = details;
+    onProjectsChange(projects.filter((_, itemIndex) => itemIndex !== safeIndex));
     onDetailsChange(restDetails);
+    setSelectedIndex(Math.max(0, safeIndex - 1));
   };
   const add = () => {
     const slug = `project-${Date.now()}`;
     onProjectsChange([{ slug, title: "Новый проект" }, ...projects]);
     onDetailsChange({ ...details, [slug]: { description: ["Описание проекта"], photo: "", leaders: [], gallery: [], testimonials: [] } });
+    setSelectedIndex(0);
   };
 
   return (
     <section className="admin-manager">
-      <div className="admin-manager-head"><h2>Проекты и направления</h2><button className="btn btn-small" onClick={add}>Добавить проект</button></div>
-      {projects.map((project, index) => {
-        const detail = details[project.slug] || {};
-        const leaders = detail.leaders || (detail.lead ? [detail.lead] : []);
-        return (
-          <article className="card admin-edit-card" key={project.slug || index}>
+      <div className="admin-manager-head"><h2>Проекты и направления</h2><p>Выберите проект из списка по названию.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={projects} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить проект" />
+        {project ? (
+          <article className="card admin-edit-card">
             <div className="admin-form-grid">
-              <AdminTextField label="Название проекта" value={project.title} onChange={(value) => updateProject(index, { title: value })} />
-              <AdminTextField label="URL slug" value={project.slug} onChange={(value) => renameProjectSlug(index, value)} />
+              <AdminTextField label="Название проекта" value={project.title} onChange={(value) => updateProject({ title: value })} />
+              <AdminTextField label="URL slug" value={project.slug} onChange={(value) => renameProjectSlug(value)} />
             </div>
             <AdminTextField label="Описание — абзацы с новой строки" value={Array.isArray(detail.description) ? detail.description.join("\n") : detail.description || ""} onChange={(value) => updateDetails(project.slug, { description: value.split("\n").filter(Boolean) })} textarea />
             <AdminTextField label="Для кого / программа — пункты с новой строки" value={(detail.forWhom || []).join("\n")} onChange={(value) => updateDetails(project.slug, { forWhom: value.split("\n").filter(Boolean) })} textarea />
             <AdminTextField label="Результаты — пункты с новой строки" value={(detail.results || []).join("\n")} onChange={(value) => updateDetails(project.slug, { results: value.split("\n").filter(Boolean) })} textarea />
             <ImageDropzone label="Обложка проекта" value={detail.photo} onChange={(value) => updateDetails(project.slug, { photo: value })} />
             <ImageDropzone label="Галерея проекта" value={detail.gallery || []} multiple onChange={(value) => updateDetails(project.slug, { gallery: value })} />
-            <div className="admin-nested-list">
-              <h3>Руководители</h3>
-              {leaders.map((leader, leaderIndex) => <div className="admin-form-grid" key={leaderIndex}><AdminTextField label="Имя" value={leader.name} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role || leader.bio} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /></div>)}
-              <button onClick={() => updateDetails(project.slug, { leaders: [...leaders, { name: "", role: "" }] })}>Добавить руководителя</button>
-            </div>
-            <div className="admin-actions"><button onClick={() => removeProject(index)}>Удалить проект</button></div>
+            <div className="admin-nested-list"><h3>Руководители</h3>{leaders.map((leader, leaderIndex) => <div className="admin-form-grid" key={leaderIndex}><AdminTextField label="Имя" value={leader.name} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role || leader.bio} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /></div>)}<button onClick={() => updateDetails(project.slug, { leaders: [...leaders, { name: "", role: "" }] })}>Добавить руководителя</button></div>
+            <div className="admin-actions"><button onClick={removeProject}>Удалить проект</button></div>
           </article>
-        );
-      })}
+        ) : <article className="card"><p>Пока нет проектов.</p></article>}
+      </div>
     </section>
   );
 }
 
 function RegionsManager({ items, onChange }) {
-  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
-  const add = () => onChange([{ slug: `region-${Date.now()}`, city: "Новый город", cover: "", leaders: [], news: [] }, ...items]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const region = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => { onChange([{ slug: `region-${Date.now()}`, city: "Новый город", cover: "", leaders: [], news: [] }, ...items]); setSelectedIndex(0); };
+  const remove = () => { onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex)); setSelectedIndex(Math.max(0, safeIndex - 1)); };
 
   return (
     <section className="admin-manager">
-      <div className="admin-manager-head"><h2>Отделения и руководители</h2><button className="btn btn-small" onClick={add}>Добавить отделение</button></div>
-      {items.map((region, index) => (
-        <article className="card admin-edit-card" key={region.slug || index}>
-          <div className="admin-form-grid"><AdminTextField label="Город" value={region.city} onChange={(value) => update(index, { city: value })} /><AdminTextField label="URL slug" value={region.slug} onChange={(value) => update(index, { slug: makeSlug(value) })} /></div>
-          <ImageDropzone label="Обложка отделения" value={region.cover} onChange={(value) => update(index, { cover: value })} />
-          <div className="admin-nested-list">
-            <h3>Руководители</h3>
-            {(region.leaders || []).map((leader, leaderIndex) => (
-              <div className="admin-leader-editor" key={leaderIndex}>
-                <div className="admin-form-grid">
-                  <AdminTextField label="Имя" value={leader.name} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} />
-                  <AdminTextField label="Роль" value={leader.role} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} />
-                  <AdminTextField label="Контакт" value={leader.contact} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, contact: value } : item) })} />
+      <div className="admin-manager-head"><h2>Отделения и руководители</h2><p>Выберите отделение из списка.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.city} addLabel="Добавить отделение" />
+        {region ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid"><AdminTextField label="Город" value={region.city} onChange={(value) => update({ city: value })} /><AdminTextField label="URL slug" value={region.slug} onChange={(value) => update({ slug: makeSlug(value) })} /></div>
+            <ImageDropzone label="Обложка отделения" value={region.cover} onChange={(value) => update({ cover: value })} />
+            <div className="admin-nested-list">
+              <h3>Руководители</h3>
+              {(region.leaders || []).map((leader, leaderIndex) => (
+                <div className="admin-leader-editor" key={leaderIndex}>
+                  <div className="admin-form-grid"><AdminTextField label="Имя" value={leader.name} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /><AdminTextField label="Контакт" value={leader.contact} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, contact: value } : item) })} /></div>
+                  <ImageDropzone label="Фото руководителя" value={leader.photo} onChange={(value) => update({ leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, photo: value } : item) })} />
+                  <button onClick={() => update({ leaders: region.leaders.filter((_, itemIndex) => itemIndex !== leaderIndex) })}>Удалить руководителя</button>
                 </div>
-                <ImageDropzone label="Фото руководителя" value={leader.photo} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, photo: value } : item) })} />
-                <button onClick={() => update(index, { leaders: region.leaders.filter((_, itemIndex) => itemIndex !== leaderIndex) })}>Удалить руководителя</button>
-              </div>
-            ))}
-            <button onClick={() => update(index, { leaders: [...(region.leaders || []), { name: "", role: "", contact: "", photo: "", socials: [] }] })}>Добавить руководителя</button>
-          </div>
-          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить отделение</button></div>
-        </article>
-      ))}
+              ))}
+              <button onClick={() => update({ leaders: [...(region.leaders || []), { name: "", role: "", contact: "", photo: "", socials: [] }] })}>Добавить руководителя</button>
+            </div>
+            <div className="admin-actions"><button onClick={remove}>Удалить отделение</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет отделений.</p></article>}
+      </div>
     </section>
   );
 }
 
 function GalleryManager({ items, onChange }) {
-  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
-  const add = () => onChange([{ title: "Новый альбом", date: "", cover: "", photos: [] }, ...items]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const safeIndex = Math.min(selectedIndex, Math.max(items.length - 1, 0));
+  const album = items[safeIndex];
+  const update = (patch) => onChange(items.map((item, itemIndex) => itemIndex === safeIndex ? { ...item, ...patch } : item));
+  const add = () => { onChange([{ title: "Новый альбом", date: "", cover: "", photos: [] }, ...items]); setSelectedIndex(0); };
+  const remove = () => { onChange(items.filter((_, itemIndex) => itemIndex !== safeIndex)); setSelectedIndex(Math.max(0, safeIndex - 1)); };
 
   return (
     <section className="admin-manager">
-      <div className="admin-manager-head"><h2>Галерея</h2><button className="btn btn-small" onClick={add}>Добавить альбом</button></div>
-      {items.map((album, index) => (
-        <article className="card admin-edit-card" key={`${album.title}-${index}`}>
-          <div className="admin-form-grid"><AdminTextField label="Название альбома" value={album.title} onChange={(value) => update(index, { title: value })} /><AdminTextField label="Дата" value={album.date} onChange={(value) => update(index, { date: value })} /></div>
-          <ImageDropzone label="Обложка альбома" value={album.cover} onChange={(value) => update(index, { cover: value })} />
-          <ImageDropzone label="Фотографии альбома" value={album.photos || []} multiple onChange={(value) => update(index, { photos: value, cover: album.cover || value[0] || "" })} />
-          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить альбом</button></div>
-        </article>
-      ))}
+      <div className="admin-manager-head"><h2>Галерея</h2><p>Выберите альбом из списка.</p></div>
+      <div className="admin-split-editor">
+        <AdminItemSelector items={items} selectedIndex={safeIndex} onSelect={setSelectedIndex} onAdd={add} getTitle={(item) => item.title} addLabel="Добавить альбом" />
+        {album ? (
+          <article className="card admin-edit-card">
+            <div className="admin-form-grid"><AdminTextField label="Название альбома" value={album.title} onChange={(value) => update({ title: value })} /><AdminTextField label="Дата" value={album.date} onChange={(value) => update({ date: value })} /></div>
+            <ImageDropzone label="Обложка альбома" value={album.cover} onChange={(value) => update({ cover: value })} />
+            <ImageDropzone label="Фотографии альбома" value={album.photos || []} multiple onChange={(value) => update({ photos: value, cover: album.cover || value[0] || "" })} />
+            <p className="admin-note">После загрузки фотографий нажмите «Сохранить изменения» сверху.</p>
+            <div className="admin-actions"><button onClick={remove}>Удалить альбом</button></div>
+          </article>
+        ) : <article className="card"><p>Пока нет альбомов.</p></article>}
+      </div>
     </section>
   );
 }
@@ -1763,11 +1804,15 @@ function AdminPage() {
   const [saveMessage, setSaveMessage] = useState("");
 
   const persistContent = (nextContent, message = "Сохранено. Контент уже записан в CMS и применится на сайте после обновления страницы.") => {
-    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
-    setContent(nextContent);
-    setDraftContent(nextContent);
-    applyCmsContent(nextContent);
-    setSaveMessage(message);
+    try {
+      window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+      setContent(nextContent);
+      setDraftContent(nextContent);
+      applyCmsContent(nextContent);
+      setSaveMessage(message);
+    } catch (error) {
+      setSaveMessage(`Не удалось сохранить: ${error.message}. Если загружали много фото, удалите часть или уменьшите изображения.`);
+    }
   };
 
   const updateContentSection = (key, value) => {
