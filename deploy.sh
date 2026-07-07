@@ -17,7 +17,8 @@ echo "🏗 Build..."
 npm run build
 
 echo "🚀 Restart..."
-pm2 restart "$APP_NAME" --update-env || pm2 start server.js --name "$APP_NAME"
+pm2 delete "$APP_NAME" || true
+pm2 start "$APP_DIR/server.js" --name "$APP_NAME" --cwd "$APP_DIR" --update-env
 pm2 save
 
 echo "✅ Done"
