@@ -235,7 +235,7 @@ let mediaProjects = [
   { slug: "blagodaryu-s-evtenia", title: "Благодарю с Evtenia", description: "Проект про благодарность, поддержку и внутреннюю устойчивость в ежедневности." },
 ];
 
-const clubProjects = [
+let clubProjects = [
   { slug: "fitnes-dlya-mozga", title: "Фитнес для мозга" },
   { slug: "networking", title: "Нетворкинг" },
   { slug: "sozdanie-meropriyatij", title: "Создание мероприятий" },
@@ -248,7 +248,7 @@ const clubProjects = [
   { slug: "prekrasnaya-ya", title: "Прекрасная Я" },
 ];
 
-const projectDetails = {
+let projectDetails = {
   "fitnes-dlya-mozga": {
     lead: {
       name: "Елена Козедуб",
@@ -434,7 +434,7 @@ const ADMIN_SESSION_KEY = "evtenia_admin_session";
 const ADMIN_LOGIN = "admin";
 const ADMIN_PASSWORD = "Evtenia2026!";
 
-const initialCmsContent = JSON.parse(JSON.stringify({ events, posts, galleryAlbums, testimonials, teamMembers, partners, services, serviceApplications, regionalBranches, mediaProjects, pageSeo }));
+const initialCmsContent = JSON.parse(JSON.stringify({ events, posts, galleryAlbums, testimonials, teamMembers, partners, services, serviceApplications, regionalBranches, mediaProjects, clubProjects, projectDetails, pageSeo }));
 
 const cmsSections = [
   { key: "events", title: "Мероприятия", type: "array" },
@@ -447,6 +447,8 @@ const cmsSections = [
   { key: "serviceApplications", title: "Заявки услуг", type: "array" },
   { key: "regionalBranches", title: "Отделения", type: "array" },
   { key: "mediaProjects", title: "Видеопроекты", type: "array" },
+  { key: "clubProjects", title: "Проекты", type: "array" },
+  { key: "projectDetails", title: "Контент проектов", type: "object" },
   { key: "pageSeo", title: "SEO страниц", type: "object" },
 ];
 
@@ -464,6 +466,8 @@ function applyCmsContent(content) {
   serviceApplications = Array.isArray(content.serviceApplications) ? content.serviceApplications : serviceApplications;
   regionalBranches = Array.isArray(content.regionalBranches) ? content.regionalBranches : regionalBranches;
   mediaProjects = Array.isArray(content.mediaProjects) ? content.mediaProjects : mediaProjects;
+  clubProjects = Array.isArray(content.clubProjects) ? content.clubProjects : clubProjects;
+  projectDetails = content.projectDetails && typeof content.projectDetails === "object" ? content.projectDetails : projectDetails;
   pageSeo = content.pageSeo && typeof content.pageSeo === "object" ? content.pageSeo : pageSeo;
 }
 
@@ -1000,7 +1004,28 @@ function GalleryPage() {
   return (
     <div className="page">
       <h1>Галерея / фотоотчёты</h1>
-      <div className="gallery-grid">{galleryAlbums.map((album) => <figure key={album.title}><img src={album.cover} alt={album.title} /><figcaption>{album.title} · {album.date}</figcaption></figure>)}</div>
+      <div className="gallery-grid">
+        {galleryAlbums.map((album) => {
+          const photos = album.photos?.length ? album.photos : [album.cover];
+          return (
+            <figure key={album.title}>
+              <img src={album.cover || photos[0]} alt={album.title} />
+              <figcaption>{album.title} · {album.date}</figcaption>
+              {photos.length > 1 && <small>{photos.length} фото</small>}
+            </figure>
+          );
+        })}
+      </div>
+      {galleryAlbums.some((album) => album.photos?.length) && (
+        <div className="album-photo-grid">
+          {galleryAlbums.flatMap((album) => (album.photos || []).map((photo, index) => (
+            <figure key={`${album.title}-${index}`}>
+              <img src={photo} alt={`${album.title} ${index + 1}`} />
+              <figcaption>{album.title}</figcaption>
+            </figure>
+          )))}
+        </div>
+      )}
     </div>
   );
 }
@@ -1130,7 +1155,7 @@ function OrgProjectPage({ slug, goTo }) {
         <section>
           <h2>Отзывы</h2>
           <div className="cards grid-2">
-            {details.testimonials.map((item) => <article key={item} className="card"><p>“{item}”</p></article>)}
+            {(details.testimonials || []).map((item) => <article key={item} className="card"><p>“{item}”</p></article>)}
           </div>
         </section>
       )}
@@ -1212,12 +1237,12 @@ function RegionDetailPage({ slug, goTo }) {
         {branch.leaders.map((leader) => (
           <article key={leader.name} className="card">
             <div className="branch-leader-item">
-              <img src={leader.photo} alt={leader.name} />
+              {leader.photo && <img src={leader.photo} alt={leader.name} />}
               <div>
                 <strong>{leader.name}</strong>
                 <p>{leader.role}</p>
                 <p>{leader.contact}</p>
-                <p>Соцсети: {leader.socials.join(" · ")}</p>
+                {leader.socials?.length > 0 && <p>Соцсети: {leader.socials.join(" · ")}</p>}
               </div>
             </div>
           </article>
@@ -1465,26 +1490,235 @@ function FaqPage() {
   );
 }
 
+const makeSlug = (value) => value
+  .toLowerCase()
+  .trim()
+  .replace(/ё/g, "e")
+  .replace(/[^a-zа-я0-9]+/g, "-")
+  .replace(/^-+|-+$/g, "") || `item-${Date.now()}`;
+
+function resizeImageFile(file, maxSize = 1600, quality = 0.82) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const image = new Image();
+      image.onload = () => {
+        const scale = Math.min(1, maxSize / Math.max(image.width, image.height));
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.round(image.width * scale);
+        canvas.height = Math.round(image.height * scale);
+        const context = canvas.getContext("2d");
+        context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        resolve(canvas.toDataURL("image/jpeg", quality));
+      };
+      image.onerror = reject;
+      image.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function ImageDropzone({ label = "Фото", value, onChange, multiple = false }) {
+  const [isDragging, setIsDragging] = useState(false);
+  const values = multiple ? value || [] : value ? [value] : [];
+
+  const processFiles = async (files) => {
+    const images = Array.from(files).filter((file) => file.type.startsWith("image/"));
+    if (!images.length) return;
+    const resized = await Promise.all(images.map((file) => resizeImageFile(file)));
+    onChange(multiple ? [...values, ...resized] : resized[0]);
+  };
+
+  return (
+    <div
+      className={`image-dropzone ${isDragging ? "dragging" : ""}`}
+      onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }}
+      onDragLeave={() => setIsDragging(false)}
+      onDrop={(event) => { event.preventDefault(); setIsDragging(false); processFiles(event.dataTransfer.files); }}
+    >
+      <strong>{label}</strong>
+      <p>Перетащите фото сюда или выберите файл. Изображение автоматически уменьшается до 1600px.</p>
+      <input type="file" accept="image/*" multiple={multiple} onChange={(event) => processFiles(event.target.files)} />
+      {!!values.length && (
+        <div className="image-preview-grid">
+          {values.map((src, index) => (
+            <figure key={`${src.slice(0, 24)}-${index}`}>
+              <img src={src} alt={`${label} ${index + 1}`} />
+              {multiple && <button type="button" onClick={() => onChange(values.filter((_, itemIndex) => itemIndex !== index))}>Удалить</button>}
+            </figure>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function AdminTextField({ label, value, onChange, textarea = false }) {
+  return <label>{label}{textarea ? <textarea value={value || ""} onChange={(event) => onChange(event.target.value)} rows="4" /> : <input value={value || ""} onChange={(event) => onChange(event.target.value)} />}</label>;
+}
+
+function EventsManager({ items, projects, onChange }) {
+  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  const add = () => onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", status: "future", image: "", short: "", program: [], audience: "" }, ...items]);
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Мероприятия</h2><button className="btn btn-small" onClick={add}>Добавить мероприятие</button></div>
+      {items.map((event, index) => (
+        <article className="card admin-edit-card" key={event.slug || index}>
+          <div className="admin-form-grid">
+            <AdminTextField label="Название" value={event.title} onChange={(value) => update(index, { title: value, slug: event.slug || makeSlug(value) })} />
+            <AdminTextField label="URL slug" value={event.slug} onChange={(value) => update(index, { slug: makeSlug(value) })} />
+            <AdminTextField label="Дата" value={event.date} onChange={(value) => update(index, { date: value })} />
+            <AdminTextField label="Время" value={event.time} onChange={(value) => update(index, { time: value })} />
+            <AdminTextField label="Место" value={event.place} onChange={(value) => update(index, { place: value })} />
+            <AdminTextField label="Город" value={event.city} onChange={(value) => update(index, { city: value })} />
+            <label>Формат<select value={event.format || "Оффлайн"} onChange={(e) => update(index, { format: e.target.value })}><option>Оффлайн</option><option>Онлайн</option><option>Гибрид</option></select></label>
+            <label>Статус<select value={event.status || "future"} onChange={(e) => update(index, { status: e.target.value })}><option value="future">Будущее</option><option value="past">Прошедшее</option></select></label>
+            <label>Проект<select value={event.projectSlug || ""} onChange={(e) => update(index, { projectSlug: e.target.value })}>{projects.map((project) => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
+            <AdminTextField label="Категория" value={event.category} onChange={(value) => update(index, { category: value })} />
+          </div>
+          <AdminTextField label="Краткое описание" value={event.short} onChange={(value) => update(index, { short: value })} textarea />
+          <AdminTextField label="Для кого" value={event.audience} onChange={(value) => update(index, { audience: value })} textarea />
+          <AdminTextField label="Программа — каждый пункт с новой строки" value={(event.program || []).join("\n")} onChange={(value) => update(index, { program: value.split("\n").filter(Boolean) })} textarea />
+          <ImageDropzone label="Обложка мероприятия" value={event.image} onChange={(value) => update(index, { image: value })} />
+          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить</button></div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function ProjectsManager({ projects, details, onProjectsChange, onDetailsChange }) {
+  const updateProject = (index, patch) => onProjectsChange(projects.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  const updateDetails = (slug, patch) => onDetailsChange({ ...details, [slug]: { ...(details[slug] || {}), ...patch } });
+  const renameProjectSlug = (index, nextSlug) => {
+    const previousSlug = projects[index].slug;
+    const normalizedSlug = makeSlug(nextSlug);
+    updateProject(index, { slug: normalizedSlug });
+    if (previousSlug === normalizedSlug) return;
+    const { [previousSlug]: previousDetails, ...restDetails } = details;
+    onDetailsChange({ ...restDetails, [normalizedSlug]: previousDetails || {} });
+  };
+  const removeProject = (index) => {
+    const { [projects[index].slug]: _removedDetails, ...restDetails } = details;
+    onProjectsChange(projects.filter((_, itemIndex) => itemIndex !== index));
+    onDetailsChange(restDetails);
+  };
+  const add = () => {
+    const slug = `project-${Date.now()}`;
+    onProjectsChange([{ slug, title: "Новый проект" }, ...projects]);
+    onDetailsChange({ ...details, [slug]: { description: ["Описание проекта"], photo: "", leaders: [], gallery: [], testimonials: [] } });
+  };
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Проекты и направления</h2><button className="btn btn-small" onClick={add}>Добавить проект</button></div>
+      {projects.map((project, index) => {
+        const detail = details[project.slug] || {};
+        const leaders = detail.leaders || (detail.lead ? [detail.lead] : []);
+        return (
+          <article className="card admin-edit-card" key={project.slug || index}>
+            <div className="admin-form-grid">
+              <AdminTextField label="Название проекта" value={project.title} onChange={(value) => updateProject(index, { title: value })} />
+              <AdminTextField label="URL slug" value={project.slug} onChange={(value) => renameProjectSlug(index, value)} />
+            </div>
+            <AdminTextField label="Описание — абзацы с новой строки" value={Array.isArray(detail.description) ? detail.description.join("\n") : detail.description || ""} onChange={(value) => updateDetails(project.slug, { description: value.split("\n").filter(Boolean) })} textarea />
+            <AdminTextField label="Для кого / программа — пункты с новой строки" value={(detail.forWhom || []).join("\n")} onChange={(value) => updateDetails(project.slug, { forWhom: value.split("\n").filter(Boolean) })} textarea />
+            <AdminTextField label="Результаты — пункты с новой строки" value={(detail.results || []).join("\n")} onChange={(value) => updateDetails(project.slug, { results: value.split("\n").filter(Boolean) })} textarea />
+            <ImageDropzone label="Обложка проекта" value={detail.photo} onChange={(value) => updateDetails(project.slug, { photo: value })} />
+            <ImageDropzone label="Галерея проекта" value={detail.gallery || []} multiple onChange={(value) => updateDetails(project.slug, { gallery: value })} />
+            <div className="admin-nested-list">
+              <h3>Руководители</h3>
+              {leaders.map((leader, leaderIndex) => <div className="admin-form-grid" key={leaderIndex}><AdminTextField label="Имя" value={leader.name} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} /><AdminTextField label="Роль" value={leader.role || leader.bio} onChange={(value) => updateDetails(project.slug, { leaders: leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} /></div>)}
+              <button onClick={() => updateDetails(project.slug, { leaders: [...leaders, { name: "", role: "" }] })}>Добавить руководителя</button>
+            </div>
+            <div className="admin-actions"><button onClick={() => removeProject(index)}>Удалить проект</button></div>
+          </article>
+        );
+      })}
+    </section>
+  );
+}
+
+function RegionsManager({ items, onChange }) {
+  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  const add = () => onChange([{ slug: `region-${Date.now()}`, city: "Новый город", cover: "", leaders: [], news: [] }, ...items]);
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Отделения и руководители</h2><button className="btn btn-small" onClick={add}>Добавить отделение</button></div>
+      {items.map((region, index) => (
+        <article className="card admin-edit-card" key={region.slug || index}>
+          <div className="admin-form-grid"><AdminTextField label="Город" value={region.city} onChange={(value) => update(index, { city: value })} /><AdminTextField label="URL slug" value={region.slug} onChange={(value) => update(index, { slug: makeSlug(value) })} /></div>
+          <ImageDropzone label="Обложка отделения" value={region.cover} onChange={(value) => update(index, { cover: value })} />
+          <div className="admin-nested-list">
+            <h3>Руководители</h3>
+            {(region.leaders || []).map((leader, leaderIndex) => (
+              <div className="admin-leader-editor" key={leaderIndex}>
+                <div className="admin-form-grid">
+                  <AdminTextField label="Имя" value={leader.name} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, name: value } : item) })} />
+                  <AdminTextField label="Роль" value={leader.role} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, role: value } : item) })} />
+                  <AdminTextField label="Контакт" value={leader.contact} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, contact: value } : item) })} />
+                </div>
+                <ImageDropzone label="Фото руководителя" value={leader.photo} onChange={(value) => update(index, { leaders: region.leaders.map((item, itemIndex) => itemIndex === leaderIndex ? { ...item, photo: value } : item) })} />
+                <button onClick={() => update(index, { leaders: region.leaders.filter((_, itemIndex) => itemIndex !== leaderIndex) })}>Удалить руководителя</button>
+              </div>
+            ))}
+            <button onClick={() => update(index, { leaders: [...(region.leaders || []), { name: "", role: "", contact: "", photo: "", socials: [] }] })}>Добавить руководителя</button>
+          </div>
+          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить отделение</button></div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
+function GalleryManager({ items, onChange }) {
+  const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
+  const add = () => onChange([{ title: "Новый альбом", date: "", cover: "", photos: [] }, ...items]);
+
+  return (
+    <section className="admin-manager">
+      <div className="admin-manager-head"><h2>Галерея</h2><button className="btn btn-small" onClick={add}>Добавить альбом</button></div>
+      {items.map((album, index) => (
+        <article className="card admin-edit-card" key={`${album.title}-${index}`}>
+          <div className="admin-form-grid"><AdminTextField label="Название альбома" value={album.title} onChange={(value) => update(index, { title: value })} /><AdminTextField label="Дата" value={album.date} onChange={(value) => update(index, { date: value })} /></div>
+          <ImageDropzone label="Обложка альбома" value={album.cover} onChange={(value) => update(index, { cover: value })} />
+          <ImageDropzone label="Фотографии альбома" value={album.photos || []} multiple onChange={(value) => update(index, { photos: value, cover: album.cover || value[0] || "" })} />
+          <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить альбом</button></div>
+        </article>
+      ))}
+    </section>
+  );
+}
+
 function AdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(() => window.sessionStorage.getItem(ADMIN_SESSION_KEY) === "true");
   const [loginForm, setLoginForm] = useState({ login: "", password: "" });
   const [loginError, setLoginError] = useState("");
+  const [activeTool, setActiveTool] = useState("events");
   const [activeSection, setActiveSection] = useState(cmsSections[0].key);
   const [content, setContent] = useState(() => loadStoredCmsContent() || getDefaultCmsContent());
   const [draft, setDraft] = useState(() => JSON.stringify(content[cmsSections[0].key], null, 2));
   const [editorError, setEditorError] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
 
+  const persistContent = (nextContent, message = "Сохранено. Контент уже записан в CMS и применится на сайте после обновления страницы.") => {
+    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+    setContent(nextContent);
+    applyCmsContent(nextContent);
+    setSaveMessage(message);
+  };
+
+  const updateContentSection = (key, value) => persistContent({ ...content, [key]: value });
+
   const summary = {
     events: content.events?.length || 0,
-    posts: content.posts?.length || 0,
     galleryAlbums: content.galleryAlbums?.length || 0,
-    testimonials: content.testimonials?.length || 0,
-    partners: content.partners?.length || 0,
-    services: content.services?.length || 0,
-    serviceApplications: content.serviceApplications?.length || 0,
     regionalBranches: content.regionalBranches?.length || 0,
-    mediaProjects: content.mediaProjects?.length || 0,
+    clubProjects: content.clubProjects?.length || 0,
     seoPages: Object.keys(content.pageSeo || {}).length,
   };
 
@@ -1506,15 +1740,11 @@ function AdminPage() {
     setLoginError("Неверный логин или пароль.");
   };
 
-  const handleSave = () => {
+  const handleJsonSave = () => {
     try {
       const parsed = JSON.parse(draft);
-      const nextContent = { ...content, [activeSection]: parsed };
-      window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
-      setContent(nextContent);
-      applyCmsContent(nextContent);
+      persistContent({ ...content, [activeSection]: parsed });
       setEditorError("");
-      setSaveMessage("Сохранено. Изменения применятся на сайте после обновления страницы.");
     } catch (error) {
       setEditorError(`Проверьте JSON: ${error.message}`);
       setSaveMessage("");
@@ -1524,11 +1754,9 @@ function AdminPage() {
   const resetSection = () => {
     const defaults = getDefaultCmsContent();
     const nextContent = { ...content, [activeSection]: defaults[activeSection] };
-    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
-    setContent(nextContent);
+    persistContent(nextContent, "Раздел сброшен к исходному контенту.");
     setDraft(JSON.stringify(nextContent[activeSection], null, 2));
     setEditorError("");
-    setSaveMessage("Раздел сброшен к исходному контенту.");
   };
 
   const exportContent = () => {
@@ -1563,40 +1791,52 @@ function AdminPage() {
       <div className="admin-heading">
         <div>
           <h1>CMS EVTENIA</h1>
-          <p className="lead">Редактируйте контент сайта в JSON: мероприятия, новости, галерею, команду, услуги, отделения, SEO и заявки.</p>
+          <p className="lead">Рабочее управление контентом: добавляйте мероприятия, проекты, руководителей и адаптивные галереи. Фото можно перетащить мышью — CMS уменьшит их перед сохранением.</p>
         </div>
         <button className="btn btn-small" onClick={() => { window.sessionStorage.removeItem(ADMIN_SESSION_KEY); setIsAuthenticated(false); }}>Выйти</button>
       </div>
 
       <div className="cards grid-3 admin-stats">
         <article className="card"><h3>Мероприятия</h3><p>{summary.events}</p></article>
-        <article className="card"><h3>Новости</h3><p>{summary.posts}</p></article>
-        <article className="card"><h3>Галерея</h3><p>{summary.galleryAlbums}</p></article>
-        <article className="card"><h3>Отзывы</h3><p>{summary.testimonials}</p></article>
-        <article className="card"><h3>Партнеры</h3><p>{summary.partners}</p></article>
-        <article className="card"><h3>Услуги</h3><p>{summary.services}</p></article>
-        <article className="card"><h3>Заявки услуг</h3><p>{summary.serviceApplications}</p></article>
+        <article className="card"><h3>Проекты</h3><p>{summary.clubProjects}</p></article>
         <article className="card"><h3>Отделения</h3><p>{summary.regionalBranches}</p></article>
+        <article className="card"><h3>Альбомы</h3><p>{summary.galleryAlbums}</p></article>
         <article className="card"><h3>SEO-страницы</h3><p>{summary.seoPages}</p></article>
       </div>
 
-      <section className="card admin-cms-card">
-        <div className="admin-cms-toolbar">
-          <div className="admin-tabs">
-            {cmsSections.map((section) => <button className={section.key === activeSection ? "active" : ""} key={section.key} onClick={() => selectSection(section.key)}>{section.title}</button>)}
+      <div className="admin-tabs admin-main-tabs">
+        <button className={activeTool === "events" ? "active" : ""} onClick={() => setActiveTool("events")}>Мероприятия</button>
+        <button className={activeTool === "projects" ? "active" : ""} onClick={() => setActiveTool("projects")}>Проекты</button>
+        <button className={activeTool === "regions" ? "active" : ""} onClick={() => setActiveTool("regions")}>Отделения</button>
+        <button className={activeTool === "gallery" ? "active" : ""} onClick={() => setActiveTool("gallery")}>Галерея</button>
+        <button className={activeTool === "json" ? "active" : ""} onClick={() => setActiveTool("json")}>Расширенный JSON</button>
+        <button className="btn btn-small" onClick={exportContent}>Экспорт JSON</button>
+      </div>
+
+      {saveMessage && <p className="admin-success">{saveMessage}</p>}
+
+      {activeTool === "events" && <EventsManager items={content.events || []} projects={content.clubProjects || []} onChange={(value) => updateContentSection("events", value)} />}
+      {activeTool === "projects" && <ProjectsManager projects={content.clubProjects || []} details={content.projectDetails || {}} onProjectsChange={(value) => updateContentSection("clubProjects", value)} onDetailsChange={(value) => updateContentSection("projectDetails", value)} />}
+      {activeTool === "regions" && <RegionsManager items={content.regionalBranches || []} onChange={(value) => updateContentSection("regionalBranches", value)} />}
+      {activeTool === "gallery" && <GalleryManager items={content.galleryAlbums || []} onChange={(value) => updateContentSection("galleryAlbums", value)} />}
+
+      {activeTool === "json" && (
+        <section className="card admin-cms-card">
+          <div className="admin-cms-toolbar">
+            <div className="admin-tabs">
+              {cmsSections.map((section) => <button className={section.key === activeSection ? "active" : ""} key={section.key} onClick={() => selectSection(section.key)}>{section.title}</button>)}
+            </div>
           </div>
-          <button className="btn btn-small" onClick={exportContent}>Экспорт JSON</button>
-        </div>
-        <label className="admin-editor-label" htmlFor="cms-editor">Раздел: {cmsSections.find((section) => section.key === activeSection)?.title}</label>
-        <textarea id="cms-editor" className="admin-json-editor" value={draft} onChange={(e) => setDraft(e.target.value)} spellCheck="false" />
-        {editorError && <p className="admin-error">{editorError}</p>}
-        {saveMessage && <p className="admin-success">{saveMessage}</p>}
-        <div className="admin-actions">
-          <button className="btn" onClick={handleSave}>Сохранить раздел</button>
-          <button onClick={() => setDraft(JSON.stringify(content[activeSection], null, 2))}>Отменить правки</button>
-          <button onClick={resetSection}>Сбросить раздел</button>
-        </div>
-      </section>
+          <label className="admin-editor-label" htmlFor="cms-editor">Раздел: {cmsSections.find((section) => section.key === activeSection)?.title}</label>
+          <textarea id="cms-editor" className="admin-json-editor" value={draft} onChange={(e) => setDraft(e.target.value)} spellCheck="false" />
+          {editorError && <p className="admin-error">{editorError}</p>}
+          <div className="admin-actions">
+            <button className="btn" onClick={handleJsonSave}>Сохранить раздел</button>
+            <button onClick={() => setDraft(JSON.stringify(content[activeSection], null, 2))}>Отменить правки</button>
+            <button onClick={resetSection}>Сбросить раздел</button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
