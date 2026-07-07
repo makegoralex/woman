@@ -791,3 +791,4 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
   .admin-manager-head { flex-direction: column; align-items: flex-start; }
 }
 .admin-leader-editor { display: grid; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 14px; background: #fff; }
+.admin-note { margin: 0; padding: 10px 12px; border-radius: 12px; background: #fff7ef; color: var(--muted); }

@@ -721,6 +721,36 @@ function Hero({ goTo }) {
   );
 }
 
+const russianMonthNumbers = {
+  января: 0,
+  февраля: 1,
+  марта: 2,
+  апреля: 3,
+  мая: 4,
+  июня: 5,
+  июля: 6,
+  августа: 7,
+  сентября: 8,
+  октября: 9,
+  ноября: 10,
+  декабря: 11,
+};
+
+function parseEventDate(dateText) {
+  const match = String(dateText || "").trim().toLowerCase().match(/(\d{1,2})\s+([а-яё]+)\s+(\d{4})/);
+  if (!match) return null;
+  const [, day, month, year] = match;
+  const monthIndex = russianMonthNumbers[month];
+  if (monthIndex === undefined) return null;
+  return new Date(Number(year), monthIndex, Number(day), 23, 59, 59);
+}
+
+function getEventStatus(event) {
+  const eventDate = parseEventDate(event.date);
+  if (!eventDate) return "future";
+  return eventDate.getTime() >= Date.now() ? "future" : "past";
+}
+
 function Home({ goTo }) {
   return (
     <div className="page">
@@ -732,7 +762,7 @@ function Home({ goTo }) {
 
       <section>
         <div className="section-head"><h2>Ближайшие мероприятия</h2><button onClick={() => goTo("/poster")}>Вся афиша →</button></div>
-        <div className="cards grid-3">{events.filter((e) => e.status === "future").slice(0, 4).map((e) => <EventCard key={e.slug} event={e} goTo={goTo} />)}</div>
+        <div className="cards grid-3">{events.filter((e) => getEventStatus(e) === "future").slice(0, 4).map((e) => <EventCard key={e.slug} event={e} goTo={goTo} />)}</div>
       </section>
 
       <section>
@@ -832,7 +862,7 @@ function EventsPage({ goTo }) {
   const projects = ["all", ...clubProjects.map((p) => p.slug)];
   const cities = ["all", ...new Set(events.map((e) => e.city))];
   const filtered = events.filter((e) =>
-    (status === "all" ? true : e.status === status)
+    (status === "all" ? true : getEventStatus(e) === status)
     && (project === "all" ? true : e.projectSlug === project)
     && (city === "all" ? true : e.city === city)
   );
@@ -840,7 +870,7 @@ function EventsPage({ goTo }) {
     <div className="page">
       <h1>Мероприятия EVTENIA</h1>
       <div className="filters">
-        <label>Статус <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
+        <label>Период <select value={status} onChange={(e) => setStatus(e.target.value)}><option value="all">Все</option><option value="future">Будущие</option><option value="past">Прошедшие</option></select></label>
         <label>Направление
           <select value={project} onChange={(e) => setProject(e.target.value)}>
             {projects.map((p) => <option key={p} value={p}>{p === "all" ? "Все направления" : clubProjects.find((item) => item.slug === p)?.title}</option>)}
@@ -871,8 +901,20 @@ function EventDetail({ slug, goTo }) {
       <p><strong>Кому подойдёт:</strong> {event.audience}</p>
       <p><strong>Описание:</strong> {event.short}</p>
       <h2>Программа</h2>
-      <ul>{event.program.map((item) => <li key={item}>{item}</li>)}</ul>
+      <ul>{(event.program || []).map((item) => <li key={item}>{item}</li>)}</ul>
       <h3>Спикеры</h3><p>Основатель клуба, приглашённые эксперты и участники с практическими кейсами.</p>
+      {event.gallery?.length > 0 && (
+        <section>
+          <h2>Фотографии мероприятия</h2>
+          <div className="album-photo-grid">
+            {event.gallery.map((photo, index) => (
+              <figure key={`${event.slug}-photo-${index}`}>
+                <img src={photo} alt={`${event.title} ${index + 1}`} />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
       <button className="btn" onClick={() => goTo("/join")}>Записаться</button>
 
       <section>
@@ -1560,7 +1602,7 @@ function AdminTextField({ label, value, onChange, textarea = false }) {
 
 function EventsManager({ items, projects, onChange }) {
   const update = (index, patch) => onChange(items.map((item, itemIndex) => itemIndex === index ? { ...item, ...patch } : item));
-  const add = () => onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", status: "future", image: "", short: "", program: [], audience: "" }, ...items]);
+  const add = () => onChange([{ slug: `event-${Date.now()}`, title: "Новое мероприятие", date: "", time: "", place: "", city: "", format: "Оффлайн", category: "", projectSlug: projects[0]?.slug || "", image: "", gallery: [], short: "", program: [], audience: "" }, ...items]);
 
   return (
     <section className="admin-manager">
@@ -1575,7 +1617,6 @@ function EventsManager({ items, projects, onChange }) {
             <AdminTextField label="Место" value={event.place} onChange={(value) => update(index, { place: value })} />
             <AdminTextField label="Город" value={event.city} onChange={(value) => update(index, { city: value })} />
             <label>Формат<select value={event.format || "Оффлайн"} onChange={(e) => update(index, { format: e.target.value })}><option>Оффлайн</option><option>Онлайн</option><option>Гибрид</option></select></label>
-            <label>Статус<select value={event.status || "future"} onChange={(e) => update(index, { status: e.target.value })}><option value="future">Будущее</option><option value="past">Прошедшее</option></select></label>
             <label>Проект<select value={event.projectSlug || ""} onChange={(e) => update(index, { projectSlug: e.target.value })}>{projects.map((project) => <option key={project.slug} value={project.slug}>{project.title}</option>)}</select></label>
             <AdminTextField label="Категория" value={event.category} onChange={(value) => update(index, { category: value })} />
           </div>
@@ -1583,6 +1624,8 @@ function EventsManager({ items, projects, onChange }) {
           <AdminTextField label="Для кого" value={event.audience} onChange={(value) => update(index, { audience: value })} textarea />
           <AdminTextField label="Программа — каждый пункт с новой строки" value={(event.program || []).join("\n")} onChange={(value) => update(index, { program: value.split("\n").filter(Boolean) })} textarea />
           <ImageDropzone label="Обложка мероприятия" value={event.image} onChange={(value) => update(index, { image: value })} />
+          <ImageDropzone label="Галерея мероприятия" value={event.gallery || []} multiple onChange={(value) => update(index, { gallery: value })} />
+          <p className="admin-note">Статус «будущее/прошедшее» определяется автоматически по дате мероприятия. Блок «Спикеры» пока фиксированный на сайте и в админке не редактируется.</p>
           <div className="admin-actions"><button onClick={() => onChange(items.filter((_, itemIndex) => itemIndex !== index))}>Удалить</button></div>
         </article>
       ))}
