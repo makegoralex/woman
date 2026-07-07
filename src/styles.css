@@ -809,3 +809,5 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 .admin-item-list button { text-align: left; border: 1px solid var(--border); background: #fff; border-radius: 12px; padding: 10px 12px; cursor: pointer; }
 .admin-item-list button.active { border-color: var(--accent); background: #fff7ef; color: var(--accent); font-weight: 800; }
 @media (max-width: 900px) { .admin-split-editor { grid-template-columns: 1fr; } .admin-item-selector { position: static; } .admin-item-list { max-height: 280px; } }
+.consent-checkbox { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--muted); }
+.consent-checkbox input { margin-top: 3px; width: 18px; height: 18px; }

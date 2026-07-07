@@ -1013,6 +1013,19 @@ function AboutPage() {
   );
 }
 
+function ConsentCheckbox({ goTo }) {
+  return (
+    <label className="consent-checkbox">
+      <input required type="checkbox" />
+      <span>Я соглашаюсь с {" "}
+        <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политикой конфиденциальности</button>
+        {" "}и даю {" "}
+        <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку персональных данных</button>.
+      </span>
+    </label>
+  );
+}
+
 function JoinForm({ compact = false, goTo }) {
   return (
     <section className={compact ? "join compact" : "join"}>
@@ -1029,12 +1042,7 @@ function JoinForm({ compact = false, goTo }) {
           <option>Участие в сообществе</option><option>Партнерство</option><option>Мероприятие</option><option>Консультация</option>
         </select>
         <textarea placeholder="Комментарий" rows="4" />
-        <small className="form-note">
-          Отправляя форму, вы принимаете{" "}
-          <button type="button" className="inline-link" onClick={() => goTo?.("/privacy")}>политику конфиденциальности</button>
-          {" "}и{" "}
-          <button type="button" className="inline-link" onClick={() => goTo?.("/consent")}>согласие на обработку данных</button>.
-        </small>
+        <ConsentCheckbox goTo={goTo} />
         <button className="btn" type="submit">Отправить заявку</button>
       </form>
     </section>
@@ -1369,7 +1377,7 @@ function TeamPage() {
 }
 
 
-function PartnersPage() {
+function PartnersPage({ goTo }) {
   return (
     <div className="page">
       <h1>Партнеры</h1>
@@ -1398,6 +1406,7 @@ function PartnersPage() {
             <option>Экспертная программа</option>
           </select>
           <textarea required placeholder="Коротко опишите предложение" rows="4" />
+          <ConsentCheckbox goTo={goTo} />
           <button className="btn" type="submit">Отправить заявку партнера</button>
         </form>
       </section>
@@ -1515,7 +1524,7 @@ function ServiceDetailPage({ slug, goTo }) {
   );
 }
 
-function ProposeServicePage() {
+function ProposeServicePage({ goTo }) {
   return (
     <div className="page">
       <h1>Предложить свою услугу</h1>
@@ -1527,6 +1536,7 @@ function ProposeServicePage() {
           <input required placeholder="Название услуги" />
           <input placeholder="Стоимость или формат расчета" />
           <textarea required placeholder="Кратко опишите услугу, пользу и для кого она подходит" rows="5" />
+          <ConsentCheckbox goTo={goTo} />
           <button className="btn" type="submit">Отправить на модерацию</button>
         </form>
       </section>
@@ -2023,10 +2033,10 @@ export default function App() {
     if (path === "/contacts") return <ContactsPage goTo={goTo} />;
     if (path === "/privacy") return <LegalDocumentPage type="privacy" />;
     if (path === "/consent") return <LegalDocumentPage type="consent" />;
-    if (path === "/partners") return <PartnersPage />;
+    if (path === "/partners") return <PartnersPage goTo={goTo} />;
     if (path === "/stories") return <StoriesPage />;
     if (path === "/services") return <ServicesPage goTo={goTo} />;
-    if (path === "/services/propose-service") return <ProposeServicePage />;
+    if (path === "/services/propose-service") return <ProposeServicePage goTo={goTo} />;
     if (path.startsWith("/services/")) return <ServiceDetailPage slug={path.split("/services/")[1]} goTo={goTo} />;
     if (path === "/housing-committee") return <HousingCommitteePage />;
     if (path === "/courses") return <CoursesPage />;
