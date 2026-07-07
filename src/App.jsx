@@ -502,7 +502,10 @@ async function saveServerCmsContent(content) {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(content),
   });
-  if (!response.ok) throw new Error("сервер не сохранил контент");
+  if (!response.ok) {
+    const details = await response.json().catch(() => ({}));
+    throw new Error(details.error || `сервер ответил ${response.status}`);
+  }
 }
 
 async function uploadCmsImages(dataUrls) {
@@ -520,6 +523,22 @@ async function uploadCmsImages(dataUrls) {
     console.warn("Не удалось загрузить изображения на сервер, используем локальные данные", error);
     return dataUrls;
   }
+}
+
+async function replaceEmbeddedImages(value) {
+  if (typeof value === "string") {
+    if (!value.startsWith("data:image/")) return value;
+    const urls = await uploadCmsImages([value]);
+    return urls[0] || value;
+  }
+  if (Array.isArray(value)) {
+    return Promise.all(value.map((item) => replaceEmbeddedImages(item)));
+  }
+  if (value && typeof value === "object") {
+    const entries = await Promise.all(Object.entries(value).map(async ([key, item]) => [key, await replaceEmbeddedImages(item)]));
+    return Object.fromEntries(entries);
+  }
+  return value;
 }
 
 if (typeof window !== "undefined") {
@@ -1900,15 +1919,17 @@ function AdminPage() {
 
   const persistContent = async (nextContent, message = "Сохранено. Контент записан в серверную CMS и доступен всем посетителям.") => {
     try {
-      await saveServerCmsContent(nextContent);
+      setSaveMessage("Сохраняем изображения и контент на сервер...");
+      const serverContent = await replaceEmbeddedImages(nextContent);
+      await saveServerCmsContent(serverContent);
       try {
-        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(nextContent));
+        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
       } catch (cacheError) {
         console.warn("Сервер сохранил контент, но локальный кеш переполнен", cacheError);
       }
-      setContent(nextContent);
-      setDraftContent(nextContent);
-      applyCmsContent(nextContent);
+      setContent(serverContent);
+      setDraftContent(serverContent);
+      applyCmsContent(serverContent);
       setSaveMessage(message);
     } catch (error) {
       setSaveMessage(`Не удалось сохранить на сервер: ${error.message}. Проверьте доступ к админке и повторите сохранение.`);

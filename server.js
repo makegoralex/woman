@@ -15,7 +15,7 @@ const DATA_DIR = path.join(__dirname, "data");
 const CONTENT_FILE = path.join(DATA_DIR, "content.json");
 const UPLOAD_DIR = path.join(__dirname, "public", "uploads");
 
-app.use(express.json({ limit: "100mb" }));
+app.use(express.json({ limit: "250mb" }));
 
 async function ensureStorage() {
   await fs.mkdir(DATA_DIR, { recursive: true });
@@ -104,7 +104,10 @@ app.use((req, res) => {
 
 app.use((error, req, res, next) => {
   console.error(error);
-  res.status(500).json({ error: "Internal server error" });
+  if (error.type === "entity.too.large") {
+    return res.status(413).json({ error: "Upload is too large" });
+  }
+  res.status(500).json({ error: error.message || "Internal server error" });
 });
 
 ensureStorage().then(() => {
