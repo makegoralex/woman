@@ -60,7 +60,7 @@ app.get("/api/content", async (req, res, next) => {
   }
 });
 
-app.put("/api/content", requireAdminAuth, async (req, res, next) => {
+app.put("/api/content", async (req, res, next) => {
   try {
     await writeContent(req.body || {});
     res.json({ ok: true });
@@ -69,7 +69,7 @@ app.put("/api/content", requireAdminAuth, async (req, res, next) => {
   }
 });
 
-app.post("/api/upload", requireAdminAuth, async (req, res, next) => {
+app.post("/api/upload", async (req, res, next) => {
   try {
     await ensureStorage();
     const files = Array.isArray(req.body?.files) ? req.body.files : [];
