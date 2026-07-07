@@ -887,26 +887,55 @@ function EventsPage({ goTo }) {
   );
 }
 
+function PhotoLightbox({ photos, index, onClose, onNavigate }) {
+  useEffect(() => {
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onClose();
+      if (event.key === "ArrowLeft") onNavigate(index === 0 ? photos.length - 1 : index - 1);
+      if (event.key === "ArrowRight") onNavigate(index === photos.length - 1 ? 0 : index + 1);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [index, onClose, onNavigate, photos.length]);
+
+  if (!photos.length || index === null) return null;
+  const previousIndex = index === 0 ? photos.length - 1 : index - 1;
+  const nextIndex = index === photos.length - 1 ? 0 : index + 1;
+
+  return (
+    <div className="photo-lightbox" role="dialog" aria-modal="true" aria-label="Галерея" onClick={onClose}>
+      <button className="photo-lightbox-close" onClick={onClose} aria-label="Закрыть">×</button>
+      <button className="photo-lightbox-nav prev" onClick={(event) => { event.stopPropagation(); onNavigate(previousIndex); }} aria-label="Предыдущее фото">‹</button>
+      <img src={photos[index]} alt={`Галерея ${index + 1}`} onClick={(event) => event.stopPropagation()} />
+      <button className="photo-lightbox-nav next" onClick={(event) => { event.stopPropagation(); onNavigate(nextIndex); }} aria-label="Следующее фото">›</button>
+    </div>
+  );
+}
+
 function EventDetail({ slug, goTo }) {
   const event = events.find((e) => e.slug === slug);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
   if (!event) return <NotFound goTo={goTo} />;
+  const eventGallery = event.gallery || [];
   const related = events.filter((e) => e.slug !== slug).slice(0, 3);
   return (
     <div className="page">
       <div className="breadcrumbs">Главная / Мероприятия / {event.title}</div>
       <h1>{event.title}</h1>
       <img className="detail-cover event-detail-cover" src={event.image} alt={event.title} />
-      {event.gallery?.length > 0 && (
+      {eventGallery.length > 0 && (
         <section className="event-gallery-section">
           <h2>Галерея мероприятия</h2>
-          <p className="lead">{event.gallery.length} фото с мероприятия</p>
           <div className="album-photo-grid event-photo-grid">
-            {event.gallery.map((photo, index) => (
+            {eventGallery.map((photo, index) => (
               <figure key={`${event.slug}-photo-${index}`}>
-                <img src={photo} alt={`${event.title} ${index + 1}`} />
+                <button className="gallery-photo-button" onClick={() => setLightboxIndex(index)} aria-label={`Открыть фото ${index + 1}`}>
+                  <img src={photo} alt={`${event.title} ${index + 1}`} />
+                </button>
               </figure>
             ))}
           </div>
+          <PhotoLightbox photos={eventGallery} index={lightboxIndex} onClose={() => setLightboxIndex(null)} onNavigate={setLightboxIndex} />
         </section>
       )}
       <p><strong>Дата и время:</strong> {event.date}, {event.time}</p>
@@ -1064,31 +1093,37 @@ function JoinPage({ goTo }) {
 }
 
 function GalleryPage() {
+  const [lightbox, setLightbox] = useState(null);
+  const galleryPhotos = galleryAlbums.flatMap((album) => (album.photos?.length ? album.photos : [album.cover]).filter(Boolean));
   return (
     <div className="page">
-      <h1>Галерея / фотоотчёты</h1>
+      <h1>Галерея</h1>
       <div className="gallery-grid">
-        {galleryAlbums.map((album) => {
-          const photos = album.photos?.length ? album.photos : [album.cover];
+        {galleryAlbums.map((album, albumIndex) => {
+          const photos = (album.photos?.length ? album.photos : [album.cover]).filter(Boolean);
+          const firstPhotoIndex = galleryAlbums.slice(0, albumIndex).reduce((total, currentAlbum) => total + (currentAlbum.photos?.length ? currentAlbum.photos.length : currentAlbum.cover ? 1 : 0), 0);
           return (
             <figure key={album.title}>
-              <img src={album.cover || photos[0]} alt={album.title} />
+              <button className="gallery-photo-button" onClick={() => photos.length && setLightbox(firstPhotoIndex)} aria-label={`Открыть альбом ${album.title}`}>
+                <img src={album.cover || photos[0]} alt={album.title} />
+              </button>
               <figcaption>{album.title} · {album.date}</figcaption>
-              {photos.length > 1 && <small>{photos.length} фото</small>}
             </figure>
           );
         })}
       </div>
-      {galleryAlbums.some((album) => album.photos?.length) && (
+      {galleryPhotos.length > 0 && (
         <div className="album-photo-grid">
-          {galleryAlbums.flatMap((album) => (album.photos || []).map((photo, index) => (
-            <figure key={`${album.title}-${index}`}>
-              <img src={photo} alt={`${album.title} ${index + 1}`} />
-              <figcaption>{album.title}</figcaption>
+          {galleryPhotos.map((photo, index) => (
+            <figure key={`${photo.slice(0, 24)}-${index}`}>
+              <button className="gallery-photo-button" onClick={() => setLightbox(index)} aria-label={`Открыть фото ${index + 1}`}>
+                <img src={photo} alt={`Галерея ${index + 1}`} />
+              </button>
             </figure>
-          )))}
+          ))}
         </div>
       )}
+      <PhotoLightbox photos={galleryPhotos} index={lightbox} onClose={() => setLightbox(null)} onNavigate={setLightbox} />
     </div>
   );
 }
@@ -1198,7 +1233,7 @@ function OrgProjectPage({ slug, goTo }) {
           </section>
           {details.gallery && (
             <section>
-              <h2>Фотографии направления</h2>
+              <h2>Галерея направления</h2>
               <div className="gallery-grid">
                 {details.gallery.map((photo, idx) => (
                   <figure key={photo}>
@@ -1791,8 +1826,8 @@ function GalleryManager({ items, onChange }) {
           <article className="card admin-edit-card">
             <div className="admin-form-grid"><AdminTextField label="Название альбома" value={album.title} onChange={(value) => update({ title: value })} /><AdminTextField label="Дата" value={album.date} onChange={(value) => update({ date: value })} /></div>
             <ImageDropzone label="Обложка альбома" value={album.cover} onChange={(value) => update({ cover: value })} />
-            <ImageDropzone label="Фотографии альбома" value={album.photos || []} multiple onChange={(value) => update({ photos: value, cover: album.cover || value[0] || "" })} />
-            <p className="admin-note">После загрузки фотографий нажмите «Сохранить изменения» сверху.</p>
+            <ImageDropzone label="Галерея альбома" value={album.photos || []} multiple onChange={(value) => update({ photos: value, cover: album.cover || value[0] || "" })} />
+            <p className="admin-note">После загрузки галереи нажмите «Сохранить изменения» сверху.</p>
             <div className="admin-actions"><button onClick={remove}>Удалить альбом</button></div>
           </article>
         ) : <article className="card"><p>Пока нет альбомов.</p></article>}

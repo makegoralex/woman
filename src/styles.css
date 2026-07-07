@@ -811,3 +811,12 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.2rem); margin-bottom: 0.6em; }
 @media (max-width: 900px) { .admin-split-editor { grid-template-columns: 1fr; } .admin-item-selector { position: static; } .admin-item-list { max-height: 280px; } }
 .consent-checkbox { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: flex-start; font-size: .92rem; color: var(--muted); }
 .consent-checkbox input { margin-top: 3px; width: 18px; height: 18px; }
+.gallery-photo-button { display: block; width: 100%; border: 0; padding: 0; background: transparent; cursor: zoom-in; }
+.photo-lightbox { position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center; padding: clamp(16px, 4vw, 48px); background: rgba(20, 14, 18, .86); }
+.photo-lightbox img { max-width: min(100%, 1180px); max-height: 86vh; object-fit: contain; border-radius: 18px; box-shadow: 0 24px 70px rgba(0,0,0,.35); }
+.photo-lightbox-close, .photo-lightbox-nav { position: fixed; border: 0; background: rgba(255,255,255,.92); color: var(--text); cursor: pointer; box-shadow: 0 10px 35px rgba(0,0,0,.22); }
+.photo-lightbox-close { top: 18px; right: 18px; width: 44px; height: 44px; border-radius: 50%; font-size: 30px; line-height: 1; }
+.photo-lightbox-nav { top: 50%; transform: translateY(-50%); width: 48px; height: 64px; border-radius: 999px; font-size: 42px; line-height: 1; }
+.photo-lightbox-nav.prev { left: 18px; }
+.photo-lightbox-nav.next { right: 18px; }
+@media (max-width: 720px) { .photo-lightbox { padding: 56px 12px; } .photo-lightbox-nav { width: 42px; height: 54px; font-size: 34px; } .photo-lightbox-close { width: 40px; height: 40px; } }
