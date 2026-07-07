@@ -945,6 +945,18 @@ function EventDetail({ slug, goTo }) {
       <h2>Программа</h2>
       <ul>{(event.program || []).map((item) => <li key={item}>{item}</li>)}</ul>
       <h3>Спикеры</h3><p>Основатель клуба, приглашённые эксперты и участники с практическими кейсами.</p>
+      {event.gallery?.length > 0 && (
+        <section>
+          <h2>Фотографии мероприятия</h2>
+          <div className="album-photo-grid">
+            {event.gallery.map((photo, index) => (
+              <figure key={`${event.slug}-photo-${index}`}>
+                <img src={photo} alt={`${event.title} ${index + 1}`} />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
       <button className="btn" onClick={() => goTo("/join")}>Записаться</button>
 
       <section>
