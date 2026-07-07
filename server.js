@@ -60,14 +60,17 @@ app.get("/api/content", async (req, res, next) => {
   }
 });
 
-app.put("/api/content", async (req, res, next) => {
+async function saveContentRequest(req, res, next) {
   try {
     await writeContent(req.body || {});
     res.json({ ok: true });
   } catch (error) {
     next(error);
   }
-});
+}
+
+app.post("/api/content", saveContentRequest);
+app.put("/api/content", saveContentRequest);
 
 app.post("/api/upload", async (req, res, next) => {
   try {
