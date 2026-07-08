@@ -484,8 +484,13 @@ function loadStoredCmsContent() {
   }
 }
 
-const CMS_CONTENT_ENDPOINTS = ["/api/content"];
-const CMS_UPLOAD_ENDPOINTS = ["/api/upload"];
+const CMS_CONTENT_ENDPOINTS = ["/api/content", "/cms/content", "/admin/content"];
+const CMS_UPLOAD_ENDPOINTS = ["/api/upload", "/cms/upload", "/admin/upload"];
+const SAVE_REQUEST_TIMEOUT_MS = 30000;
+
+function getAdminAuthHeader() {
+  return `Basic ${btoa(`${ADMIN_LOGIN}:${ADMIN_PASSWORD}`)}`;
+}
 
 async function parseJsonResponse(response) {
   const text = await response.text();
@@ -581,7 +586,7 @@ async function saveServerCmsContent(content) {
     }
   }
 
-  throw new Error(lastError);
+  throw new Error(errors.join("; ") || "сервер не принял запрос");
 }
 
 async function uploadCmsImages(dataUrls) {
@@ -592,7 +597,10 @@ async function uploadCmsImages(dataUrls) {
       const response = await fetch(endpoint, {
         method: "POST",
         credentials: "same-origin",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": getAdminAuthHeader(),
+        },
         body: JSON.stringify({ files: dataUrls }),
       });
 
