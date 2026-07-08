@@ -476,7 +476,8 @@ function loadStoredCmsContent() {
   try {
     const raw = window.localStorage.getItem(CMS_STORAGE_KEY);
     if (!raw) return null;
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    return isMeaningfulCmsContent(parsed) ? parsed : null;
   } catch (error) {
     console.warn("Не удалось прочитать CMS-контент", error);
     return null;
@@ -502,25 +503,50 @@ async function parseJsonResponse(response) {
   }
 }
 
+function isPlainObject(value) {
+  return value && typeof value === "object" && !Array.isArray(value);
+}
+
+function hasItems(value) {
+  return Array.isArray(value) ? value.length > 0 : isPlainObject(value) && Object.keys(value).length > 0;
+}
+
+function isMeaningfulCmsContent(content) {
+  if (!isPlainObject(content)) return false;
+  return cmsSections.some((section) => hasItems(content[section.key]));
+}
+
 function normalizeCmsContent(content) {
   const defaults = getDefaultCmsContent();
-  const source = content && typeof content === "object" ? content : {};
+  if (!isMeaningfulCmsContent(content)) return defaults;
+
+  const source = content;
 
   return {
     events: Array.isArray(source.events) ? source.events : defaults.events,
     posts: Array.isArray(source.posts) ? source.posts : defaults.posts,
     galleryAlbums: Array.isArray(source.galleryAlbums) ? source.galleryAlbums : defaults.galleryAlbums,
     testimonials: Array.isArray(source.testimonials) ? source.testimonials : defaults.testimonials,
-    teamMembers: source.teamMembers && typeof source.teamMembers === "object" ? source.teamMembers : defaults.teamMembers,
+    teamMembers: isPlainObject(source.teamMembers) ? source.teamMembers : defaults.teamMembers,
     partners: Array.isArray(source.partners) ? source.partners : defaults.partners,
     services: Array.isArray(source.services) ? source.services : defaults.services,
     serviceApplications: Array.isArray(source.serviceApplications) ? source.serviceApplications : defaults.serviceApplications,
     regionalBranches: Array.isArray(source.regionalBranches) ? source.regionalBranches : defaults.regionalBranches,
     mediaProjects: Array.isArray(source.mediaProjects) ? source.mediaProjects : defaults.mediaProjects,
     clubProjects: Array.isArray(source.clubProjects) ? source.clubProjects : defaults.clubProjects,
-    projectDetails: source.projectDetails && typeof source.projectDetails === "object" ? source.projectDetails : defaults.projectDetails,
-    pageSeo: source.pageSeo && typeof source.pageSeo === "object" ? source.pageSeo : defaults.pageSeo,
+    projectDetails: isPlainObject(source.projectDetails) ? source.projectDetails : defaults.projectDetails,
+    pageSeo: isPlainObject(source.pageSeo) ? source.pageSeo : defaults.pageSeo,
   };
+}
+
+function cacheCmsContent(content) {
+  try {
+    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(content));
+    return true;
+  } catch (cacheError) {
+    console.warn("Не удалось сохранить локальный кеш CMS", cacheError);
+    return false;
+  }
 }
 
 async function loadServerCmsContent() {
@@ -529,7 +555,7 @@ async function loadServerCmsContent() {
       const response = await fetch(endpoint, { credentials: "same-origin" });
       if (!response.ok) continue;
       const content = await parseJsonResponse(response);
-      if (content && Object.keys(content).length) return content;
+      if (isMeaningfulCmsContent(content)) return normalizeCmsContent(content);
     } catch (error) {
       console.warn(`Не удалось загрузить CMS-контент с ${endpoint}`, error);
     }
@@ -1981,35 +2007,35 @@ function AdminPage() {
   useEffect(() => {
     loadServerCmsContent().then((serverContent) => {
       if (!serverContent) return;
-      setContent(serverContent);
-      setDraftContent(serverContent);
-      applyCmsContent(serverContent);
-      setDraft(JSON.stringify(serverContent[cmsSections[0].key], null, 2));
+      const normalizedContent = normalizeCmsContent(serverContent);
+      setContent(normalizedContent);
+      setDraftContent(normalizedContent);
+      applyCmsContent(normalizedContent);
+      setDraft(JSON.stringify(normalizedContent[cmsSections[0].key], null, 2));
     });
   }, []);
 
   const persistContent = async (nextContent, message = "Сохранено. Контент записан в серверную CMS и доступен всем посетителям.") => {
     setEditorError("");
-    setSaveMessage("Сохраняем изображения и контент на сервер...");
+    setSaveMessage("Сохраняем контент и изображения...");
 
-    const preparedContent = normalizeCmsContent(nextContent);
-    const serverContent = normalizeCmsContent(await replaceEmbeddedImages(preparedContent));
+    let serverContent = normalizeCmsContent(nextContent);
 
     try {
+      serverContent = normalizeCmsContent(await replaceEmbeddedImages(serverContent));
       await saveServerCmsContent(serverContent);
     } catch (error) {
       console.error("Ошибка сохранения CMS-контента", error);
-      setSaveMessage(`Не удалось сохранить на сервер: ${error.message}. Изменения оставлены в черновике, попробуйте ещё раз.`);
+      cacheCmsContent(serverContent);
+      setContent(serverContent);
       setDraftContent(serverContent);
+      setDraft(JSON.stringify(serverContent[activeSection], null, 2));
+      applyCmsContent(serverContent);
+      setSaveMessage(`Сервер сейчас недоступен (${error.message}). Изменения сохранены локально в этом браузере; для публикации на сайте нужен работающий /api/content.`);
       return false;
     }
 
-    try {
-      window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
-    } catch (cacheError) {
-      console.warn("Сервер сохранил контент, но локальный кеш переполнен", cacheError);
-    }
-
+    cacheCmsContent(serverContent);
     setContent(serverContent);
     setDraftContent(serverContent);
     setDraft(JSON.stringify(serverContent[activeSection], null, 2));
@@ -2173,12 +2199,9 @@ export default function App() {
   useEffect(() => {
     loadServerCmsContent().then((serverContent) => {
       if (!serverContent) return;
-      applyCmsContent(serverContent);
-      try {
-        window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(serverContent));
-      } catch (cacheError) {
-        console.warn("Не удалось обновить локальный кеш CMS", cacheError);
-      }
+      const normalizedContent = normalizeCmsContent(serverContent);
+      applyCmsContent(normalizedContent);
+      cacheCmsContent(normalizedContent);
       setContentVersion((version) => version + 1);
     });
   }, []);
