@@ -33,8 +33,16 @@ async function readContent() {
 }
 
 async function writeContent(content) {
+  if (!content || typeof content !== "object" || Array.isArray(content)) {
+    const error = new Error("Content payload must be a JSON object");
+    error.statusCode = 400;
+    throw error;
+  }
+
   await ensureStorage();
-  await fs.writeFile(CONTENT_FILE, JSON.stringify(content, null, 2));
+  const tmpFile = `${CONTENT_FILE}.${process.pid}.${Date.now()}.tmp`;
+  await fs.writeFile(tmpFile, JSON.stringify(content, null, 2));
+  await fs.rename(tmpFile, CONTENT_FILE);
 }
 
 function isAdminAuthorized(req) {
@@ -122,7 +130,7 @@ app.use((error, req, res, next) => {
   if (error.type === "entity.too.large") {
     return res.status(413).json({ error: "Upload is too large" });
   }
-  res.status(500).json({ error: error.message || "Internal server error" });
+  res.status(error.statusCode || 500).json({ error: error.message || "Internal server error" });
 });
 
 ensureStorage().then(() => {
