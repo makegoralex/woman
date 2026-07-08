@@ -523,12 +523,6 @@ function normalizeCmsContent(content) {
   };
 }
 
-function createSaveController() {
-  const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), SAVE_REQUEST_TIMEOUT_MS);
-  return { controller, timeoutId };
-}
-
 async function loadServerCmsContent() {
   for (const endpoint of CMS_CONTENT_ENDPOINTS) {
     try {
@@ -545,34 +539,24 @@ async function loadServerCmsContent() {
 
 async function saveServerCmsContent(content) {
   const payload = JSON.stringify(normalizeCmsContent(content));
-  const errors = [];
+  let lastError = "сервер не принял запрос";
 
   for (const endpoint of CMS_CONTENT_ENDPOINTS) {
-    for (const method of ["PUT", "POST"]) {
-      const { controller, timeoutId } = createSaveController();
+    try {
+      const response = await fetch(endpoint, {
+        method: "POST",
+        credentials: "same-origin",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      });
 
-      try {
-        const response = await fetch(endpoint, {
-          method,
-          credentials: "same-origin",
-          signal: controller.signal,
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": getAdminAuthHeader(),
-          },
-          body: payload,
-        });
+      const details = await parseJsonResponse(response);
+      if (response.ok) return details || { ok: true };
 
-        const details = await parseJsonResponse(response);
-        if (response.ok) return details || { ok: true };
-
-        errors.push(`${method} ${endpoint}: ${details?.error || response.statusText || response.status}`);
-      } catch (error) {
-        errors.push(`${method} ${endpoint}: ${error.name === "AbortError" ? "тайм-аут сохранения" : error.message}`);
-        console.warn(`Не удалось сохранить CMS-контент через ${method} ${endpoint}`, error);
-      } finally {
-        window.clearTimeout(timeoutId);
-      }
+      lastError = details?.error || `сервер ответил ${response.status} на ${endpoint}`;
+    } catch (error) {
+      lastError = error.message;
+      console.warn(`Не удалось сохранить CMS-контент через ${endpoint}`, error);
     }
   }
 
