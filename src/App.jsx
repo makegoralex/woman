@@ -570,7 +570,7 @@ async function loadServerCmsContent() {
 
 async function saveServerCmsContent(content) {
   const payload = JSON.stringify(normalizeCmsContent(content));
-  let lastError = "сервер не принял запрос";
+  const errors = [];
 
   for (const endpoint of CMS_CONTENT_ENDPOINTS) {
     try {
@@ -584,9 +584,9 @@ async function saveServerCmsContent(content) {
       const details = await parseJsonResponse(response);
       if (response.ok) return details || { ok: true };
 
-      lastError = details?.error || `сервер ответил ${response.status} на ${endpoint}`;
+      errors.push(details?.error || `сервер ответил ${response.status} на ${endpoint}`);
     } catch (error) {
-      lastError = error.message;
+      errors.push(`${endpoint}: ${error.message}`);
       console.warn(`Не удалось сохранить CMS-контент через ${endpoint}`, error);
     }
   }
