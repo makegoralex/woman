@@ -484,12 +484,14 @@ function loadStoredCmsContent() {
   }
 }
 
-const CMS_CONTENT_ENDPOINTS = ["/api/content", "/cms/content", "/admin/content"];
-const CMS_UPLOAD_ENDPOINTS = ["/api/upload", "/cms/upload", "/admin/upload"];
-const SAVE_REQUEST_TIMEOUT_MS = 30000;
+const CMS_CONTENT_ENDPOINTS = ["/cms/content", "/api/content", "/admin/content"];
+const CMS_UPLOAD_ENDPOINTS = ["/cms/upload", "/api/upload", "/admin/upload"];
 
-function getAdminAuthHeader() {
-  return `Basic ${btoa(`${ADMIN_LOGIN}:${ADMIN_PASSWORD}`)}`;
+function getCmsRequestHeaders() {
+  return {
+    "Content-Type": "application/json",
+    "Authorization": `Basic ${btoa(`${ADMIN_LOGIN}:${ADMIN_PASSWORD}`)}`,
+  };
 }
 
 async function parseJsonResponse(response) {
@@ -552,7 +554,10 @@ function cacheCmsContent(content) {
 async function loadServerCmsContent() {
   for (const endpoint of CMS_CONTENT_ENDPOINTS) {
     try {
-      const response = await fetch(endpoint, { credentials: "same-origin" });
+      const response = await fetch(endpoint, {
+        credentials: "same-origin",
+        headers: getCmsRequestHeaders(),
+      });
       if (!response.ok) continue;
       const content = await parseJsonResponse(response);
       if (isMeaningfulCmsContent(content)) return normalizeCmsContent(content);
@@ -572,7 +577,7 @@ async function saveServerCmsContent(content) {
       const response = await fetch(endpoint, {
         method: "POST",
         credentials: "same-origin",
-        headers: { "Content-Type": "application/json" },
+        headers: getCmsRequestHeaders(),
         body: payload,
       });
 
@@ -597,10 +602,7 @@ async function uploadCmsImages(dataUrls) {
       const response = await fetch(endpoint, {
         method: "POST",
         credentials: "same-origin",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": getAdminAuthHeader(),
-        },
+        headers: getCmsRequestHeaders(),
         body: JSON.stringify({ files: dataUrls }),
       });
 
@@ -2031,7 +2033,7 @@ function AdminPage() {
       setDraftContent(serverContent);
       setDraft(JSON.stringify(serverContent[activeSection], null, 2));
       applyCmsContent(serverContent);
-      setSaveMessage(`Сервер сейчас недоступен (${error.message}). Изменения сохранены локально в этом браузере; для публикации на сайте нужен работающий /api/content.`);
+      setSaveMessage(`Не удалось опубликовать изменения: ${error.message}. Проверьте, что сервер CMS отвечает на /cms/content или /api/content, и нажмите «Сохранить изменения» ещё раз.`);
       return false;
     }
 
