@@ -63,8 +63,7 @@ jobs:
             wait_for_api http://127.0.0.1:3003/api/content "Local API"
 
             echo "🌐 Update nginx route for CMS API..."
-            install -m 0644 "$APP_DIR/deploy/nginx-people.evtenia.ru.conf" /etc/nginx/sites-available/people.evtenia.ru.conf
-            ln -sf /etc/nginx/sites-available/people.evtenia.ru.conf /etc/nginx/sites-enabled/people.evtenia.ru.conf
+            APP_PORT=3003 node "$APP_DIR/deploy/configure-nginx.js"
             nginx -t
             systemctl reload nginx
 

@@ -42,10 +42,9 @@ pm2 save
 echo "🩺 Check local API..."
 wait_for_api "http://127.0.0.1:$APP_PORT/api/content" "Local API"
 
-if [[ -f "$APP_DIR/deploy/nginx-people.evtenia.ru.conf" ]] && command -v nginx >/dev/null 2>&1 && [[ $EUID -eq 0 ]]; then
+if [[ -f "$APP_DIR/deploy/configure-nginx.js" ]] && command -v nginx >/dev/null 2>&1 && [[ $EUID -eq 0 ]]; then
   echo "🌐 Update nginx route for CMS API..."
-  install -m 0644 "$APP_DIR/deploy/nginx-people.evtenia.ru.conf" /etc/nginx/sites-available/people.evtenia.ru.conf
-  ln -sf /etc/nginx/sites-available/people.evtenia.ru.conf /etc/nginx/sites-enabled/people.evtenia.ru.conf
+  APP_PORT="$APP_PORT" node "$APP_DIR/deploy/configure-nginx.js"
   nginx -t
   systemctl reload nginx
 fi
