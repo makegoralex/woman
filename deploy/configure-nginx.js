@@ -29,6 +29,15 @@ const managedBlock = `
         proxy_set_header Connection "upgrade";
     }
 
+    location ^~ /uploads/ {
+        proxy_pass http://127.0.0.1:${port};
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
     location = /admin/content {
         proxy_pass http://127.0.0.1:${port};
         proxy_http_version 1.1;
@@ -103,6 +112,7 @@ function updateConfig(text) {
   let next = text.replace(/\n\s*# BEGIN EVTENIA CMS API[\s\S]*?# END EVTENIA CMS API\n?/g, "\n");
   next = removeLocationBlock(next, "\\/api\\/?");
   next = removeLocationBlock(next, "\\/cms\\/?");
+  next = removeLocationBlock(next, "\\/uploads\\/?");
   next = removeLocationBlock(next, "\\/admin\\/content");
   next = removeLocationBlock(next, "\\/admin\\/upload");
 
