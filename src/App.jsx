@@ -429,7 +429,6 @@ let regionalBranches = [
   },
 ];
 
-const CMS_STORAGE_KEY = "evtenia_cms_content_v1";
 const ADMIN_SESSION_KEY = "evtenia_admin_session";
 const ADMIN_LOGIN = "admin";
 const ADMIN_PASSWORD = "Evtenia2026!";
@@ -471,21 +470,8 @@ function applyCmsContent(content) {
   pageSeo = content.pageSeo && typeof content.pageSeo === "object" ? content.pageSeo : pageSeo;
 }
 
-function loadStoredCmsContent() {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(CMS_STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw);
-    return isMeaningfulCmsContent(parsed) ? parsed : null;
-  } catch (error) {
-    console.warn("Не удалось прочитать CMS-контент", error);
-    return null;
-  }
-}
-
-const CMS_CONTENT_ENDPOINTS = ["/cms/content", "/api/content", "/admin/content"];
-const CMS_UPLOAD_ENDPOINTS = ["/cms/upload", "/api/upload", "/admin/upload"];
+const CMS_CONTENT_ENDPOINTS = ["/api/content", "/cms/content", "/admin/content"];
+const CMS_UPLOAD_ENDPOINTS = ["/api/upload", "/cms/upload", "/admin/upload"];
 
 function getCmsRequestHeaders() {
   return {
@@ -497,6 +483,10 @@ function getCmsRequestHeaders() {
 async function parseJsonResponse(response) {
   const text = await response.text();
   if (!text) return null;
+  const contentType = response.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    return { error: `ожидался JSON, сервер вернул ${contentType || "ответ без content-type"}` };
+  }
 
   try {
     return JSON.parse(text);
@@ -541,16 +531,6 @@ function normalizeCmsContent(content) {
   };
 }
 
-function cacheCmsContent(content) {
-  try {
-    window.localStorage.setItem(CMS_STORAGE_KEY, JSON.stringify(content));
-    return true;
-  } catch (cacheError) {
-    console.warn("Не удалось сохранить локальный кеш CMS", cacheError);
-    return false;
-  }
-}
-
 async function loadServerCmsContent() {
   for (const endpoint of CMS_CONTENT_ENDPOINTS) {
     try {
@@ -560,6 +540,10 @@ async function loadServerCmsContent() {
       });
       if (!response.ok) continue;
       const content = await parseJsonResponse(response);
+      if (content?.error) {
+        console.warn(`Некорректный ответ CMS с ${endpoint}: ${content.error}`);
+        continue;
+      }
       if (isMeaningfulCmsContent(content)) return normalizeCmsContent(content);
     } catch (error) {
       console.warn(`Не удалось загрузить CMS-контент с ${endpoint}`, error);
@@ -582,7 +566,7 @@ async function saveServerCmsContent(content) {
       });
 
       const details = await parseJsonResponse(response);
-      if (response.ok) return details || { ok: true };
+      if (response.ok && details?.ok === true) return details;
 
       errors.push(details?.error || `сервер ответил ${response.status} на ${endpoint}`);
     } catch (error) {
@@ -613,6 +597,10 @@ async function uploadCmsImages(dataUrls) {
       }
 
       const result = await parseJsonResponse(response);
+      if (result?.error) {
+        lastError = result.error;
+        continue;
+      }
       return result?.urls?.length ? result.urls : dataUrls;
     }
 
@@ -638,10 +626,6 @@ async function replaceEmbeddedImages(value) {
     return Object.fromEntries(entries);
   }
   return value;
-}
-
-if (typeof window !== "undefined") {
-  applyCmsContent(loadStoredCmsContent());
 }
 
 function usePath() {
@@ -2000,7 +1984,7 @@ function AdminPage() {
   const [loginError, setLoginError] = useState("");
   const [activeTool, setActiveTool] = useState("events");
   const [activeSection, setActiveSection] = useState(cmsSections[0].key);
-  const [content, setContent] = useState(() => loadStoredCmsContent() || getDefaultCmsContent());
+  const [content, setContent] = useState(() => getDefaultCmsContent());
   const [draftContent, setDraftContent] = useState(() => content);
   const [draft, setDraft] = useState(() => JSON.stringify(content[cmsSections[0].key], null, 2));
   const [editorError, setEditorError] = useState("");
@@ -2028,16 +2012,12 @@ function AdminPage() {
       await saveServerCmsContent(serverContent);
     } catch (error) {
       console.error("Ошибка сохранения CMS-контента", error);
-      cacheCmsContent(serverContent);
-      setContent(serverContent);
       setDraftContent(serverContent);
       setDraft(JSON.stringify(serverContent[activeSection], null, 2));
-      applyCmsContent(serverContent);
-      setSaveMessage(`Не удалось опубликовать изменения: ${error.message}. Проверьте, что сервер CMS отвечает на /cms/content или /api/content, и нажмите «Сохранить изменения» ещё раз.`);
+      setSaveMessage(`Не удалось опубликовать изменения: ${error.message}. Изменения остались в форме, но не показаны посетителям. Проверьте, что сервер CMS отвечает на /api/content, и нажмите «Сохранить изменения» ещё раз.`);
       return false;
     }
 
-    cacheCmsContent(serverContent);
     setContent(serverContent);
     setDraftContent(serverContent);
     setDraft(JSON.stringify(serverContent[activeSection], null, 2));
@@ -2203,7 +2183,6 @@ export default function App() {
       if (!serverContent) return;
       const normalizedContent = normalizeCmsContent(serverContent);
       applyCmsContent(normalizedContent);
-      cacheCmsContent(normalizedContent);
       setContentVersion((version) => version + 1);
     });
   }, []);

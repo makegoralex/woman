@@ -83,10 +83,10 @@ async function saveContentRequest(req, res, next) {
 
 app.post("/admin/content", requireAdminAuth, saveContentRequest);
 app.put("/admin/content", requireAdminAuth, saveContentRequest);
-app.post("/cms/content", saveContentRequest);
-app.put("/cms/content", saveContentRequest);
-app.post("/api/content", saveContentRequest);
-app.put("/api/content", saveContentRequest);
+app.post("/cms/content", requireAdminAuth, saveContentRequest);
+app.put("/cms/content", requireAdminAuth, saveContentRequest);
+app.post("/api/content", requireAdminAuth, saveContentRequest);
+app.put("/api/content", requireAdminAuth, saveContentRequest);
 
 async function uploadRequest(req, res, next) {
   try {
@@ -111,13 +111,13 @@ async function uploadRequest(req, res, next) {
 }
 
 app.post("/admin/upload", requireAdminAuth, uploadRequest);
-app.post("/cms/upload", uploadRequest);
-app.post("/api/upload", uploadRequest);
+app.post("/cms/upload", requireAdminAuth, uploadRequest);
+app.post("/api/upload", requireAdminAuth, uploadRequest);
 
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 app.use("/public", express.static(path.join(__dirname, "public")));
 app.use(express.static(path.join(__dirname, "dist")));
-app.get("/admin", requireAdminAuth, (req, res) => {
+app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
