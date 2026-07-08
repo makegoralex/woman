@@ -1726,7 +1726,7 @@ const makeSlug = (value) => value
   .replace(/[^a-zа-я0-9]+/g, "-")
   .replace(/^-+|-+$/g, "") || `item-${Date.now()}`;
 
-function resizeImageFile(file, maxSize = 900, quality = 0.68) {
+function resizeImageFile(file, maxSize = 2000, quality = 0.9) {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.onload = () => {
@@ -1768,7 +1768,7 @@ function ImageDropzone({ label = "Фото", value, onChange, multiple = false }
       onDrop={(event) => { event.preventDefault(); setIsDragging(false); processFiles(event.dataTransfer.files); }}
     >
       <strong>{label}</strong>
-      <p>Перетащите фото сюда или выберите файл. Изображение автоматически сжимается для загрузки больших галерей.</p>
+      <p>Перетащите фото сюда или выберите файл. Изображение автоматически оптимизируется для загрузки без заметной потери качества.</p>
       <input type="file" accept="image/*" multiple={multiple} onChange={(event) => processFiles(event.target.files)} />
       {!!values.length && (
         <div className="image-preview-grid">
