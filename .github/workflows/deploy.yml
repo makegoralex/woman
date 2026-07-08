@@ -25,6 +25,23 @@ jobs:
             APP_DIR=/var/www/people
             APP_NAME=people
 
+            wait_for_api() {
+              local url="$1"
+              local label="$2"
+              for attempt in $(seq 1 30); do
+                if curl -fsS "$url" >/dev/null; then
+                  echo "$label is ready"
+                  return 0
+                fi
+                sleep 1
+              done
+
+              echo "$label did not become ready"
+              pm2 status "$APP_NAME" || true
+              pm2 logs "$APP_NAME" --lines 80 --nostream || true
+              return 1
+            }
+
             cd "$APP_DIR"
 
             echo "📥 Sync..."
@@ -43,7 +60,7 @@ jobs:
             pm2 save
 
             echo "🩺 Check local API..."
-            curl -fsS http://127.0.0.1:3003/api/content >/dev/null
+            wait_for_api http://127.0.0.1:3003/api/content "Local API"
 
             echo "🌐 Update nginx route for CMS API..."
             install -m 0644 "$APP_DIR/deploy/nginx-people.evtenia.ru.conf" /etc/nginx/sites-available/people.evtenia.ru.conf
@@ -52,6 +69,6 @@ jobs:
             systemctl reload nginx
 
             echo "🩺 Check public API..."
-            curl -fsS https://people.evtenia.ru/api/content >/dev/null
+            wait_for_api https://people.evtenia.ru/api/content "Public API"
 
             echo "✅ Done"
