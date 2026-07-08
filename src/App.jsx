@@ -591,7 +591,7 @@ async function saveServerCmsContent(content) {
     }
   }
 
-  throw new Error(lastError);
+  throw new Error(errors.join("; ") || "сервер не принял запрос");
 }
 
 async function uploadCmsImages(dataUrls) {
