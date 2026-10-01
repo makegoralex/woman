@@ -629,9 +629,10 @@ async function replaceEmbeddedImages(value) {
 }
 
 function usePath() {
-  const [path, setPath] = useState(window.location.pathname);
+  const normalizePath = (value) => value.length > 1 ? value.replace(/\/+$/, "") : value;
+  const [path, setPath] = useState(normalizePath(window.location.pathname));
   useEffect(() => {
-    const onPop = () => setPath(window.location.pathname);
+    const onPop = () => setPath(normalizePath(window.location.pathname));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);

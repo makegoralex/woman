@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "node server.js",
-    "build": "vite build"
+    "build": "vite build && node deploy/prepare-static-site.js"
   },
   "dependencies": {
     "express": "^5.2.1",

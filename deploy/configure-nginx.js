@@ -139,11 +139,18 @@ if (files.length === 0) {
   throw new Error(`No active nginx config with ${domain} was found`);
 }
 
+let configuredFiles = 0;
 let updatedFiles = 0;
 for (const file of files) {
   const original = fs.readFileSync(file, "utf8");
   const updated = updateConfig(original);
-  if (updated === null || updated === original) continue;
+  if (updated === null) continue;
+
+  configuredFiles += 1;
+  if (updated === original) {
+    console.log(`Nginx CMS routes are already current in ${file}`);
+    continue;
+  }
 
   const backup = `${file}.bak-${Date.now()}`;
   fs.copyFileSync(file, backup);
@@ -152,6 +159,10 @@ for (const file of files) {
   updatedFiles += 1;
 }
 
-if (updatedFiles === 0) {
+if (configuredFiles === 0) {
   throw new Error(`Found nginx config for ${domain}, but no server_name block could be updated`);
+}
+
+if (updatedFiles > 0) {
+  console.log(`Updated CMS routes in ${updatedFiles} nginx config file(s)`);
 }
