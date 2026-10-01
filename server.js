@@ -116,6 +116,7 @@ app.post("/api/upload", requireAdminAuth, uploadRequest);
 
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 app.use("/public", express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public", "site-refresh")));
 app.use(express.static(path.join(__dirname, "dist")));
 app.get("/admin", (req, res) => {
   res.sendFile(path.join(__dirname, "dist", "index.html"));
