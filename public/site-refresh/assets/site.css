@@ -135,3 +135,40 @@ a:focus-visible,button:focus-visible{outline:3px solid #bf9b4c;outline-offset:3p
 @media(max-width:900px){.partner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.event-intro,.service-overview,.course-overview,.about-hero,.gallery-feature,.service-detail{gap:22px;padding:22px}.event-photo,.service-overview>img,.course-overview>img,.about-hero>img,.gallery-feature>img,.service-detail>img{height:280px}.service-list{grid-template-columns:1fr}.project-page-cover>div{padding:22px}}
 @media(max-width:780px){.hero-panel{grid-template-columns:1fr}.hero-copy{padding:32px 25px 25px}.hero h1{font-size:clamp(40px,9vw,58px)}.hero-visual{width:100%;height:auto;min-height:0;max-height:360px;aspect-ratio:4/3}.hero-image{width:100%;height:100%;object-fit:contain}.shagi-banner{gap:16px;padding:16px}.shagi-logo-frame{width:88px;height:88px}.shagi-banner h2{font-size:30px}.project-page-cover{grid-template-columns:1fr}.project-page-cover>img{height:auto;min-height:0;aspect-ratio:3/2}.project-page-cover>div{padding:20px}.event-intro,.service-overview,.course-overview,.about-hero,.gallery-feature,.service-detail{grid-template-columns:1fr;padding:18px;gap:16px}.event-photo,.service-overview>img,.course-overview>img,.about-hero>img,.gallery-feature>img,.service-detail>img{height:auto;min-height:0;aspect-ratio:3/2}.contact-prompt{align-items:flex-start;flex-direction:column;padding:22px}.contact-prompt-actions{display:flex;flex-wrap:wrap}.contact-layout .contact-project{padding:22px}.separate-project{margin-top:36px;padding:17px}.project-spotlight-wide .project-detail{padding:18px 13px 20px}}
 @media(max-width:420px){.hero-copy{padding:27px 19px 21px}.hero h1{font-size:clamp(37px,10vw,46px)}.shagi-banner{align-items:flex-start;flex-direction:column}.shagi-logo-frame{width:78px;height:78px}.shagi-heading{align-items:flex-start}.shagi-heading>img{width:54px;height:54px}.resource-card{min-height:180px}.story-card{min-height:0}.contact-prompt-actions{display:grid}.separate-project{align-items:flex-start}}
+
+/* Fit the full community photograph into a wider, shallower desktop hero. */
+@media(min-width:781px){
+  .hero-panel{grid-template-columns:minmax(0,.82fr) minmax(0,1.18fr);min-height:0;align-items:stretch}
+  .hero-copy{padding:clamp(24px,2.4vw,34px) clamp(24px,2.7vw,38px)}
+  .hero h1{max-width:580px;margin:13px 0 10px;font-size:clamp(36px,3.4vw,47px);line-height:1.02}
+  .hero-copy>p{max-width:470px;margin:0;font-size:13px;line-height:1.58}
+  .hero-buttons{margin-top:15px}
+  .hero-tags{gap:12px;margin-top:17px;padding-top:10px}
+  .hero-visual{min-height:0;max-height:520px;aspect-ratio:16/10;align-self:stretch}
+  .hero-image{position:relative;inset:auto;width:100%;height:100%;object-fit:contain!important;object-position:center}
+  .cookie{width:min(860px,calc(100% - 30px));padding-block:7px;font-size:9px}
+  .project-page-cover{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:0}
+  .project-page-cover>img{height:auto;min-height:0;aspect-ratio:4/3;object-fit:cover}
+  .shaga-photo{display:grid;grid-template-columns:minmax(0,1fr) minmax(250px,.55fr);align-items:center;gap:24px;margin:0 0 24px;padding:14px 22px;border:1px solid var(--line);border-radius:22px;background:#e7eee6}
+  .shaga-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:15px}
+  .shaga-photo p{max-width:340px;margin:0;color:#465c4c;font:500 clamp(23px,2.6vw,34px)/1.25 var(--serif)}
+  .service-info-card{min-height:150px}
+  .service-info-card p{margin-top:12px;font-size:13px;line-height:1.7}
+}
+@media(min-width:781px) and (max-width:1000px){
+  .hero-panel{grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr)}
+  .hero-copy{padding:24px}
+  .hero h1{font-size:clamp(34px,4vw,40px)}
+  .hero-visual{aspect-ratio:4/3;max-height:420px}
+}
+@media(max-width:780px){
+  .project-page-cover>img{aspect-ratio:4/3;object-fit:cover}
+  .shaga-photo{margin:0 0 18px;padding:11px;border:1px solid var(--line);border-radius:18px;background:#e7eee6}
+  .shaga-photo img{width:100%;height:auto;aspect-ratio:4/3;object-fit:cover;border-radius:13px}
+  .shaga-photo p{margin:13px 5px 4px;color:#465c4c;font:500 23px/1.3 var(--serif)}
+  .service-info-card p{margin-top:10px;font-size:13px;line-height:1.65}
+}
+@media(min-width:781px){
+  .hero-image{object-fit:cover!important;object-position:center 40%}
+  .cookie{left:auto;right:15px;transform:none;width:min(680px,calc(100% - 30px))}
+}
