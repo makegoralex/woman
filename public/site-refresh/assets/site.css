@@ -172,3 +172,8 @@ a:focus-visible,button:focus-visible{outline:3px solid #bf9b4c;outline-offset:3p
   .hero-image{object-fit:cover!important;object-position:center 40%}
   .cookie{left:auto;right:15px;transform:none;width:min(680px,calc(100% - 30px))}
 }
+.shagi-team-feature{display:grid;grid-template-columns:minmax(260px,.82fr) minmax(0,1.18fr);align-items:center;gap:clamp(22px,4vw,52px);margin:26px 0 10px;padding:22px;border:1px solid var(--line);border-radius:23px;background:var(--white)}
+.shagi-team-feature>img{width:100%;height:auto;max-height:590px;object-fit:contain;object-position:center;border-radius:17px}
+.shagi-team-copy h2{margin:9px 0 16px}
+.shagi-team-copy p{max-width:670px;color:var(--muted);font-size:14px;line-height:1.8}
+@media(max-width:780px){.shagi-team-feature{grid-template-columns:1fr;gap:16px;margin:20px 0 8px;padding:12px}.shagi-team-feature>img{width:min(100%,520px);max-height:none;margin-inline:auto}.shagi-team-copy h2{font-size:32px}.shagi-team-copy p{font-size:13px}}
